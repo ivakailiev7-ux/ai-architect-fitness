@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#0a0a0a">
+<link rel="manifest" href="./manifest.json">
+<link rel="apple-touch-icon" href="./icon-192.png">
+<title>AI ARCHITECT - Fitness</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+:root{--bg:#0a0a0a;--surface:#111;--surface2:#1a1a1a;--surface3:#222;--blue:#2563eb;--blue-glow:rgba(37,99,235,.25);--blue-light:#4a8af5;--text:#fff;--text2:#aaa;--text3:#666;--danger:#ef4444;--success:#22c55e;--radius:14px;--radius-sm:10px}
+html,body{height:100%;overflow:hidden}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:var(--bg);color:var(--text);line-height:1.5;position:relative}
+.app{display:flex;flex-direction:column;height:100dvh;max-width:480px;margin:0 auto;position:relative;overflow:hidden}
+.app-content{flex:1;overflow-y:auto;overflow-x:hidden;padding:20px 16px 100px;scroll-behavior:smooth;-webkit-overflow-scrolling:touch}
+.app-content::-webkit-scrollbar{display:none}
+
+/* Header */
+.header{padding:16px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--surface2)}
+.header .logo{display:flex;align-items:center;gap:10px}
+.header .logo svg{width:28px;height:28px}
+.header .logo span{font-weight:700;font-size:14px;letter-spacing:2px;color:var(--blue)}
+.header .date{font-size:12px;color:var(--text2)}
+
+/* Bottom Nav */
+.nav{position:absolute;bottom:0;left:0;right:0;display:flex;background:var(--surface);border-top:1px solid var(--surface2);padding:8px 0 env(safe-area-inset-bottom,8px);z-index:100}
+.nav-item{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;padding:8px 0;cursor:pointer;transition:color .2s;color:var(--text3);border:none;background:none;font-size:10px;font-family:inherit}
+.nav-item.active{color:var(--blue)}
+.nav-item svg{width:22px;height:22px}
+
+/* Pages */
+.page{display:none}
+.page.active{display:block}
+
+/* Cards */
+.card{background:var(--surface);border-radius:var(--radius);padding:18px;margin-bottom:12px;border:1px solid var(--surface2);transition:border-color .2s}
+.card:active{border-color:var(--blue)}
+
+/* Section titles */
+.section-title{font-size:13px;font-weight:600;color:var(--text2);text-transform:uppercase;letter-spacing:1.5px;margin:24px 0 12px}
+.section-title:first-child{margin-top:0}
+
+/* Home page */
+.greeting{font-size:26px;font-weight:700;margin-bottom:4px}
+.greeting span{color:var(--blue)}
+.subtitle{color:var(--text2);font-size:14px;margin-bottom:24px}
+.stat-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:24px}
+.stat-box{background:var(--surface);border-radius:var(--radius-sm);padding:14px;text-align:center;border:1px solid var(--surface2)}
+.stat-box .num{font-size:24px;font-weight:700;color:var(--blue)}
+.stat-box .label{font-size:11px;color:var(--text2);margin-top:2px}
+.program-card{display:flex;align-items:center;gap:14px;cursor:pointer}
+.program-card .icon{width:48px;height:48px;border-radius:12px;background:var(--blue-glow);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.program-card .icon svg{width:24px;height:24px;color:var(--blue)}
+.program-card .info{flex:1}
+.program-card .info h3{font-size:15px;font-weight:600}
+.program-card .info p{font-size:12px;color:var(--text2)}
+.program-card .arrow{color:var(--text3);font-size:18px}
+
+/* Programs page */
+.program-detail-header{display:flex;align-items:center;gap:12px;margin-bottom:20px}
+.program-detail-header .back{width:36px;height:36px;border-radius:50%;background:var(--surface);border:1px solid var(--surface2);display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--text)}
+.program-detail-header h2{font-size:20px;font-weight:700}
+.day-selector{display:flex;gap:8px;overflow-x:auto;padding-bottom:8px;margin-bottom:16px;-webkit-overflow-scrolling:touch}
+.day-selector::-webkit-scrollbar{display:none}
+.day-btn{padding:8px 16px;border-radius:20px;border:1px solid var(--surface3);background:var(--surface);color:var(--text2);font-size:13px;font-weight:500;cursor:pointer;white-space:nowrap;font-family:inherit;transition:all .2s}
+.day-btn.active{background:var(--blue);color:#fff;border-color:var(--blue)}
+.exercise-item{display:flex;align-items:center;gap:12px;padding:14px 0;border-bottom:1px solid var(--surface2)}
+.exercise-item:last-child{border-bottom:none}
+.exercise-item .muscle-tag{font-size:10px;color:var(--blue);background:var(--blue-glow);padding:2px 8px;border-radius:6px;font-weight:600}
+.exercise-item .ex-info{flex:1}
+.exercise-item .ex-name{font-size:14px;font-weight:600}
+.exercise-item .ex-detail{font-size:12px;color:var(--text2)}
+
+/* Workout page */
+.workout-active-header{text-align:center;margin-bottom:20px}
+.workout-active-header h2{font-size:22px;font-weight:700}
+.workout-active-header .timer{font-size:36px;font-weight:700;color:var(--blue);font-variant-numeric:tabular-nums;margin:8px 0}
+.workout-active-header p{font-size:13px;color:var(--text2)}
+.set-row{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--surface2)}
+.set-row:last-child{border-bottom:none}
+.set-num{width:32px;height:32px;border-radius:50%;background:var(--surface2);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;color:var(--text2);flex-shrink:0}
+.set-row.done .set-num{background:var(--blue);color:#fff}
+.set-input{flex:1;display:flex;gap:8px}
+.set-input input{width:100%;background:var(--surface2);border:1px solid var(--surface3);border-radius:8px;padding:10px;color:var(--text);font-size:15px;text-align:center;font-family:inherit;outline:none;transition:border-color .2s}
+.set-input input:focus{border-color:var(--blue)}
+.set-input input::placeholder{color:var(--text3)}
+.set-input .unit{font-size:11px;color:var(--text3);text-align:center;margin-top:2px}
+.check-btn{width:36px;height:36px;border-radius:50%;border:2px solid var(--surface3);background:none;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;flex-shrink:0}
+.check-btn.checked{background:var(--success);border-color:var(--success)}
+.check-btn svg{width:18px;height:18px;color:var(--text3)}
+.check-btn.checked svg{color:#fff}
+.add-set-btn{width:100%;padding:10px;border:1px dashed var(--surface3);border-radius:8px;background:none;color:var(--text3);cursor:pointer;font-size:13px;margin-top:8px;font-family:inherit;transition:all .2s}
+.add-set-btn:hover{border-color:var(--blue);color:var(--blue)}
+.exercise-nav{display:flex;gap:10px;margin-top:16px}
+.exercise-nav button{flex:1;padding:12px;border-radius:var(--radius-sm);border:none;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit;transition:all .2s}
+.btn-outline{background:var(--surface);color:var(--text);border:1px solid var(--surface3)!important}
+.btn-primary{background:var(--blue);color:#fff}
+.btn-primary:active{background:var(--blue-light)}
+.btn-danger{background:var(--danger);color:#fff}
+.btn-full{width:100%;padding:14px;border-radius:var(--radius-sm);border:none;font-size:15px;font-weight:600;cursor:pointer;font-family:inherit;margin-top:12px}
+
+/* Start workout */
+.start-workout-btn{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;padding:16px;border-radius:var(--radius);border:none;background:var(--blue);color:#fff;font-size:16px;font-weight:700;cursor:pointer;font-family:inherit;box-shadow:0 4px 24px var(--blue-glow);transition:all .2s;margin-top:16px}
+.start-workout-btn:active{transform:scale(.98)}
+.start-workout-btn svg{width:22px;height:22px}
+
+/* Progress page */
+.history-item{display:flex;align-items:center;gap:12px;padding:14px 0;border-bottom:1px solid var(--surface2);cursor:pointer}
+.history-item:last-child{border-bottom:none}
+.history-date{width:48px;height:48px;border-radius:12px;background:var(--blue-glow);display:flex;flex-direction:column;align-items:center;justify-content:center;flex-shrink:0}
+.history-date .day{font-size:18px;font-weight:700;color:var(--blue);line-height:1}
+.history-date .month{font-size:10px;color:var(--blue);text-transform:uppercase}
+.history-info{flex:1}
+.history-info h4{font-size:14px;font-weight:600}
+.history-info p{font-size:12px;color:var(--text2)}
+.history-detail{margin-top:8px}
+.history-detail table{width:100%;font-size:12px;border-collapse:collapse}
+.history-detail th{text-align:left;color:var(--text2);font-weight:500;padding:4px 0}
+.history-detail td{padding:4px 0;color:var(--text)}
+
+/* Empty state */
+.empty-state{text-align:center;padding:40px 20px;color:var(--text3)}
+.empty-state svg{width:48px;height:48px;margin-bottom:12px;opacity:.3}
+.empty-state p{font-size:14px}
+
+/* Modal */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:200;display:flex;align-items:flex-end;justify-content:center;opacity:0;pointer-events:none;transition:opacity .25s}
+.modal-overlay.show{opacity:1;pointer-events:all}
+.modal{background:var(--surface);border-radius:20px 20px 0 0;width:100%;max-width:480px;max-height:80vh;overflow-y:auto;padding:24px 20px env(safe-area-inset-bottom,20px);transform:translateY(100%);transition:transform .3s}
+.modal-overlay.show .modal{transform:translateY(0)}
+.modal-handle{width:36px;height:4px;background:var(--surface3);border-radius:2px;margin:0 auto 20px}
+.modal h3{font-size:18px;font-weight:700;margin-bottom:16px}
+
+/* Animations */
+@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.card{animation:fadeIn .3s ease}
+
+/* Scrollbar hide */
+*::-webkit-scrollbar{width:0;height:0}
+
+/* Input number arrows hide */
+input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-spin-button{-webkit-appearance:none;margin:0}
+input[type=number]{-moz-appearance:textfield}
+</style>
+</head>
+<body>
+<div class="app">
+  <!-- Header -->
+  <div class="header">
+    <div class="logo">
+      <svg viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="8" fill="#2563eb" fill-opacity=".15"/><path d="M16 6l2 4h4l-3 3 1 4-4-2-4 2 1-4-3-3h4l2-4z" fill="#2563eb"/><circle cx="10" cy="22" r="2" fill="#2563eb"/><circle cx="16" cy="24" r="2" fill="#2563eb"/><circle cx="22" cy="22" r="2" fill="#2563eb"/><line x1="10" y1="22" x2="16" y2="24" stroke="#2563eb" stroke-width="1.5"/><line x1="16" y1="24" x2="22" y2="22" stroke="#2563eb" stroke-width="1.5"/></svg>
+      <span>AI ARCHITECT</span>
+    </div>
+    <div class="date" id="headerDate"></div>
+  </div>
+
+  <!-- Content -->
+  <div class="app-content">
+    <!-- HOME -->
+    <div class="page active" id="page-home">
+      <div class="greeting">Welcome to <span>the Build</span></div>
+      <div class="subtitle">Track your gains. Build your best.</div>
+      <div class="stat-row">
+        <div class="stat-box"><div class="num" id="totalWorkouts">0</div><div class="label">Workouts</div></div>
+        <div class="stat-box"><div class="num" id="thisWeek">0</div><div class="label">This Week</div></div>
+        <div class="stat-box"><div class="num" id="streak">0</div><div class="label">Streak</div></div>
+      </div>
+      <div class="section-title">Programs</div>
+      <div id="programList"></div>
+    </div>
+
+    <!-- PROGRAMS DETAIL -->
+    <div class="page" id="page-program">
+      <div class="program-detail-header">
+        <div class="back" onclick="showPage('home')">&larr;</div>
+        <h2 id="programTitle"></h2>
+      </div>
+      <div class="day-selector" id="daySelector"></div>
+      <div class="card" id="exerciseList"></div>
+      <button class="start-workout-btn" onclick="startWorkout()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5,3 19,12 5,21"/></svg>
+        Start Workout
+      </button>
+    </div>
+
+    <!-- ACTIVE WORKOUT -->
+    <div class="page" id="page-workout">
+      <div class="workout-active-header">
+        <h2 id="workoutTitle"></h2>
+        <div class="timer" id="workoutTimer">00:00</div>
+        <p id="workoutExCount"></p>
+      </div>
+      <div id="workoutExercises"></div>
+      <button class="btn-full btn-primary" onclick="finishWorkout()" style="margin-top:20px">Finish Workout</button>
+      <button class="btn-full btn-outline" onclick="cancelWorkout()" style="margin-top:8px;border:1px solid var(--surface3)">Cancel</button>
+    </div>
+
+    <!-- PROGRESS -->
+    <div class="page" id="page-progress">
+      <h2 style="font-size:22px;font-weight:700;margin-bottom:20px">Progress</h2>
+      <div id="historyList"></div>
+    </div>
+  </div>
+
+  <!-- Bottom Nav -->
+  <div class="nav">
+    <button class="nav-item active" onclick="showPage('home')" data-page="home">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg>
+      Home
+    </button>
+    <button class="nav-item" onclick="showPage('progress')" data-page="progress">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22,12 18,12 15,21 9,3 6,12 2,12"/></svg>
+      Progress
+    </button>
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
+  <div class="modal" id="modalContent"></div>
+</div>
+
+<script>
+// ===== DATA =====
+const PROGRAMS = [
+  {
+    id: 'ppl',
+    name: 'Push / Pull / Legs',
+    desc: '6 days per week',
+    days: [
+      {
+        name: 'Push',
+        exercises: [
+          {name:'Bench Press',muscle:'Chest',sets:4,reps:'8-10'},
+          {name:'Overhead Press',muscle:'Shoulders',sets:4,reps:'8-10'},
+          {name:'Incline Dumbbell Press',muscle:'Chest',sets:3,reps:'10-12'},
+          {name:'Lateral Raises',muscle:'Shoulders',sets:4,reps:'12-15'},
+          {name:'Tricep Pushdowns',muscle:'Triceps',sets:3,reps:'10-12'},
+          {name:'Overhead Tricep Extension',muscle:'Triceps',sets:3,reps:'10-12'}
+        ]
+      },
+      {
+        name: 'Pull',
+        exercises: [
+          {name:'Deadlift',muscle:'Back',sets:4,reps:'5-6'},
+          {name:'Pull-Ups',muscle:'Back',sets:4,reps:'8-10'},
+          {name:'Barbell Rows',muscle:'Back',sets:4,reps:'8-10'},
+          {name:'Face Pulls',muscle:'Rear Delts',sets:3,reps:'15-20'},
+          {name:'Barbell Curls',muscle:'Biceps',sets:3,reps:'10-12'},
+          {name:'Hammer Curls',muscle:'Biceps',sets:3,reps:'10-12'}
+        ]
+      },
+      {
+        name: 'Legs',
+        exercises: [
+          {name:'Squat',muscle:'Quads',sets:4,reps:'6-8'},
+          {name:'Romanian Deadlift',muscle:'Hamstrings',sets:4,reps:'8-10'},
+          {name:'Leg Press',muscle:'Quads',sets:3,reps:'10-12'},
+          {name:'Leg Curls',muscle:'Hamstrings',sets:3,reps:'10-12'},
+          {name:'Calf Raises',muscle:'Calves',sets:4,reps:'12-15'},
+          {name:'Leg Extensions',muscle:'Quads',sets:3,reps:'12-15'}
+        ]
+      }
+    ]
+  },
+  {
+    id: 'ul',
+    name: 'Upper / Lower',
+    desc: '4 days per week',
+    days: [
+      {
+        name: 'Upper A',
+        exercises: [
+          {name:'Bench Press',muscle:'Chest',sets:4,reps:'6-8'},
+          {name:'Barbell Rows',muscle:'Back',sets:4,reps:'6-8'},
+          {name:'Overhead Press',muscle:'Shoulders',sets:3,reps:'8-10'},
+          {name:'Pull-Ups',muscle:'Back',sets:3,reps:'8-10'},
+          {name:'Barbell Curls',muscle:'Biceps',sets:3,reps:'10-12'},
+          {name:'Tricep Dips',muscle:'Triceps',sets:3,reps:'10-12'}
+        ]
+      },
+      {
+        name: 'Lower A',
+        exercises: [
+          {name:'Squat',muscle:'Quads',sets:4,reps:'6-8'},
+          {name:'Romanian Deadlift',muscle:'Hamstrings',sets:4,reps:'8-10'},
+          {name:'Bulgarian Split Squat',muscle:'Quads',sets:3,reps:'10-12'},
+          {name:'Leg Curls',muscle:'Hamstrings',sets:3,reps:'10-12'},
+          {name:'Calf Raises',muscle:'Calves',sets:4,reps:'15-20'},
+          {name:'Plank',muscle:'Core',sets:3,reps:'60s'}
+        ]
+      },
+      {
+        name: 'Upper B',
+        exercises: [
+          {name:'Incline Dumbbell Press',muscle:'Chest',sets:4,reps:'8-10'},
+          {name:'Cable Rows',muscle:'Back',sets:4,reps:'10-12'},
+          {name:'Dumbbell Shoulder Press',muscle:'Shoulders',sets:3,reps:'10-12'},
+          {name:'Lat Pulldown',muscle:'Back',sets:3,reps:'10-12'},
+          {name:'Hammer Curls',muscle:'Biceps',sets:3,reps:'10-12'},
+          {name:'Overhead Tricep Extension',muscle:'Triceps',sets:3,reps:'10-12'}
+        ]
+      },
+      {
+        name: 'Lower B',
+        exercises: [
+          {name:'Deadlift',muscle:'Back',sets:4,reps:'5-6'},
+          {name:'Leg Press',muscle:'Quads',sets:4,reps:'10-12'},
+          {name:'Hip Thrust',muscle:'Glutes',sets:3,reps:'10-12'},
+          {name:'Leg Extensions',muscle:'Quads',sets:3,reps:'12-15'},
+          {name:'Seated Calf Raises',muscle:'Calves',sets:4,reps:'15-20'},
+          {name:'Hanging Leg Raises',muscle:'Core',sets:3,reps:'12-15'}
+        ]
+      }
+    ]
+  },
+  {
+    id: 'fb',
+    name: 'Full Body',
+    desc: '3 days per week',
+    days: [
+      {
+        name: 'Day A',
+        exercises: [
+          {name:'Squat',muscle:'Quads',sets:4,reps:'6-8'},
+          {name:'Bench Press',muscle:'Chest',sets:4,reps:'6-8'},
+          {name:'Barbell Rows',muscle:'Back',sets:4,reps:'8-10'},
+          {name:'Overhead Press',muscle:'Shoulders',sets:3,reps:'8-10'},
+          {name:'Barbell Curls',muscle:'Biceps',sets:2,reps:'10-12'},
+          {name:'Tricep Pushdowns',muscle:'Triceps',sets:2,reps:'10-12'}
+        ]
+      },
+      {
+        name: 'Day B',
+        exercises: [
+          {name:'Deadlift',muscle:'Back',sets:4,reps:'5-6'},
+          {name:'Incline Dumbbell Press',muscle:'Chest',sets:3,reps:'8-10'},
+          {name:'Pull-Ups',muscle:'Back',sets:3,reps:'8-10'},
+          {name:'Lateral Raises',muscle:'Shoulders',sets:3,reps:'12-15'},
+          {name:'Leg Press',muscle:'Quads',sets:3,reps:'10-12'},
+          {name:'Plank',muscle:'Core',sets:3,reps:'60s'}
+        ]
+      },
+      {
+        name: 'Day C',
+        exercises: [
+          {name:'Front Squat',muscle:'Quads',sets:4,reps:'8-10'},
+          {name:'Dumbbell Bench Press',muscle:'Chest',sets:3,reps:'8-10'},
+          {name:'Cable Rows',muscle:'Back',sets:3,reps:'10-12'},
+          {name:'Dumbbell Shoulder Press',muscle:'Shoulders',sets:3,reps:'8-10'},
+          {name:'Hammer Curls',muscle:'Biceps',sets:2,reps:'10-12'},
+          {name:'Tricep Dips',muscle:'Triceps',sets:2,reps:'10-12'}
+        ]
+      }
+    ]
+  }
+];
+
+// ===== STATE =====
+let currentProgram = null;
+let currentDay = 0;
+let activeWorkout = null;
+let timerInterval = null;
+let workoutStartTime = null;
+
+// ===== STORAGE =====
+function getHistory(){return JSON.parse(localStorage.getItem('aia_history')||'[]')}
+function saveHistory(h){localStorage.setItem('aia_history',JSON.stringify(h))}
+
+// ===== INIT =====
+function init(){
+  document.getElementById('headerDate').textContent = new Date().toLocaleDateString('bg-BG',{weekday:'short',day:'numeric',month:'short'});
+  renderProgramList();
+  updateStats();
+  const saved = localStorage.getItem('aia_activeWorkout');
+  if(saved){
+    const w = JSON.parse(saved);
+    activeWorkout = w;
+    currentProgram = PROGRAMS.find(p=>p.id===w.programId);
+    currentDay = w.dayIndex;
+    workoutStartTime = w.startTime;
+    showPage('workout');
+    renderActiveWorkout();
+    startTimer();
+  }
+}
+
+// ===== NAVIGATION =====
+function showPage(page){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById('page-'+page).classList.add('active');
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  const navBtn = document.querySelector(`.nav-item[data-page="${page}"]`);
+  if(navBtn) navBtn.classList.add('active');
+  if(page==='home'){updateStats();renderProgramList()}
+  if(page==='progress'){renderHistory()}
+  document.querySelector('.app-content').scrollTop=0;
+}
+
+// ===== STATS =====
+function updateStats(){
+  const h = getHistory();
+  document.getElementById('totalWorkouts').textContent = h.length;
+  const now = new Date();
+  const weekStart = new Date(now);
+  weekStart.setDate(now.getDate()-now.getDay());
+  weekStart.setHours(0,0,0,0);
+  const thisWeek = h.filter(w=>new Date(w.date)>=weekStart).length;
+  document.getElementById('thisWeek').textContent = thisWeek;
+  let streak = 0;
+  if(h.length){
+    const sorted = [...h].sort((a,b)=>new Date(b.date)-new Date(a.date));
+    const today = new Date();today.setHours(0,0,0,0);
+    let checkDate = new Date(today);
+    const todayDone = sorted.some(w=>{const d=new Date(w.date);d.setHours(0,0,0,0);return d.getTime()===today.getTime()});
+    if(!todayDone) checkDate.setDate(checkDate.getDate()-1);
+    for(let i=0;i<365;i++){
+      const found = sorted.some(w=>{const d=new Date(w.date);d.setHours(0,0,0,0);return d.getTime()===checkDate.getTime()});
+      if(found){streak++;checkDate.setDate(checkDate.getDate()-1)}else break;
+    }
+  }
+  document.getElementById('streak').textContent = streak;
+}
+
+// ===== PROGRAM LIST =====
+function renderProgramList(){
+  const el = document.getElementById('programList');
+  el.innerHTML = PROGRAMS.map(p=>`
+    <div class="card program-card" onclick="selectProgram('${p.id}')">
+      <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6.5 6.5h11M4 12h16M6.5 17.5h11"/><circle cx="6.5" cy="6.5" r="2.5"/><circle cx="17.5" cy="6.5" r="2.5"/><circle cx="4" cy="12" r="2.5"/><circle cx="20" cy="12" r="2.5"/><circle cx="6.5" cy="17.5" r="2.5"/><circle cx="17.5" cy="17.5" r="2.5"/></svg></div>
+      <div class="info"><h3>${p.name}</h3><p>${p.desc} &middot; ${p.days.length} days</p></div>
+      <div class="arrow">&rsaquo;</div>
+    </div>
+  `).join('');
+}
+
+// ===== PROGRAM DETAIL =====
+function selectProgram(id){
+  currentProgram = PROGRAMS.find(p=>p.id===id);
+  currentDay = 0;
+  showPage('program');
+  renderProgramDetail();
+}
+
+function renderProgramDetail(){
+  document.getElementById('programTitle').textContent = currentProgram.name;
+  const ds = document.getElementById('daySelector');
+  ds.innerHTML = currentProgram.days.map((d,i)=>`<button class="day-btn ${i===currentDay?'active':''}" onclick="selectDay(${i})">${d.name}</button>`).join('');
+  renderExerciseList();
+}
+
+function selectDay(i){
+  currentDay = i;
+  document.querySelectorAll('.day-btn').forEach((b,j)=>b.classList.toggle('active',j===i));
+  renderExerciseList();
+}
+
+function renderExerciseList(){
+  const day = currentProgram.days[currentDay];
+  const el = document.getElementById('exerciseList');
+  el.innerHTML = day.exercises.map(ex=>`
+    <div class="exercise-item">
+      <div class="ex-info">
+        <div class="ex-name">${ex.name}</div>
+        <div class="ex-detail">${ex.sets} sets &times; ${ex.reps} reps</div>
+      </div>
+      <span class="muscle-tag">${ex.muscle}</span>
+    </div>
+  `).join('');
+}
+
+// ===== WORKOUT =====
+function startWorkout(){
+  const day = currentProgram.days[currentDay];
+  workoutStartTime = Date.now();
+  activeWorkout = {
+    programId: currentProgram.id,
+    programName: currentProgram.name,
+    dayName: day.name,
+    dayIndex: currentDay,
+    startTime: workoutStartTime,
+    exercises: day.exercises.map(ex=>({
+      name: ex.name,
+      muscle: ex.muscle,
+      targetSets: ex.sets,
+      targetReps: ex.reps,
+      sets: Array.from({length:ex.sets},()=>({kg:'',reps:'',done:false}))
+    }))
+  };
+  localStorage.setItem('aia_activeWorkout',JSON.stringify(activeWorkout));
+  showPage('workout');
+  renderActiveWorkout();
+  startTimer();
+}
+
+function renderActiveWorkout(){
+  document.getElementById('workoutTitle').textContent = activeWorkout.dayName;
+  document.getElementById('workoutExCount').textContent = `${activeWorkout.exercises.length} exercises`;
+  const el = document.getElementById('workoutExercises');
+  el.innerHTML = activeWorkout.exercises.map((ex,ei)=>`
+    <div class="card">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+        <div>
+          <div style="font-size:15px;font-weight:600">${ex.name}</div>
+          <div style="font-size:12px;color:var(--text2)">${ex.targetSets} &times; ${ex.targetReps}</div>
+        </div>
+        <span class="muscle-tag">${ex.muscle}</span>
+      </div>
+      <div style="display:flex;gap:8px;padding:0 0 6px;font-size:11px;color:var(--text3)">
+        <div style="width:32px;text-align:center">SET</div>
+        <div style="flex:1;text-align:center">KG</div>
+        <div style="flex:1;text-align:center">REPS</div>
+        <div style="width:36px"></div>
+      </div>
+      ${ex.sets.map((s,si)=>`
+        <div class="set-row ${s.done?'done':''}" id="set-${ei}-${si}">
+          <div class="set-num">${si+1}</div>
+          <div class="set-input">
+            <div><input type="number" inputmode="decimal" placeholder="-" value="${s.kg}" onchange="updateSet(${ei},${si},'kg',this.value)"></div>
+            <div><input type="number" inputmode="numeric" placeholder="-" value="${s.reps}" onchange="updateSet(${ei},${si},'reps',this.value)"></div>
+          </div>
+          <button class="check-btn ${s.done?'checked':''}" onclick="toggleSet(${ei},${si})">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20,6 9,17 4,12"/></svg>
+          </button>
+        </div>
+      `).join('')}
+      <button class="add-set-btn" onclick="addSet(${ei})">+ Add Set</button>
+    </div>
+  `).join('');
+}
+
+function updateSet(ei,si,field,val){
+  activeWorkout.exercises[ei].sets[si][field]=val;
+  localStorage.setItem('aia_activeWorkout',JSON.stringify(activeWorkout));
+}
+
+function toggleSet(ei,si){
+  const s = activeWorkout.exercises[ei].sets[si];
+  s.done = !s.done;
+  localStorage.setItem('aia_activeWorkout',JSON.stringify(activeWorkout));
+  const row = document.getElementById(`set-${ei}-${si}`);
+  row.classList.toggle('done',s.done);
+  row.querySelector('.set-num').style.background = s.done?'var(--blue)':'var(--surface2)';
+  row.querySelector('.set-num').style.color = s.done?'#fff':'var(--text2)';
+  row.querySelector('.check-btn').classList.toggle('checked',s.done);
+}
+
+function addSet(ei){
+  activeWorkout.exercises[ei].sets.push({kg:'',reps:'',done:false});
+  localStorage.setItem('aia_activeWorkout',JSON.stringify(activeWorkout));
+  renderActiveWorkout();
+}
+
+function startTimer(){
+  clearInterval(timerInterval);
+  timerInterval = setInterval(()=>{
+    const elapsed = Math.floor((Date.now()-workoutStartTime)/1000);
+    const m = String(Math.floor(elapsed/60)).padStart(2,'0');
+    const s = String(elapsed%60).padStart(2,'0');
+    document.getElementById('workoutTimer').textContent = `${m}:${s}`;
+  },1000);
+}
+
+function finishWorkout(){
+  clearInterval(timerInterval);
+  const elapsed = Math.floor((Date.now()-workoutStartTime)/1000);
+  const h = getHistory();
+  h.push({
+    date: new Date().toISOString(),
+    program: activeWorkout.programName,
+    day: activeWorkout.dayName,
+    duration: elapsed,
+    exercises: activeWorkout.exercises.map(ex=>({
+      name: ex.name,
+      muscle: ex.muscle,
+      sets: ex.sets.filter(s=>s.done).map(s=>({kg:parseFloat(s.kg)||0,reps:parseInt(s.reps)||0}))
+    })).filter(ex=>ex.sets.length>0)
+  });
+  saveHistory(h);
+  localStorage.removeItem('aia_activeWorkout');
+  activeWorkout = null;
+  showPage('home');
+}
+
+function cancelWorkout(){
+  if(!confirm('Cancel this workout? Progress will be lost.')) return;
+  clearInterval(timerInterval);
+  localStorage.removeItem('aia_activeWorkout');
+  activeWorkout = null;
+  showPage('home');
+}
+
+// ===== PROGRESS =====
+function renderHistory(){
+  const h = getHistory().sort((a,b)=>new Date(b.date)-new Date(a.date));
+  const el = document.getElementById('historyList');
+  if(!h.length){
+    el.innerHTML = `<div class="empty-state"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22,12 18,12 15,21 9,3 6,12 2,12"/></svg><p>No workouts yet.<br>Start your first one!</p></div>`;
+    return;
+  }
+  const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  el.innerHTML = h.map((w,i)=>{
+    const d = new Date(w.date);
+    const dur = `${Math.floor(w.duration/60)}min`;
+    const totalSets = w.exercises.reduce((a,e)=>a+e.sets.length,0);
+    return `
+      <div class="card" onclick="toggleHistoryDetail(${i})">
+        <div class="history-item" style="border:none">
+          <div class="history-date">
+            <div class="day">${d.getDate()}</div>
+            <div class="month">${months[d.getMonth()]}</div>
+          </div>
+          <div class="history-info">
+            <h4>${w.day} <span style="color:var(--text3);font-weight:400">&middot; ${w.program}</span></h4>
+            <p>${dur} &middot; ${totalSets} sets &middot; ${w.exercises.length} exercises</p>
+          </div>
+        </div>
+        <div class="history-detail" id="hdetail-${i}" style="display:none">
+          <table>
+            <tr><th>Exercise</th><th>Sets</th><th>Best</th></tr>
+            ${w.exercises.map(ex=>{
+              const best = ex.sets.reduce((max,s)=>s.kg>max?s.kg:max,0);
+              return `<tr><td>${ex.name}</td><td>${ex.sets.map(s=>`${s.kg}kg×${s.reps}`).join(', ')}</td><td style="color:var(--blue);font-weight:600">${best}kg</td></tr>`;
+            }).join('')}
+          </table>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+function toggleHistoryDetail(i){
+  const el = document.getElementById('hdetail-'+i);
+  el.style.display = el.style.display==='none'?'block':'none';
+}
+
+// ===== MODAL =====
+function closeModal(e){
+  if(e.target===document.getElementById('modalOverlay')){
+    document.getElementById('modalOverlay').classList.remove('show');
+  }
+}
+
+// ===== SERVICE WORKER =====
+if('serviceWorker' in navigator){navigator.serviceWorker.register('./sw.js').catch(()=>{})}
+
+// ===== START =====
+init();
+</script>
+</body>
+</html>
