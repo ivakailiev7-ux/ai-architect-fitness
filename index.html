@@ -367,6 +367,81 @@ input[type=number]{-moz-appearance:textfield}
 .ex-browse-item .ebi-name{font-size:14px;font-weight:500}
 .ex-browse-item .ebi-muscle{font-size:11px;color:var(--text3)}
 .ex-browse-item .ebi-add{width:28px;height:28px;border-radius:50%;border:1px solid var(--gold-dark);background:none;color:var(--gold);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:16px}
+
+/* ===== PRO BADGE ===== */
+.pro-badge{display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:10px;background:var(--gold-gradient);color:#000;font-size:9px;font-weight:800;letter-spacing:1px;text-transform:uppercase}
+.pro-tag{font-size:9px;background:var(--gold-gradient);color:#000;padding:1px 6px;border-radius:6px;font-weight:700;letter-spacing:.5px;margin-left:6px}
+.pro-lock{position:relative;overflow:hidden}
+.pro-lock::after{content:'PRO';position:absolute;top:8px;right:8px;background:var(--gold-gradient);color:#000;font-size:8px;font-weight:800;padding:2px 6px;border-radius:6px;letter-spacing:.5px}
+.pro-blur{filter:blur(3px);pointer-events:none;user-select:none}
+
+/* ===== UPGRADE MODAL ===== */
+.upgrade-overlay{position:fixed;inset:0;background:rgba(8,8,10,.95);z-index:500;display:flex;align-items:center;justify-content:center;padding:24px;opacity:0;pointer-events:none;transition:opacity .3s}
+.upgrade-overlay.show{opacity:1;pointer-events:all}
+.upgrade-card{background:var(--surface);border:1px solid var(--gold-dark);border-radius:var(--radius);padding:32px 24px;max-width:380px;width:100%;text-align:center;animation:fadeUp .4s ease}
+.upgrade-card .uc-icon{font-size:48px;margin-bottom:16px}
+.upgrade-card h2{font-size:22px;font-weight:800;margin-bottom:4px;background:var(--gold-gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.upgrade-card .uc-sub{font-size:13px;color:var(--text2);margin-bottom:20px}
+.upgrade-features{text-align:left;margin-bottom:24px}
+.upgrade-features li{display:flex;align-items:center;gap:8px;padding:6px 0;font-size:13px;color:var(--text)}
+.upgrade-features li::before{content:'✓';color:var(--gold);font-weight:700;font-size:14px}
+.upgrade-price{font-size:32px;font-weight:800;color:var(--gold);margin-bottom:4px}
+.upgrade-price small{font-size:14px;color:var(--text2);font-weight:400}
+.upgrade-price-sub{font-size:12px;color:var(--text3);margin-bottom:20px}
+.upgrade-btn{width:100%;padding:16px;border-radius:var(--radius-sm);border:none;background:var(--gold-gradient);color:#000;font-size:16px;font-weight:700;cursor:pointer;font-family:inherit;transition:var(--transition);letter-spacing:.5px}
+.upgrade-btn:active{transform:scale(.98)}
+.upgrade-close{margin-top:12px;background:none;border:none;color:var(--text3);font-size:13px;cursor:pointer;font-family:inherit;padding:8px}
+
+/* ===== XP BAR ===== */
+.xp-bar-wrap{padding:0 16px 8px}
+@media(min-width:768px){.xp-bar-wrap{display:none}}
+.xp-bar-inner{display:flex;align-items:center;gap:8px}
+.xp-level{display:flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:50%;background:var(--gold-gradient);color:#000;font-size:11px;font-weight:800;flex-shrink:0}
+.xp-info{flex:1}
+.xp-label{display:flex;justify-content:space-between;font-size:10px;color:var(--text3);margin-bottom:3px}
+.xp-track{height:4px;background:var(--surface3);border-radius:2px;overflow:hidden}
+.xp-fill{height:100%;background:var(--gold-gradient);border-radius:2px;transition:width .5s ease}
+
+/* ===== ACHIEVEMENTS ===== */
+.achievements-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:16px}
+.ach-item{display:flex;flex-direction:column;align-items:center;text-align:center;padding:10px 4px;border-radius:var(--radius-sm);background:var(--surface);border:1px solid var(--surface2);transition:var(--transition)}
+.ach-item.unlocked{border-color:var(--gold-dark);background:rgba(212,168,83,.05)}
+.ach-item.locked{opacity:.35}
+.ach-item .ach-icon{font-size:24px;margin-bottom:4px}
+.ach-item .ach-name{font-size:9px;font-weight:600;line-height:1.2}
+.ach-item .ach-xp{font-size:8px;color:var(--gold);margin-top:2px}
+
+/* ===== BODY MEASUREMENTS ===== */
+.measure-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px}
+.measure-item{background:var(--surface);border:1px solid var(--surface2);border-radius:var(--radius-sm);padding:12px;text-align:center}
+.measure-item .mi-val{font-size:22px;font-weight:700;color:var(--gold)}
+.measure-item .mi-label{font-size:10px;color:var(--text2);text-transform:uppercase;letter-spacing:.5px;margin-top:2px}
+.measure-item .mi-change{font-size:10px;margin-top:2px}
+.mi-change.positive{color:var(--green)}
+.mi-change.negative{color:var(--red)}
+
+/* ===== ADAPTIVE TDEE CARD ===== */
+.tdee-card{background:linear-gradient(135deg,rgba(212,168,83,.08),rgba(212,168,83,.02));border:1px solid var(--gold-dark);border-radius:var(--radius);padding:16px;margin-bottom:16px}
+.tdee-card h4{font-size:13px;font-weight:600;color:var(--gold);margin-bottom:8px;display:flex;align-items:center;gap:6px}
+.tdee-row{display:flex;justify-content:space-between;padding:4px 0;font-size:13px}
+.tdee-row .tdee-label{color:var(--text2)}
+.tdee-row .tdee-val{font-weight:600}
+.tdee-adjusted{font-size:11px;color:var(--gold);margin-top:8px;padding-top:8px;border-top:1px solid var(--surface3)}
+
+/* ===== STREAK CALENDAR ===== */
+.streak-cal{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;margin-bottom:16px}
+.streak-day{aspect-ratio:1;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--text3)}
+.streak-day.active{background:var(--gold);color:#000;font-weight:700}
+.streak-day.today{border:1px solid var(--gold)}
+.streak-day.empty{background:var(--surface)}
+.streak-day.has-workout{background:rgba(212,168,83,.2);color:var(--gold)}
+
+/* ===== TOAST NOTIFICATION ===== */
+.toast{position:fixed;top:20px;left:50%;transform:translateX(-50%) translateY(-100px);background:var(--surface);border:1px solid var(--gold-dark);border-radius:var(--radius-sm);padding:12px 20px;display:flex;align-items:center;gap:10px;z-index:600;transition:transform .4s cubic-bezier(.4,0,.2,1);box-shadow:0 8px 30px rgba(0,0,0,.5)}
+.toast.show{transform:translateX(-50%) translateY(0)}
+.toast .toast-icon{font-size:20px}
+.toast .toast-text{font-size:13px;font-weight:500}
+.toast .toast-xp{font-size:12px;color:var(--gold);font-weight:700}
 </style>
 </head>
 <body>
@@ -397,11 +472,22 @@ input[type=number]{-moz-appearance:textfield}
       <div class="date" id="headerDate"></div>
     </div>
 
+    <!-- XP Bar (Mobile) -->
+    <div class="xp-bar-wrap" id="xpBarWrap" style="display:none">
+      <div class="xp-bar-inner">
+        <div class="xp-level" id="xpLevel">1</div>
+        <div class="xp-info">
+          <div class="xp-label"><span id="xpLevelName">Начинаещ</span><span id="xpText">0/100 XP</span></div>
+          <div class="xp-track"><div class="xp-fill" id="xpFill" style="width:0%"></div></div>
+        </div>
+      </div>
+    </div>
+
     <div class="app-content">
       <!-- HOME / DASHBOARD -->
       <div class="page active" id="page-home">
-        <div class="greeting" id="greetingText">Welcome to <span>the Build</span></div>
-        <div class="subtitle">Track your gains & nutrition.</div>
+        <div class="greeting" id="greetingText">Добре дошъл, <span>Builder</span></div>
+        <div class="subtitle">Проследявай напредъка и храненето си.</div>
 
         <div class="calorie-card">
           <div class="cal-top">
@@ -422,9 +508,18 @@ input[type=number]{-moz-appearance:textfield}
           </div>
         </div>
 
+        <!-- Adaptive TDEE Card (PRO) -->
+        <div class="tdee-card" id="tdeeCard" style="display:none">
+          <h4>🧠 Адаптивен TDEE <span class="pro-tag">PRO</span></h4>
+          <div class="tdee-row"><span class="tdee-label">Изчислен TDEE</span><span class="tdee-val" id="tdeeCurrent">--</span></div>
+          <div class="tdee-row"><span class="tdee-label">Адаптивен TDEE</span><span class="tdee-val" id="tdeeAdaptive">--</span></div>
+          <div class="tdee-row"><span class="tdee-label">Седмична промяна</span><span class="tdee-val" id="tdeeWeeklyChange">--</span></div>
+          <div class="tdee-adjusted" id="tdeeNote"></div>
+        </div>
+
         <div class="quick-actions">
-          <div class="quick-action qa-food" onclick="showPage('nutrition')"><div class="qa-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8h1a4 4 0 010 8h-1M2 8h16v9a4 4 0 01-4 4H6a4 4 0 01-4-4V8z"/></svg></div><div class="qa-text"><h4>Log Food</h4><p>Track meals</p></div></div>
-          <div class="quick-action qa-workout" onclick="showPage('workout')"><div class="qa-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5,3 19,12 5,21"/></svg></div><div class="qa-text"><h4>Workout</h4><p>Start training</p></div></div>
+          <div class="quick-action qa-food" onclick="showPage('nutrition')"><div class="qa-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8h1a4 4 0 010 8h-1M2 8h16v9a4 4 0 01-4 4H6a4 4 0 01-4-4V8z"/></svg></div><div class="qa-text"><h4>Добави храна</h4><p>Проследи хранене</p></div></div>
+          <div class="quick-action qa-workout" onclick="showPage('workout')"><div class="qa-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5,3 19,12 5,21"/></svg></div><div class="qa-text"><h4>Тренировка</h4><p>Започни сесия</p></div></div>
         </div>
 
         <div class="stat-row">
@@ -433,7 +528,7 @@ input[type=number]{-moz-appearance:textfield}
           <div class="stat-box"><div class="num" id="streak">0</div><div class="label">Streak</div></div>
         </div>
 
-        <div class="section-title">Today's Meals</div>
+        <div class="section-title">Днешно хранене</div>
         <div id="homeMealSummary"></div>
       </div>
 
@@ -529,11 +624,24 @@ input[type=number]{-moz-appearance:textfield}
           <div class="profile-sub" id="profileGoalText">Set up your profile</div>
         </div>
         <div class="profile-stats">
-          <div class="profile-stat"><div class="ps-num" id="psTotalW">0</div><div class="ps-label">Workouts</div></div>
-          <div class="profile-stat"><div class="ps-num" id="psStreak">0</div><div class="ps-label">Streak</div></div>
-          <div class="profile-stat"><div class="ps-num" id="psWeight">--</div><div class="ps-label">kg</div></div>
+          <div class="profile-stat"><div class="ps-num" id="psTotalW">0</div><div class="ps-label">Тренировки</div></div>
+          <div class="profile-stat"><div class="ps-num" id="psStreak">0</div><div class="ps-label">Стрийк</div></div>
+          <div class="profile-stat"><div class="ps-num" id="psWeight">--</div><div class="ps-label">кг</div></div>
         </div>
-        <div class="section-title">Settings</div>
+
+        <!-- Achievements -->
+        <div class="section-title">Постижения <span id="achCount" style="font-size:11px;color:var(--gold)"></span></div>
+        <div class="achievements-grid" id="achievementsGrid"></div>
+
+        <!-- Body Measurements -->
+        <div class="section-title">Мерки на тялото <span class="pro-tag">PRO</span> <span style="cursor:pointer;color:var(--gold);font-size:11px;font-weight:400;text-transform:none;letter-spacing:0" onclick="logMeasurements()">+ Добави</span></div>
+        <div class="measure-grid" id="measureGrid"></div>
+
+        <!-- Streak Calendar -->
+        <div class="section-title">Активност (последните 28 дни)</div>
+        <div class="streak-cal" id="streakCal"></div>
+
+        <div class="section-title">Настройки</div>
         <div class="card" style="padding:0;overflow:hidden">
           <div class="setting-item" onclick="showOnboarding()"><div class="si-left"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg><span class="si-label">Goals & Profile</span></div><span class="si-val">›</span></div>
           <div class="setting-item" onclick="logWeight()"><div class="si-left"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v18M3 12h18"/></svg><span class="si-label">Log Weight</span></div><span class="si-val">›</span></div>
@@ -649,6 +757,30 @@ input[type=number]{-moz-appearance:textfield}
   </div>
 </div>
 </div>
+
+<!-- UPGRADE MODAL -->
+<div class="upgrade-overlay" id="upgradeModal" onclick="if(event.target===this)closeUpgrade()">
+  <div class="upgrade-card">
+    <div class="uc-icon">👑</div>
+    <h2>PRIME PHYSIQUE PRO</h2>
+    <div class="uc-sub" id="upgradeReason">Отключи пълния потенциал</div>
+    <ul class="upgrade-features">
+      <li>Адаптивен TDEE — преизчислява калориите от теглото ти</li>
+      <li>AI тренировъчни планове</li>
+      <li>Мерки на тялото и прогрес снимки</li>
+      <li>Неограничени собствени програми</li>
+      <li>Облачен синхрон между устройства</li>
+      <li>PDF отчети за прогреса</li>
+    </ul>
+    <div class="upgrade-price">$2.99<small>/мес</small></div>
+    <div class="upgrade-price-sub">или $24.99/год (спестяваш 30%)</div>
+    <button class="upgrade-btn" onclick="handleUpgrade()">Стани PRO</button>
+    <button class="upgrade-close" onclick="closeUpgrade()">Може би по-късно</button>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"><span class="toast-icon" id="toastIcon"></span><span class="toast-text" id="toastText"></span><span class="toast-xp" id="toastXP"></span></div>
 
 <script>
 // ==============================
@@ -799,8 +931,48 @@ const COACH_KB=[
 ];
 const COACH_TOPICS=['Protein','Creatine','Volume','Rest Times','Fat Loss','Muscle Gain','Sleep','Supplements','Beginner','Plateau'];
 
-const MEALS=['Breakfast','Lunch','Dinner','Snacks'];
+const MEALS=['Закуска','Обяд','Вечеря','Снакс'];
 const MEAL_ICONS=['🌅','☀️','🌙','🍎'];
+
+// ==============================
+// ACHIEVEMENTS DEFINITIONS
+// ==============================
+const ACHIEVEMENTS=[
+  {id:'first_workout',name:'Първа крачка',desc:'Завърши първата тренировка',icon:'💪',xp:50},
+  {id:'streak_3',name:'Три дни',desc:'3 дни поред тренировки',icon:'🔥',xp:75},
+  {id:'streak_7',name:'Седмица огън',desc:'7 дни поред',icon:'🔥',xp:150},
+  {id:'streak_30',name:'Желязна воля',desc:'30 дни поред',icon:'⚡',xp:500},
+  {id:'workouts_10',name:'Десетката',desc:'10 тренировки общо',icon:'🎯',xp:100},
+  {id:'workouts_50',name:'Полувек',desc:'50 тренировки общо',icon:'🏅',xp:300},
+  {id:'workouts_100',name:'Стотицата',desc:'100 тренировки',icon:'🏆',xp:500},
+  {id:'pr_first',name:'Първи рекорд',desc:'Постигни първия си PR',icon:'🥇',xp:100},
+  {id:'pr_10',name:'Рекордьор',desc:'10 персонални рекорда',icon:'👑',xp:300},
+  {id:'food_log_7',name:'Хранител',desc:'Логвай храна 7 дни поред',icon:'🥗',xp:100},
+  {id:'weight_log_5',name:'Прецизен',desc:'Логни тегло 5 пъти',icon:'⚖️',xp:75},
+  {id:'early_bird',name:'Ранна птица',desc:'Тренировка преди 8:00',icon:'🌅',xp:50},
+  {id:'night_owl',name:'Нощна сова',desc:'Тренировка след 21:00',icon:'🌙',xp:50},
+  {id:'custom_workout',name:'Архитект',desc:'Създай собствена тренировка',icon:'🏗️',xp:50},
+  {id:'coach_ask',name:'Любопитен',desc:'Задай 10 въпроса на Coach',icon:'🧠',xp:75},
+  {id:'total_volume_10k',name:'10 тона',desc:'Вдигни 10,000кг общ обем',icon:'🏋️',xp:200},
+];
+
+// ==============================
+// XP LEVEL DEFINITIONS
+// ==============================
+const LEVELS=[
+  {level:1,name:'Начинаещ',xp:0},
+  {level:2,name:'Ентусиаст',xp:100},
+  {level:3,name:'Редовен',xp:300},
+  {level:4,name:'Отдаден',xp:600},
+  {level:5,name:'Напреднал',xp:1000},
+  {level:6,name:'Силен',xp:1500},
+  {level:7,name:'Атлет',xp:2200},
+  {level:8,name:'Елитен',xp:3000},
+  {level:9,name:'Шампион',xp:4000},
+  {level:10,name:'Легенда',xp:5500},
+  {level:11,name:'Машина',xp:7500},
+  {level:12,name:'Титан',xp:10000},
+];
 
 // ==============================
 // STATE
@@ -808,6 +980,7 @@ const MEAL_ICONS=['🌅','☀️','🌙','🍎'];
 let profile=null,currentProgram=null,currentDay=0,activeWorkout=null,timerInterval=null,workoutStartTime=null;
 let restTimerInterval=null,restDuration=90,restRemaining=0;
 let currentMealIndex=0,foodTab='search';
+let isPro=false;
 
 // ==============================
 // STORAGE
@@ -831,16 +1004,23 @@ function addRecentFood(f){let r=getRecentFoods();r=r.filter(x=>x.name!==f.name);
 // ==============================
 function init(){
   profile=getProfile();
+  loadProStatus();
   if(!profile){document.getElementById('onboarding').classList.remove('hidden');renderObDots()}
   else{document.getElementById('onboarding').classList.add('hidden');updateAll()}
   document.getElementById('headerDate').textContent=new Date().toLocaleDateString('bg-BG',{weekday:'short',day:'numeric',month:'short'});
   const saved=LS.get('activeWorkout',null);
   if(saved){activeWorkout=saved;currentProgram=PROGRAMS.find(p=>p.id===saved.programId);currentDay=saved.dayIndex;workoutStartTime=saved.startTime;showPage('active-workout');renderActiveWorkout();startTimer()}
-  // Load saved custom exercises
   customExercises=LS.get('customExercises',[]);
+  // Check PRO expiry
+  const expiry=LS.get('proExpiry',0);
+  if(isPro&&expiry>0&&Date.now()>expiry){isPro=false;LS.set('isPro',false)}
 }
 
-function updateAll(){updateDashboard();updateNutrition();renderProgramList();renderExBrowser();updateProfile()}
+function updateAll(){
+  updateDashboard();updateNutrition();renderProgramList();renderExBrowser();updateProfile();
+  updateXPBar();renderAchievements();renderMeasurements();renderStreakCalendar();renderAdaptiveTDEE();
+  checkAchievements();
+}
 
 // ==============================
 // ONBOARDING
@@ -941,8 +1121,9 @@ function updateDashboard(){
 
   // Greeting
   const h=new Date().getHours();
-  const greet=h<12?'Good Morning':h<18?'Good Afternoon':'Good Evening';
-  document.getElementById('greetingText').innerHTML=`${greet}, <span>Builder</span>`;
+  const greet=h<12?'Добро утро':h<18?'Добър ден':'Добър вечер';
+  const lvl=getLevelInfo(getXP());
+  document.getElementById('greetingText').innerHTML=`${greet}, <span>${lvl.name}</span>`;
 
   updateStats();
   // Home meal summary
@@ -1065,6 +1246,7 @@ function selectFood(f){
   closeFoodModal();
   updateNutrition();
   updateDashboard();
+  addXP(5,'Храна записана');
 }
 
 function quickAddFood(){
@@ -1186,8 +1368,20 @@ function finishWorkout(){
   h.push({date:new Date().toISOString(),programId:activeWorkout.programId||'custom',program:activeWorkout.programName||'Custom',dayName:activeWorkout.dayName,duration:elapsed,exercises:completedExercises});
   saveHistory(h);LS.set('activeWorkout',null);activeWorkout=null;
 
-  if(prs.length>0)showPRCelebration(prs);
-  else showPage('home');
+  // Award XP
+  let workoutXP=25;
+  completedExercises.forEach(ex=>workoutXP+=ex.sets.length*3);
+  addXP(workoutXP,'Тренировка завършена');
+
+  // Track PRs
+  if(prs.length>0){
+    const totalPRs=LS.get('totalPRs',0);
+    LS.set('totalPRs',totalPRs+prs.length);
+    prs.forEach(()=>addXP(20,'Нов личен рекорд'));
+    showPRCelebration(prs);
+  } else showPage('home');
+
+  checkAchievements();
 }
 function cancelWorkout(){if(!confirm('Cancel workout?'))return;clearInterval(timerInterval);LS.set('activeWorkout',null);activeWorkout=null;showPage('workout')}
 
@@ -1355,8 +1549,9 @@ function sendChat(){
   if(!q)return;
   input.value='';
   addChatMsg(q,true);
+  const cq=LS.get('coachQuestions',0);LS.set('coachQuestions',cq+1);
   const answer=matchKB(q);
-  setTimeout(()=>addChatMsg(answer,false),400+Math.random()*400);
+  setTimeout(()=>{addChatMsg(answer,false);checkAchievements()},400+Math.random()*400);
 }
 function matchKB(query){
   const ql=query.toLowerCase();
@@ -1470,15 +1665,16 @@ function toggleDetail(i){const el=document.getElementById('hd-'+i);el.style.maxH
 // ==============================
 function updateProfile(){
   if(!profile)return;
-  document.getElementById('profileName').textContent='Builder';
-  const goals={cut:'Losing weight',maintain:'Maintaining',bulk:'Building muscle'};
-  document.getElementById('profileGoalText').textContent=goals[profile.goal]+' • '+profile.calTarget+' kcal/day';
+  const lvl=getLevelInfo(getXP());
+  document.getElementById('profileName').textContent=lvl.name+(isPro?' 👑':'');
+  const goals={cut:'Отслабване',maintain:'Поддържане',bulk:'Качване на маса'};
+  document.getElementById('profileGoalText').textContent=goals[profile.goal]+' • '+profile.calTarget+' kcal/ден • Ниво '+lvl.level;
   const h=getHistory();
   document.getElementById('psTotalW').textContent=h.length;
-  let streak=0;if(h.length){/* same streak logic */}
-  document.getElementById('psStreak').textContent=document.getElementById('streak')?.textContent||'0';
+  document.getElementById('psStreak').textContent=calcStreak();
   const wl=getWeightLog();
   document.getElementById('psWeight').textContent=wl.length?wl[wl.length-1].weight:'--';
+  renderAchievements();renderMeasurements();renderStreakCalendar();
 }
 
 function logWeight(){
@@ -1497,6 +1693,299 @@ function exportData(){
 }
 
 function clearAllData(){if(!confirm('Delete ALL data? This cannot be undone.'))return;Object.keys(localStorage).filter(k=>k.startsWith('aia_')).forEach(k=>localStorage.removeItem(k));location.reload()}
+
+// ==============================
+// PRO SYSTEM
+// ==============================
+function loadProStatus(){isPro=LS.get('isPro',false)}
+function checkPro(feature){
+  if(isPro)return true;
+  showUpgradeModal(feature);
+  return false;
+}
+function showUpgradeModal(feature){
+  const reasons={'tdee':'Адаптивният TDEE преизчислява калориите ти от реалния прогрес','measurements':'Проследявай мерки на тялото и виж визуалния си прогрес','programs':'Отключи неограничени собствени програми','ai':'AI тренировъчни планове базирани на твоя прогрес','sync':'Синхронизирай данните между всички устройства'};
+  document.getElementById('upgradeReason').textContent=reasons[feature]||'Отключи пълния потенциал';
+  document.getElementById('upgradeModal').classList.add('show');
+}
+function closeUpgrade(){document.getElementById('upgradeModal').classList.remove('show')}
+function handleUpgrade(){
+  // For now: simple activation. Later: Stripe integration
+  const key=prompt('Въведи PRO код (или напиши DEMO за 7-дневен пробен период):');
+  if(!key)return;
+  if(key.toUpperCase()==='DEMO'){
+    isPro=true;
+    LS.set('isPro',true);
+    LS.set('proExpiry',Date.now()+7*24*60*60*1000);
+    closeUpgrade();
+    showToast('👑','PRO активиран!','7 дни пробен период');
+    updateAll();
+  }
+}
+
+// ==============================
+// XP & GAMIFICATION
+// ==============================
+function getXP(){return LS.get('xp',0)}
+function addXP(amount,reason){
+  let xp=getXP();
+  const oldLevel=getLevelInfo(xp);
+  xp+=amount;
+  LS.set('xp',xp);
+  const newLevel=getLevelInfo(xp);
+  updateXPBar();
+  if(newLevel.level>oldLevel.level){
+    showToast('⬆️',`Ниво ${newLevel.level}: ${newLevel.name}`,`+${amount} XP`);
+  } else {
+    showToast('✨',reason,`+${amount} XP`);
+  }
+}
+function getLevelInfo(xp){
+  let current=LEVELS[0];
+  for(let i=LEVELS.length-1;i>=0;i--){
+    if(xp>=LEVELS[i].xp){current=LEVELS[i];break}
+  }
+  const nextIdx=Math.min(LEVELS.findIndex(l=>l.level===current.level)+1,LEVELS.length-1);
+  const next=LEVELS[nextIdx];
+  const progress=next.xp>current.xp?(xp-current.xp)/(next.xp-current.xp):1;
+  return{...current,xpCurrent:xp,xpNext:next.xp,progress,nextName:next.name};
+}
+function updateXPBar(){
+  if(!profile)return;
+  const info=getLevelInfo(getXP());
+  document.getElementById('xpBarWrap').style.display='block';
+  document.getElementById('xpLevel').textContent=info.level;
+  document.getElementById('xpLevelName').textContent=info.name;
+  document.getElementById('xpText').textContent=`${info.xpCurrent}/${info.xpNext} XP`;
+  document.getElementById('xpFill').style.width=Math.round(info.progress*100)+'%';
+}
+
+// ==============================
+// ACHIEVEMENTS
+// ==============================
+function getUnlockedAch(){return LS.get('achievements',[])}
+function unlockAchievement(id){
+  const unlocked=getUnlockedAch();
+  if(unlocked.includes(id))return;
+  const ach=ACHIEVEMENTS.find(a=>a.id===id);
+  if(!ach)return;
+  unlocked.push(id);
+  LS.set('achievements',unlocked);
+  addXP(ach.xp,ach.name);
+}
+function checkAchievements(){
+  const h=getHistory(),unlocked=getUnlockedAch(),streak=calcStreak();
+  const totalPRs=LS.get('totalPRs',0);
+  const coachQs=LS.get('coachQuestions',0);
+  if(h.length>=1)unlockAchievement('first_workout');
+  if(h.length>=10)unlockAchievement('workouts_10');
+  if(h.length>=50)unlockAchievement('workouts_50');
+  if(h.length>=100)unlockAchievement('workouts_100');
+  if(streak>=3)unlockAchievement('streak_3');
+  if(streak>=7)unlockAchievement('streak_7');
+  if(streak>=30)unlockAchievement('streak_30');
+  if(totalPRs>=1)unlockAchievement('pr_first');
+  if(totalPRs>=10)unlockAchievement('pr_10');
+  if(coachQs>=10)unlockAchievement('coach_ask');
+  if(customExercises.length>0)unlockAchievement('custom_workout');
+  const wl=getWeightLog();
+  if(wl.length>=5)unlockAchievement('weight_log_5');
+  // Check time-based achievements
+  if(h.length>0){
+    const lastH=new Date(h[h.length-1].date).getHours();
+    if(lastH<8)unlockAchievement('early_bird');
+    if(lastH>=21)unlockAchievement('night_owl');
+  }
+  // Total volume
+  let totalVol=0;
+  h.forEach(w=>w.exercises.forEach(ex=>ex.sets.forEach(s=>totalVol+=s.kg*s.reps)));
+  if(totalVol>=10000)unlockAchievement('total_volume_10k');
+}
+function renderAchievements(){
+  const unlocked=getUnlockedAch();
+  const el=document.getElementById('achievementsGrid');
+  document.getElementById('achCount').textContent=`${unlocked.length}/${ACHIEVEMENTS.length}`;
+  el.innerHTML=ACHIEVEMENTS.map(a=>`
+    <div class="ach-item ${unlocked.includes(a.id)?'unlocked':'locked'}" title="${a.desc}">
+      <div class="ach-icon">${a.icon}</div>
+      <div class="ach-name">${a.name}</div>
+      <div class="ach-xp">${a.xp} XP</div>
+    </div>
+  `).join('');
+}
+
+// ==============================
+// ADAPTIVE TDEE (PRO)
+// ==============================
+function calculateAdaptiveTDEE(){
+  if(!profile)return null;
+  const wl=getWeightLog();
+  if(wl.length<3)return null;
+  // Need at least 2 weeks of data
+  const recent=wl.slice(-14);
+  if(recent.length<3)return null;
+  // Calculate weekly weight change
+  const firstWeek=recent.slice(0,Math.floor(recent.length/2));
+  const secondWeek=recent.slice(Math.floor(recent.length/2));
+  const avgFirst=firstWeek.reduce((a,e)=>a+e.weight,0)/firstWeek.length;
+  const avgSecond=secondWeek.reduce((a,e)=>a+e.weight,0)/secondWeek.length;
+  const daysBetween=(new Date(secondWeek[secondWeek.length-1].date)-new Date(firstWeek[0].date))/(1000*60*60*24);
+  const weeklyChange=((avgSecond-avgFirst)/daysBetween)*7;
+  // 1kg = ~7700 kcal
+  const dailyCalChange=Math.round((weeklyChange*7700)/7);
+  // Get average daily intake from food logs
+  let totalDays=0,totalCals=0;
+  for(let i=13;i>=0;i--){
+    const d=new Date();d.setDate(d.getDate()-i);
+    const k='food_'+d.toISOString().slice(0,10);
+    const food=LS.get(k,null);
+    if(food&&food.meals){
+      let dayCal=0;
+      food.meals.forEach(m=>m.forEach(f=>dayCal+=f.cal));
+      if(dayCal>0){totalCals+=dayCal;totalDays++}
+    }
+  }
+  if(totalDays<3)return null;
+  const avgIntake=Math.round(totalCals/totalDays);
+  const adaptiveTDEE=avgIntake-dailyCalChange;
+  return{
+    staticTDEE:profile.tdee,
+    adaptiveTDEE:Math.round(adaptiveTDEE),
+    weeklyChange:weeklyChange.toFixed(2),
+    avgIntake,
+    dailyCalChange,
+    suggestion:weeklyChange>0.2?'Намали с ~200 kcal за по-бързо отслабване':weeklyChange<-0.2?'Увеличи с ~200 kcal — губиш тегло прекалено бързо':'Ти си на правилния път!'
+  };
+}
+function renderAdaptiveTDEE(){
+  const card=document.getElementById('tdeeCard');
+  if(!isPro){card.style.display='none';return}
+  const data=calculateAdaptiveTDEE();
+  if(!data){card.style.display='none';return}
+  card.style.display='block';
+  document.getElementById('tdeeCurrent').textContent=data.staticTDEE+' kcal';
+  document.getElementById('tdeeAdaptive').textContent=data.adaptiveTDEE+' kcal';
+  const sign=data.weeklyChange>0?'+':'';
+  document.getElementById('tdeeWeeklyChange').textContent=sign+data.weeklyChange+' кг/седмица';
+  document.getElementById('tdeeNote').textContent='💡 '+data.suggestion;
+}
+
+// ==============================
+// BODY MEASUREMENTS (PRO)
+// ==============================
+function getMeasurements(){return LS.get('measurements',[])}
+function logMeasurements(){
+  if(!checkPro('measurements'))return;
+  const fields=['Гърди (см)','Талия (см)','Ханш (см)','Бицепс (см)','Бедро (см)','Прасец (см)'];
+  const keys=['chest','waist','hips','bicep','thigh','calf'];
+  const existing=getMeasurements();
+  const last=existing.length?existing[existing.length-1]:{};
+  const entry={date:new Date().toISOString()};
+  for(let i=0;i<fields.length;i++){
+    const val=prompt(`${fields[i]}:`,last[keys[i]]||'');
+    if(val===null)return;
+    entry[keys[i]]=parseFloat(val)||0;
+  }
+  existing.push(entry);
+  LS.set('measurements',existing);
+  renderMeasurements();
+  addXP(15,'Мерки записани');
+}
+function renderMeasurements(){
+  const all=getMeasurements();
+  const el=document.getElementById('measureGrid');
+  if(!all.length){el.innerHTML='<div style="grid-column:1/-1;text-align:center;padding:16px;color:var(--text3);font-size:13px">Натисни "+ Добави" за първо измерване</div>';return}
+  const last=all[all.length-1];
+  const prev=all.length>1?all[all.length-2]:null;
+  const labels={chest:'Гърди',waist:'Талия',hips:'Ханш',bicep:'Бицепс',thigh:'Бедро',calf:'Прасец'};
+  const keys=['chest','waist','hips','bicep','thigh','calf'];
+  el.innerHTML=keys.filter(k=>last[k]>0).map(k=>{
+    const diff=prev&&prev[k]?(last[k]-prev[k]).toFixed(1):null;
+    const diffClass=diff>0?'positive':diff<0?'negative':'';
+    return`<div class="measure-item"><div class="mi-val">${last[k]}</div><div class="mi-label">${labels[k]}</div>${diff!==null?`<div class="mi-change ${diffClass}">${diff>0?'+':''}${diff} см</div>`:''}</div>`;
+  }).join('');
+}
+
+// ==============================
+// STREAK CALENDAR
+// ==============================
+function calcStreak(){
+  const h=getHistory();
+  let streak=0;
+  if(!h.length)return 0;
+  const sorted=[...h].sort((a,b)=>new Date(b.date)-new Date(a.date));
+  const today=new Date();today.setHours(0,0,0,0);
+  let cd=new Date(today);
+  const td=sorted.some(w=>{const d=new Date(w.date);d.setHours(0,0,0,0);return d.getTime()===today.getTime()});
+  if(!td)cd.setDate(cd.getDate()-1);
+  for(let i=0;i<365;i++){
+    const f=sorted.some(w=>{const d=new Date(w.date);d.setHours(0,0,0,0);return d.getTime()===cd.getTime()});
+    if(f){streak++;cd.setDate(cd.getDate()-1)}else break;
+  }
+  return streak;
+}
+function renderStreakCalendar(){
+  const el=document.getElementById('streakCal');
+  const h=getHistory();
+  const today=new Date();today.setHours(0,0,0,0);
+  const workoutDays=new Set(h.map(w=>{const d=new Date(w.date);d.setHours(0,0,0,0);return d.getTime()}));
+  const days=[];
+  const dayLabels=['Пн','Вт','Ср','Чт','Пт','Сб','Нд'];
+  // Header
+  let html=dayLabels.map(d=>`<div class="streak-day" style="font-weight:600;font-size:8px;color:var(--text3)">${d}</div>`).join('');
+  // Last 28 days
+  const start=new Date(today);start.setDate(start.getDate()-27);
+  // Align to Monday
+  const startDay=start.getDay()||7;
+  start.setDate(start.getDate()-(startDay-1));
+  for(let i=0;i<35;i++){
+    const d=new Date(start);d.setDate(d.getDate()+i);
+    if(d>today){html+=`<div class="streak-day"></div>`;continue}
+    const isToday=d.getTime()===today.getTime();
+    const hasW=workoutDays.has(d.getTime());
+    html+=`<div class="streak-day ${isToday?'today':''} ${hasW?'has-workout':''}">${d.getDate()}</div>`;
+  }
+  el.innerHTML=html;
+}
+
+// ==============================
+// TOAST NOTIFICATIONS
+// ==============================
+let toastTimeout=null;
+function showToast(icon,text,xp){
+  const t=document.getElementById('toast');
+  document.getElementById('toastIcon').textContent=icon;
+  document.getElementById('toastText').textContent=text;
+  document.getElementById('toastXP').textContent=xp||'';
+  t.classList.add('show');
+  clearTimeout(toastTimeout);
+  toastTimeout=setTimeout(()=>t.classList.remove('show'),3000);
+}
+
+// ==============================
+// MORE WORKOUT PROGRAMS
+// ==============================
+PROGRAMS.push(
+  {id:'531',name:'5/3/1 Wendler',desc:'4 дни/седмица • Сила',icon:'🔨',days:[
+    {name:'Squat Day',exercises:[{name:'Squat',muscle:'Quads',sets:3,reps:'5/3/1'},{name:'Leg Press',muscle:'Quads',sets:5,reps:'10'},{name:'Leg Curls',muscle:'Hamstrings',sets:4,reps:'10'},{name:'Hanging Leg Raises',muscle:'Core',sets:4,reps:'15'}]},
+    {name:'Bench Day',exercises:[{name:'Barbell Bench Press',muscle:'Chest',sets:3,reps:'5/3/1'},{name:'Incline DB Press',muscle:'Chest',sets:5,reps:'10'},{name:'Dumbbell Rows',muscle:'Back',sets:5,reps:'10'},{name:'Tricep Pushdowns',muscle:'Triceps',sets:4,reps:'12'}]},
+    {name:'Deadlift Day',exercises:[{name:'Deadlift',muscle:'Back',sets:3,reps:'5/3/1'},{name:'Romanian Deadlift',muscle:'Hamstrings',sets:4,reps:'10'},{name:'Pull-Ups',muscle:'Back',sets:4,reps:'8-10'},{name:'Plank',muscle:'Core',sets:3,reps:'60s'}]},
+    {name:'Press Day',exercises:[{name:'Overhead Press',muscle:'Shoulders',sets:3,reps:'5/3/1'},{name:'DB Shoulder Press',muscle:'Shoulders',sets:4,reps:'10'},{name:'Lateral Raises',muscle:'Shoulders',sets:4,reps:'15'},{name:'Barbell Curls',muscle:'Biceps',sets:3,reps:'12'}]}
+  ]},
+  {id:'nsuns',name:'nSuns 5/3/1 LP',desc:'5 дни/седмица • Линейна прогресия',icon:'📈',days:[
+    {name:'Bench + OHP',exercises:[{name:'Barbell Bench Press',muscle:'Chest',sets:9,reps:'Varied'},{name:'Overhead Press',muscle:'Shoulders',sets:8,reps:'Varied'},{name:'Cable Rows',muscle:'Back',sets:4,reps:'8-12'},{name:'Lateral Raises',muscle:'Shoulders',sets:4,reps:'15-20'}]},
+    {name:'Squat + Sumo DL',exercises:[{name:'Squat',muscle:'Quads',sets:9,reps:'Varied'},{name:'Stiff-Leg Deadlift',muscle:'Hamstrings',sets:8,reps:'Varied'},{name:'Leg Extensions',muscle:'Quads',sets:3,reps:'12'},{name:'Leg Curls',muscle:'Hamstrings',sets:3,reps:'12'}]},
+    {name:'OHP + Incline',exercises:[{name:'Overhead Press',muscle:'Shoulders',sets:9,reps:'Varied'},{name:'Incline Barbell Press',muscle:'Chest',sets:8,reps:'Varied'},{name:'Pull-Ups',muscle:'Back',sets:4,reps:'8-10'},{name:'Face Pulls',muscle:'Back',sets:4,reps:'15-20'}]},
+    {name:'Deadlift + Front Squat',exercises:[{name:'Deadlift',muscle:'Back',sets:9,reps:'Varied'},{name:'Front Squat',muscle:'Quads',sets:8,reps:'Varied'},{name:'Barbell Rows',muscle:'Back',sets:4,reps:'8-10'},{name:'Hanging Leg Raises',muscle:'Core',sets:3,reps:'15'}]},
+    {name:'Bench + CG Bench',exercises:[{name:'Barbell Bench Press',muscle:'Chest',sets:9,reps:'Varied'},{name:'Close-Grip Bench Press',muscle:'Triceps',sets:8,reps:'Varied'},{name:'Dumbbell Rows',muscle:'Back',sets:4,reps:'10'},{name:'Dumbbell Curls',muscle:'Biceps',sets:3,reps:'12'}]}
+  ]},
+  {id:'gzclp',name:'GZCLP',desc:'3-4 дни/седмица • Начинаещи',icon:'🔰',days:[
+    {name:'Day 1',exercises:[{name:'Squat',muscle:'Quads',sets:5,reps:'3'},{name:'Barbell Bench Press',muscle:'Chest',sets:3,reps:'10'},{name:'Lat Pulldown',muscle:'Back',sets:3,reps:'15'},{name:'Dumbbell Curls',muscle:'Biceps',sets:2,reps:'15'}]},
+    {name:'Day 2',exercises:[{name:'Overhead Press',muscle:'Shoulders',sets:5,reps:'3'},{name:'Deadlift',muscle:'Back',sets:3,reps:'10'},{name:'Dumbbell Rows',muscle:'Back',sets:3,reps:'15'},{name:'Lateral Raises',muscle:'Shoulders',sets:2,reps:'15'}]},
+    {name:'Day 3',exercises:[{name:'Barbell Bench Press',muscle:'Chest',sets:5,reps:'3'},{name:'Squat',muscle:'Quads',sets:3,reps:'10'},{name:'Cable Rows',muscle:'Back',sets:3,reps:'15'},{name:'Tricep Pushdowns',muscle:'Triceps',sets:2,reps:'15'}]},
+    {name:'Day 4',exercises:[{name:'Deadlift',muscle:'Back',sets:5,reps:'3'},{name:'Overhead Press',muscle:'Shoulders',sets:3,reps:'10'},{name:'Pull-Ups',muscle:'Back',sets:3,reps:'15'},{name:'Leg Curls',muscle:'Hamstrings',sets:2,reps:'15'}]}
+  ]}
+);
 
 // ==============================
 // SERVICE WORKER
