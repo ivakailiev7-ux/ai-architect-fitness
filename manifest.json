@@ -1,11 +1,11 @@
 {
-  "name": "AI Architect Fitness",
-  "short_name": "AI Fitness",
-  "description": "Track your gains. Build your best.",
+  "name": "PRIME PHYSIQUE",
+  "short_name": "PRIME",
+  "description": "Premium fitness & nutrition tracking. Your body, elevated.",
   "start_url": "./index.html",
   "display": "standalone",
-  "background_color": "#0a0a0a",
-  "theme_color": "#0a0a0a",
+  "background_color": "#08080a",
+  "theme_color": "#08080a",
   "orientation": "portrait",
   "icons": [
     {"src": "icon-192.png", "sizes": "192x192", "type": "image/png"},

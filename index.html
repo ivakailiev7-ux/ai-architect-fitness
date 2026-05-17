@@ -5,27 +5,32 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="theme-color" content="#0a0a0a">
+<meta name="theme-color" content="#08080a">
 <link rel="manifest" href="./manifest.json">
 <link rel="apple-touch-icon" href="./icon-192.png">
-<title>AI ARCHITECT - Fitness & Nutrition</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<title>PRIME PHYSIQUE</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 :root{
-  --bg:#060608;--surface:#0f1014;--surface2:#16171c;--surface3:#1e2028;--surface4:#282a33;
-  --blue:#2563eb;--blue-glow:rgba(37,99,235,.18);--blue-light:#4a8af5;--blue-dark:#1a4bc4;
-  --green:#22c55e;--green-glow:rgba(34,197,94,.15);
-  --red:#ef4444;--red-glow:rgba(239,68,68,.15);
-  --orange:#f59e0b;--orange-glow:rgba(245,158,11,.15);
-  --purple:#a855f7;--purple-glow:rgba(168,85,247,.15);
-  --cyan:#06b6d4;
-  --text:#f0f0f5;--text2:#8b8d9a;--text3:#4a4c58;
-  --radius:16px;--radius-sm:10px;--radius-xs:8px;
-  --shadow:0 2px 16px rgba(0,0,0,.3);
-  --transition:all .25s cubic-bezier(.4,0,.2,1)
+  --bg:#08080a;--surface:#101012;--surface2:#18181b;--surface3:#222226;--surface4:#2c2c32;
+  --blue:#D4A853;--blue-glow:rgba(212,168,83,.14);--blue-light:#E4C075;--blue-dark:#B8913D;
+  --green:#22c55e;--green-glow:rgba(34,197,94,.12);
+  --red:#ef4444;--red-glow:rgba(239,68,68,.12);
+  --orange:#E4C075;--orange-glow:rgba(228,192,117,.12);
+  --purple:#D4A853;--purple-glow:rgba(212,168,83,.12);
+  --cyan:#D4A853;
+  --text:#f5f5f7;--text2:#9a9aa0;--text3:#55555e;
+  --radius:16px;--radius-sm:12px;--radius-xs:8px;
+  --shadow:0 2px 20px rgba(0,0,0,.4);
+  --transition:all .25s cubic-bezier(.4,0,.2,1);
+  --gold:#D4A853;--gold-light:#E8D5A0;--gold-dark:#A88A3E;
+  --gold-gradient:linear-gradient(135deg,#D4A853 0%,#F0DFA0 50%,#D4A853 100%)
 }
 html,body{height:100%;overflow:hidden;background:var(--bg)}
-body{font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','Segoe UI',Roboto,sans-serif;color:var(--text);line-height:1.5}
+body{font-family:'Inter',system-ui,-apple-system,sans-serif;color:var(--text);line-height:1.5;letter-spacing:-.01em;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;font-feature-settings:'cv02','cv03','cv04','cv11'}
 *::-webkit-scrollbar{width:0;height:0}
 input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-spin-button{-webkit-appearance:none}
 input[type=number]{-moz-appearance:textfield}
@@ -37,7 +42,7 @@ input[type=number]{-moz-appearance:textfield}
   .desktop-sidebar{display:flex!important;flex-direction:column;width:260px;background:var(--surface);border-right:1px solid var(--surface3);padding:20px 0;flex-shrink:0;height:100dvh}
   .desktop-sidebar .logo{padding:0 20px 24px;display:flex;align-items:center;gap:10px}
   .desktop-sidebar .logo svg{width:28px;height:28px}
-  .desktop-sidebar .logo span{font-weight:700;font-size:13px;letter-spacing:2px;color:var(--blue)}
+  .desktop-sidebar .logo span{font-weight:700;font-size:13px;letter-spacing:2px;color:var(--gold)}
   .desktop-sidebar .sidebar-nav{flex:1}
   .sidebar-item{display:flex;align-items:center;gap:12px;padding:12px 20px;cursor:pointer;color:var(--text2);font-size:14px;transition:var(--transition);border:none;background:none;width:100%;font-family:inherit;text-align:left}
   .sidebar-item:hover{background:var(--surface2);color:var(--text)}
@@ -52,7 +57,7 @@ input[type=number]{-moz-appearance:textfield}
 .header{padding:14px 16px;display:flex;align-items:center;justify-content:space-between;background:var(--bg);z-index:10}
 .header .logo{display:flex;align-items:center;gap:8px}
 .header .logo svg{width:24px;height:24px}
-.header .logo span{font-weight:700;font-size:12px;letter-spacing:2px;color:var(--blue)}
+.header .logo span{font-weight:700;font-size:12px;letter-spacing:2px;color:var(--gold)}
 .header .date{font-size:11px;color:var(--text2)}
 
 .app-content{flex:1;overflow-y:auto;overflow-x:hidden;padding:0 16px 100px;scroll-behavior:smooth;-webkit-overflow-scrolling:touch}
@@ -61,7 +66,7 @@ input[type=number]{-moz-appearance:textfield}
 /* ===== BOTTOM NAV ===== */
 .nav{position:absolute;bottom:0;left:0;right:0;display:flex;background:var(--surface);border-top:1px solid var(--surface2);padding:6px 0 env(safe-area-inset-bottom,6px);z-index:100;backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);background:rgba(15,16,20,.85)}
 .nav-item{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:6px 0;cursor:pointer;color:var(--text3);border:none;background:none;font-size:9px;font-weight:500;font-family:inherit;transition:var(--transition);letter-spacing:.3px}
-.nav-item.active{color:var(--blue)}
+.nav-item.active{color:var(--gold)}
 .nav-item svg{width:20px;height:20px}
 
 /* ===== PAGES ===== */
@@ -84,7 +89,7 @@ input[type=number]{-moz-appearance:textfield}
 .ob-input:focus{border-color:var(--blue);box-shadow:0 0 0 3px var(--blue-glow)}
 .ob-select-group{display:grid;grid-template-columns:1fr 1fr;gap:10px;width:100%;margin-bottom:16px}
 .ob-select-btn{padding:14px;border-radius:var(--radius-sm);border:1px solid var(--surface3);background:var(--surface);color:var(--text2);font-size:14px;font-weight:500;cursor:pointer;font-family:inherit;transition:var(--transition);text-align:center}
-.ob-select-btn.selected{border-color:var(--blue);background:var(--blue-glow);color:var(--blue)}
+.ob-select-btn.selected{border-color:var(--blue);background:var(--blue-glow);color:var(--gold)}
 .ob-select-btn:active{transform:scale(.97)}
 .ob-activity{display:flex;flex-direction:column;gap:8px;width:100%;margin-bottom:16px}
 .ob-activity .ob-select-btn{text-align:left;padding:12px 16px}
@@ -98,7 +103,7 @@ input[type=number]{-moz-appearance:textfield}
 
 /* ===== DASHBOARD ===== */
 .greeting{font-size:24px;font-weight:700;margin:16px 0 4px}
-.greeting span{color:var(--blue)}
+.greeting span{color:var(--gold)}
 .subtitle{font-size:13px;color:var(--text2);margin-bottom:20px}
 
 .calorie-card{background:linear-gradient(135deg,var(--surface) 0%,var(--surface2) 100%);border-radius:var(--radius);padding:24px;margin-bottom:16px;border:1px solid var(--surface3);position:relative;overflow:hidden}
@@ -107,7 +112,7 @@ input[type=number]{-moz-appearance:textfield}
 .cal-ring{position:relative;width:120px;height:120px;flex-shrink:0}
 .cal-ring svg{width:120px;height:120px;transform:rotate(-90deg)}
 .cal-ring .bg{stroke:var(--surface3);stroke-width:8;fill:none}
-.cal-ring .progress{stroke:var(--blue);stroke-width:8;fill:none;stroke-linecap:round;transition:stroke-dashoffset .5s ease}
+.cal-ring .progress{stroke:var(--gold);stroke-width:8;fill:none;stroke-linecap:round;transition:stroke-dashoffset .5s ease}
 .cal-center{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
 .cal-center .num{font-size:28px;font-weight:700;line-height:1}
 .cal-center .lbl{font-size:10px;color:var(--text2);margin-top:2px}
@@ -142,7 +147,7 @@ input[type=number]{-moz-appearance:textfield}
 .quick-action:active{transform:scale(.97)}
 .quick-action .qa-icon{width:42px;height:42px;border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
 .quick-action .qa-icon svg{width:20px;height:20px}
-.qa-workout .qa-icon{background:var(--blue-glow);color:var(--blue)}
+.qa-workout .qa-icon{background:var(--blue-glow);color:var(--gold)}
 .qa-food .qa-icon{background:var(--green-glow);color:var(--green)}
 .quick-action .qa-text h4{font-size:13px;font-weight:600}
 .quick-action .qa-text p{font-size:11px;color:var(--text2)}
@@ -169,7 +174,7 @@ input[type=number]{-moz-appearance:textfield}
 .water-card .water-info p{font-size:12px;color:var(--text2)}
 .water-btns{display:flex;gap:6px}
 .water-btn{width:36px;height:36px;border-radius:50%;border:1px solid var(--surface3);background:var(--surface2);color:var(--text);cursor:pointer;font-size:16px;font-weight:600;display:flex;align-items:center;justify-content:center;font-family:inherit;transition:var(--transition)}
-.water-btn:active{background:var(--blue-glow);border-color:var(--blue)}
+.water-btn:active{background:var(--blue-glow);border-color:var(--gold)}
 
 /* ===== FOOD SEARCH MODAL ===== */
 .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:200;display:flex;align-items:flex-end;justify-content:center;opacity:0;pointer-events:none;transition:opacity .25s}
@@ -181,11 +186,11 @@ input[type=number]{-moz-appearance:textfield}
 .modal-header h3{font-size:18px;font-weight:700;margin-bottom:12px}
 .search-bar{display:flex;gap:8px}
 .search-input{flex:1;padding:12px 16px;border-radius:var(--radius-sm);border:1px solid var(--surface3);background:var(--surface2);color:var(--text);font-size:15px;font-family:inherit;outline:none;transition:var(--transition)}
-.search-input:focus{border-color:var(--blue)}
+.search-input:focus{border-color:var(--gold)}
 .search-input::placeholder{color:var(--text3)}
 .modal-tabs{display:flex;padding:0 20px;gap:0;border-bottom:1px solid var(--surface2);flex-shrink:0}
 .modal-tab{padding:10px 16px;font-size:13px;font-weight:500;color:var(--text3);cursor:pointer;border:none;background:none;font-family:inherit;border-bottom:2px solid transparent;transition:var(--transition)}
-.modal-tab.active{color:var(--blue);border-bottom-color:var(--blue)}
+.modal-tab.active{color:var(--blue);border-bottom-color:var(--gold)}
 .modal-body{flex:1;overflow-y:auto;padding:12px 20px}
 .food-result{display:flex;align-items:center;gap:12px;padding:14px 0;border-bottom:1px solid var(--surface2);cursor:pointer;transition:var(--transition)}
 .food-result:active{background:var(--surface2);margin:0 -20px;padding:14px 20px}
@@ -193,7 +198,7 @@ input[type=number]{-moz-appearance:textfield}
 .food-result .fr-name{font-size:14px;font-weight:500}
 .food-result .fr-brand{font-size:11px;color:var(--text3)}
 .food-result .fr-macros{font-size:11px;color:var(--text2);margin-top:2px}
-.food-result .fr-cal{font-size:15px;font-weight:600;color:var(--blue)}
+.food-result .fr-cal{font-size:15px;font-weight:600;color:var(--gold)}
 .food-result .fr-cal small{font-size:10px;color:var(--text3);font-weight:400}
 
 .portion-selector{padding:20px}
@@ -204,12 +209,12 @@ input[type=number]{-moz-appearance:textfield}
 .portion-macro{text-align:center;padding:10px;background:var(--surface2);border-radius:var(--radius-xs)}
 .portion-macro .pm-val{font-size:18px;font-weight:700}
 .portion-macro .pm-label{font-size:10px;color:var(--text2);text-transform:uppercase}
-.portion-macro:first-child .pm-val{color:var(--blue)}
+.portion-macro:first-child .pm-val{color:var(--gold)}
 
 /* ===== WORKOUT PAGE ===== */
 .program-card{display:flex;align-items:center;gap:14px;cursor:pointer}
 .program-card .icon{width:48px;height:48px;border-radius:14px;background:var(--blue-glow);display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.program-card .icon svg{width:22px;height:22px;color:var(--blue)}
+.program-card .icon svg{width:22px;height:22px;color:var(--gold)}
 .program-card .info{flex:1}
 .program-card .info h3{font-size:15px;font-weight:600}
 .program-card .info p{font-size:12px;color:var(--text2)}
@@ -259,7 +264,7 @@ input[type=number]{-moz-appearance:textfield}
 .check-btn svg{width:16px;height:16px;color:var(--text3)}
 .check-btn.checked svg{color:#fff}
 .add-set-btn{width:100%;padding:10px;border:1px dashed var(--surface3);border-radius:var(--radius-xs);background:none;color:var(--text3);cursor:pointer;font-size:12px;margin-top:8px;font-family:inherit;transition:var(--transition)}
-.add-set-btn:active{border-color:var(--blue);color:var(--blue)}
+.add-set-btn:active{border-color:var(--blue);color:var(--gold)}
 .workout-actions{display:flex;flex-direction:column;gap:8px;margin-top:20px}
 .btn-finish{padding:16px;border-radius:var(--radius-sm);border:none;background:var(--green);color:#fff;font-size:15px;font-weight:600;cursor:pointer;font-family:inherit}
 .btn-cancel{padding:14px;border-radius:var(--radius-sm);border:1px solid var(--surface3);background:none;color:var(--text2);font-size:14px;cursor:pointer;font-family:inherit}
@@ -298,12 +303,12 @@ input[type=number]{-moz-appearance:textfield}
 /* ===== PROFILE PAGE ===== */
 .profile-header{text-align:center;padding:20px 0}
 .profile-avatar{width:72px;height:72px;border-radius:50%;background:var(--blue-glow);display:flex;align-items:center;justify-content:center;margin:0 auto 12px;border:2px solid var(--blue)}
-.profile-avatar svg{width:32px;height:32px;color:var(--blue)}
+.profile-avatar svg{width:32px;height:32px;color:var(--gold)}
 .profile-name{font-size:18px;font-weight:700}
 .profile-sub{font-size:13px;color:var(--text2)}
 .profile-stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1px;background:var(--surface2);border-radius:var(--radius-sm);overflow:hidden;margin:16px 0}
 .profile-stat{background:var(--surface);padding:14px;text-align:center}
-.profile-stat .ps-num{font-size:20px;font-weight:700;color:var(--blue)}
+.profile-stat .ps-num{font-size:20px;font-weight:700;color:var(--gold)}
 .profile-stat .ps-label{font-size:10px;color:var(--text2);text-transform:uppercase;letter-spacing:.5px}
 .setting-item{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-bottom:1px solid var(--surface2);cursor:pointer}
 .setting-item .si-left{display:flex;align-items:center;gap:12px}
@@ -322,8 +327,8 @@ input[type=number]{-moz-appearance:textfield}
   <!-- Desktop Sidebar -->
   <div class="desktop-sidebar">
     <div class="logo">
-      <svg viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="8" fill="#2563eb" fill-opacity=".15"/><path d="M16 6l2 4h4l-3 3 1 4-4-2-4 2 1-4-3-3h4l2-4z" fill="#2563eb"/><circle cx="10" cy="22" r="2" fill="#2563eb"/><circle cx="16" cy="24" r="2" fill="#2563eb"/><circle cx="22" cy="22" r="2" fill="#2563eb"/><line x1="10" y1="22" x2="16" y2="24" stroke="#2563eb" stroke-width="1.5"/><line x1="16" y1="24" x2="22" y2="22" stroke="#2563eb" stroke-width="1.5"/></svg>
-      <span>AI ARCHITECT</span>
+      <svg viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="8" fill="#D4A853" fill-opacity=".12"/><path d="M16 4L6 10v8c0 5.5 4.3 10.6 10 12 5.7-1.4 10-6.5 10-12v-8L16 4z" fill="none" stroke="#D4A853" stroke-width="1.5"/><path d="M12 16l3 3 5-6" stroke="#D4A853" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <span>PRIME PHYSIQUE</span>
     </div>
     <div class="sidebar-nav">
       <button class="sidebar-item active" onclick="showPage('home')" data-page="home"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg>Dashboard</button>
@@ -338,8 +343,8 @@ input[type=number]{-moz-appearance:textfield}
     <!-- Mobile Header -->
     <div class="header">
       <div class="logo">
-        <svg viewBox="0 0 32 32" fill="none" width="24" height="24"><rect width="32" height="32" rx="8" fill="#2563eb" fill-opacity=".15"/><path d="M16 6l2 4h4l-3 3 1 4-4-2-4 2 1-4-3-3h4l2-4z" fill="#2563eb"/></svg>
-        <span>AI ARCHITECT</span>
+        <svg viewBox="0 0 32 32" fill="none" width="24" height="24"><rect width="32" height="32" rx="8" fill="#D4A853" fill-opacity=".12"/><path d="M16 4L6 10v8c0 5.5 4.3 10.6 10 12 5.7-1.4 10-6.5 10-12v-8L16 4z" fill="none" stroke="#D4A853" stroke-width="1.5"/><path d="M12 16l3 3 5-6" stroke="#D4A853" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span>PRIME PHYSIQUE</span>
       </div>
       <div class="date" id="headerDate"></div>
     </div>
@@ -479,8 +484,8 @@ input[type=number]{-moz-appearance:textfield}
 <!-- ONBOARDING -->
 <div class="onboarding" id="onboarding">
   <div class="ob-step active" id="ob-0">
-    <div class="ob-logo"><svg viewBox="0 0 56 56" fill="none" width="56" height="56"><rect width="56" height="56" rx="16" fill="#2563eb" fill-opacity=".15"/><path d="M28 10l4 8h8l-6 6 2 8-8-4-8 4 2-8-6-6h8l4-8z" fill="#2563eb"/><circle cx="18" cy="40" r="3" fill="#2563eb"/><circle cx="28" cy="43" r="3" fill="#2563eb"/><circle cx="38" cy="40" r="3" fill="#2563eb"/><line x1="18" y1="40" x2="28" y2="43" stroke="#2563eb" stroke-width="2"/><line x1="28" y1="43" x2="38" y2="40" stroke="#2563eb" stroke-width="2"/></svg></div>
-    <div class="ob-title">AI ARCHITECT</div>
+    <div class="ob-logo"><svg viewBox="0 0 56 56" fill="none" width="56" height="56"><rect width="56" height="56" rx="16" fill="#D4A853" fill-opacity=".1"/><path d="M28 8L12 16v12c0 8.5 6.8 16.4 16 18.5 9.2-2.1 16-10 16-18.5V16L28 8z" fill="none" stroke="#D4A853" stroke-width="2"/><path d="M21 28l5 5 9-10" stroke="#D4A853" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    <div class="ob-title">PRIME PHYSIQUE</div>
     <div class="ob-sub">Your all-in-one fitness & nutrition tracker. Let's set up your profile.</div>
     <button class="ob-btn" onclick="obNext()">Get Started</button>
   </div>
@@ -1038,16 +1043,16 @@ function renderWeightChart(){
   ctx.strokeStyle='#1e2028';ctx.lineWidth=1;
   for(let i=0;i<=4;i++){const y=pad.t+ch*i/4;ctx.beginPath();ctx.moveTo(pad.l,y);ctx.lineTo(w-pad.r,y);ctx.stroke();ctx.fillStyle='#4a4c58';ctx.font='11px sans-serif';ctx.textAlign='right';ctx.fillText((max-(max-min)*i/4).toFixed(1),pad.l-6,y+4)}
   // Line
-  ctx.beginPath();ctx.strokeStyle='#2563eb';ctx.lineWidth=2;ctx.lineJoin='round';
+  ctx.beginPath();ctx.strokeStyle='#D4A853';ctx.lineWidth=2;ctx.lineJoin='round';
   wl.forEach((e,i)=>{const x=pad.l+cw*i/(wl.length-1);const y=pad.t+ch*(1-(e.weight-min)/(max-min));i===0?ctx.moveTo(x,y):ctx.lineTo(x,y)});
   ctx.stroke();
   // Gradient fill
   const last=wl[wl.length-1];const lastX=pad.l+cw;const lastY=pad.t+ch*(1-(last.weight-min)/(max-min));
   ctx.lineTo(lastX,pad.t+ch);ctx.lineTo(pad.l,pad.t+ch);ctx.closePath();
-  const grad=ctx.createLinearGradient(0,pad.t,0,pad.t+ch);grad.addColorStop(0,'rgba(37,99,235,0.2)');grad.addColorStop(1,'rgba(37,99,235,0)');
+  const grad=ctx.createLinearGradient(0,pad.t,0,pad.t+ch);grad.addColorStop(0,'rgba(212,168,83,0.15)');grad.addColorStop(1,'rgba(212,168,83,0)');
   ctx.fillStyle=grad;ctx.fill();
   // Dots
-  wl.forEach((e,i)=>{const x=pad.l+cw*i/(wl.length-1);const y=pad.t+ch*(1-(e.weight-min)/(max-min));ctx.beginPath();ctx.arc(x,y,3,0,Math.PI*2);ctx.fillStyle='#2563eb';ctx.fill()});
+  wl.forEach((e,i)=>{const x=pad.l+cw*i/(wl.length-1);const y=pad.t+ch*(1-(e.weight-min)/(max-min));ctx.beginPath();ctx.arc(x,y,3,0,Math.PI*2);ctx.fillStyle='#D4A853';ctx.fill()});
   // Date labels
   ctx.fillStyle='#4a4c58';ctx.font='10px sans-serif';ctx.textAlign='center';
   [0,Math.floor(wl.length/2),wl.length-1].forEach(i=>{if(wl[i]){const x=pad.l+cw*i/(wl.length-1);const d=new Date(wl[i].date);ctx.fillText(d.getDate()+'/'+(d.getMonth()+1),x,h-8)}});
