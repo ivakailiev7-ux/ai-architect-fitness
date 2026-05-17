@@ -65,9 +65,9 @@ input[type=number]{-moz-appearance:textfield}
 
 /* ===== BOTTOM NAV ===== */
 .nav{position:absolute;bottom:0;left:0;right:0;display:flex;background:var(--surface);border-top:1px solid var(--surface2);padding:6px 0 env(safe-area-inset-bottom,6px);z-index:100;backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);background:rgba(15,16,20,.85)}
-.nav-item{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:6px 0;cursor:pointer;color:var(--text3);border:none;background:none;font-size:9px;font-weight:500;font-family:inherit;transition:var(--transition);letter-spacing:.3px}
+.nav-item{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;padding:5px 0;cursor:pointer;color:var(--text3);border:none;background:none;font-size:9px;font-weight:500;font-family:inherit;transition:var(--transition);letter-spacing:.2px;min-width:0}
 .nav-item.active{color:var(--gold)}
-.nav-item svg{width:20px;height:20px}
+.nav-item svg{width:18px;height:18px}
 
 /* ===== PAGES ===== */
 .page{display:none;animation:fadeUp .3s ease}
@@ -110,7 +110,7 @@ input[type=number]{-moz-appearance:textfield}
 .calorie-card::after{content:'';position:absolute;top:-50%;right:-30%;width:200px;height:200px;background:radial-gradient(circle,var(--blue-glow) 0%,transparent 70%);pointer-events:none}
 .cal-top{display:flex;align-items:center;gap:20px;position:relative;z-index:1}
 .cal-ring{position:relative;width:120px;height:120px;flex-shrink:0}
-.cal-ring svg{width:120px;height:120px;transform:rotate(-90deg)}
+.cal-ring svg{width:100%;height:100%;transform:rotate(-90deg)}
 .cal-ring .bg{stroke:var(--surface3);stroke-width:8;fill:none}
 .cal-ring .progress{stroke:var(--gold);stroke-width:8;fill:none;stroke-linecap:round;transition:stroke-dashoffset .5s ease}
 .cal-center{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
@@ -320,6 +320,53 @@ input[type=number]{-moz-appearance:textfield}
 .empty-state{text-align:center;padding:48px 20px;color:var(--text3)}
 .empty-state svg{width:48px;height:48px;margin-bottom:12px;opacity:.3}
 .empty-state p{font-size:14px}
+
+/* ===== PR CELEBRATION ===== */
+.pr-overlay{position:fixed;inset:0;background:rgba(8,8,10,.97);z-index:400;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;opacity:0;pointer-events:none;transition:opacity .4s}
+.pr-overlay.show{opacity:1;pointer-events:all}
+.pr-trophy{font-size:64px;animation:prBounce 1s ease}
+@keyframes prBounce{0%{transform:scale(0) rotate(-20deg)}50%{transform:scale(1.2) rotate(5deg)}100%{transform:scale(1) rotate(0)}}
+.pr-title{font-size:24px;font-weight:800;margin:16px 0 4px;background:var(--gold-gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.pr-sub{font-size:14px;color:var(--text2);margin-bottom:24px}
+.pr-list{width:100%;max-width:340px}
+.pr-item{display:flex;align-items:center;gap:12px;padding:12px;background:var(--surface);border:1px solid var(--gold-dark);border-radius:var(--radius-sm);margin-bottom:8px;animation:prSlide .4s ease both}
+@keyframes prSlide{from{opacity:0;transform:translateX(-20px)}to{opacity:1;transform:translateX(0)}}
+.pr-item .pr-icon{font-size:20px}
+.pr-item .pr-info{flex:1}
+.pr-item .pr-name{font-size:13px;font-weight:600}
+.pr-item .pr-detail{font-size:11px;color:var(--gold)}
+.pr-close{margin-top:24px;padding:14px 48px;border-radius:var(--radius-sm);border:1px solid var(--gold-dark);background:none;color:var(--gold);font-size:15px;font-weight:600;cursor:pointer;font-family:inherit}
+
+/* ===== COACH CHAT ===== */
+.chat-container{display:flex;flex-direction:column;height:calc(100dvh - 140px)}
+@media(min-width:768px){.chat-container{height:calc(100dvh - 80px)}}
+.chat-messages{flex:1;overflow-y:auto;padding:8px 0}
+.chat-msg{display:flex;gap:10px;margin-bottom:12px;animation:fadeUp .3s ease}
+.chat-msg.bot .chat-avatar{width:32px;height:32px;border-radius:50%;background:var(--blue-glow);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:16px;border:1px solid var(--gold-dark)}
+.chat-msg.user{flex-direction:row-reverse}
+.chat-bubble{max-width:80%;padding:12px 16px;border-radius:16px;font-size:14px;line-height:1.6}
+.chat-msg.bot .chat-bubble{background:var(--surface);border:1px solid var(--surface2);border-top-left-radius:4px}
+.chat-msg.user .chat-bubble{background:var(--gold-dark);color:#fff;border-top-right-radius:4px}
+.chat-bubble strong{color:var(--gold)}
+.chat-input-bar{display:flex;gap:8px;padding:12px 0;flex-shrink:0}
+.chat-input-bar input{flex:1;padding:12px 16px;border-radius:24px;border:1px solid var(--surface3);background:var(--surface);color:var(--text);font-size:14px;font-family:inherit;outline:none;transition:var(--transition)}
+.chat-input-bar input:focus{border-color:var(--gold)}
+.chat-send{width:44px;height:44px;border-radius:50%;border:none;background:var(--gold);color:#000;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700;flex-shrink:0;transition:var(--transition)}
+.chat-send:active{transform:scale(.9)}
+.coach-topics{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0 16px}
+.coach-topic{padding:6px 14px;border-radius:20px;border:1px solid var(--surface3);background:var(--surface);color:var(--text2);font-size:12px;cursor:pointer;font-family:inherit;transition:var(--transition)}
+.coach-topic:active{border-color:var(--gold);color:var(--gold)}
+
+/* ===== EXERCISE BROWSER ===== */
+.ex-filter{display:flex;gap:6px;overflow-x:auto;padding-bottom:8px;margin-bottom:12px}
+.ex-filter-btn{padding:6px 14px;border-radius:20px;border:1px solid var(--surface3);background:var(--surface);color:var(--text2);font-size:12px;font-weight:500;cursor:pointer;font-family:inherit;white-space:nowrap;transition:var(--transition)}
+.ex-filter-btn.active{background:var(--gold);color:#000;border-color:var(--gold)}
+.ex-browse-item{display:flex;align-items:center;gap:12px;padding:12px;border-bottom:1px solid var(--surface2);cursor:pointer;transition:var(--transition)}
+.ex-browse-item:active{background:var(--surface2)}
+.ex-browse-item .ebi-info{flex:1}
+.ex-browse-item .ebi-name{font-size:14px;font-weight:500}
+.ex-browse-item .ebi-muscle{font-size:11px;color:var(--text3)}
+.ex-browse-item .ebi-add{width:28px;height:28px;border-radius:50%;border:1px solid var(--gold-dark);background:none;color:var(--gold);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:16px}
 </style>
 </head>
 <body>
@@ -335,6 +382,7 @@ input[type=number]{-moz-appearance:textfield}
       <button class="sidebar-item" onclick="showPage('nutrition')" data-page="nutrition"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8h1a4 4 0 010 8h-1M2 8h16v9a4 4 0 01-4 4H6a4 4 0 01-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg>Nutrition</button>
       <button class="sidebar-item" onclick="showPage('workout')" data-page="workout"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6.5 6.5h11M4 12h16M6.5 17.5h11"/><circle cx="6.5" cy="6.5" r="2.5"/><circle cx="17.5" cy="6.5" r="2.5"/><circle cx="4" cy="12" r="2.5"/><circle cx="20" cy="12" r="2.5"/><circle cx="6.5" cy="17.5" r="2.5"/><circle cx="17.5" cy="17.5" r="2.5"/></svg>Workout</button>
       <button class="sidebar-item" onclick="showPage('progress')" data-page="progress"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22,12 18,12 15,21 9,3 6,12 2,12"/></svg>Progress</button>
+      <button class="sidebar-item" onclick="showPage('coach')" data-page="coach"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>Coach</button>
       <button class="sidebar-item" onclick="showPage('profile')" data-page="profile"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>Profile</button>
     </div>
   </div>
@@ -420,6 +468,31 @@ input[type=number]{-moz-appearance:textfield}
       <div class="page" id="page-workout">
         <div class="section-title" style="margin-top:12px">Programs</div>
         <div id="programList"></div>
+        <div class="section-title">Custom Workout</div>
+        <div class="card" style="cursor:pointer" onclick="showPage('custom-workout')">
+          <div class="program-card"><div class="icon" style="background:var(--gold-dark);background:rgba(212,168,83,.15)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--gold)"><path d="M12 5v14M5 12h14"/></svg></div><div class="info"><h3>Build Your Own</h3><p>Choose exercises from library</p></div><div class="arrow">›</div></div>
+        </div>
+        <div class="section-title">Exercise Library</div>
+        <div class="ex-filter" id="exFilter"></div>
+        <div id="exBrowseList"></div>
+      </div>
+
+      <!-- CUSTOM WORKOUT BUILDER -->
+      <div class="page" id="page-custom-workout">
+        <div class="back-header"><button class="back-btn" onclick="showPage('workout')">←</button><h2>Custom Workout</h2></div>
+        <div id="customExList"></div>
+        <button class="start-btn" style="margin-bottom:8px" onclick="openExPickerModal()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>Add Exercise</button>
+        <button class="start-btn" id="startCustomBtn" style="display:none" onclick="startCustomWorkout()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5,3 19,12 5,21"/></svg>Start Workout</button>
+      </div>
+
+      <!-- COACH -->
+      <div class="page" id="page-coach">
+        <div class="chat-container">
+          <div style="padding:8px 0"><div style="font-size:18px;font-weight:700">🏆 Coach</div><div style="font-size:12px;color:var(--text2)">Science-backed fitness advice</div></div>
+          <div class="coach-topics" id="coachTopics"></div>
+          <div class="chat-messages" id="chatMessages"></div>
+          <div class="chat-input-bar"><input id="chatInput" type="text" placeholder="Ask your coach..." onkeydown="if(event.key==='Enter')sendChat()"><button class="chat-send" onclick="sendChat()">→</button></div>
+        </div>
       </div>
 
       <!-- PROGRAM DETAIL -->
@@ -474,8 +547,9 @@ input[type=number]{-moz-appearance:textfield}
     <div class="nav">
       <button class="nav-item active" onclick="showPage('home')" data-page="home"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg>Home</button>
       <button class="nav-item" onclick="showPage('nutrition')" data-page="nutrition"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8h1a4 4 0 010 8h-1M2 8h16v9a4 4 0 01-4 4H6a4 4 0 01-4-4V8z"/></svg>Food</button>
-      <button class="nav-item" onclick="showPage('workout')" data-page="workout"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6.5 6.5h11M4 12h16M6.5 17.5h11"/><circle cx="6.5" cy="6.5" r="2"/><circle cx="17.5" cy="6.5" r="2"/><circle cx="4" cy="12" r="2"/><circle cx="20" cy="12" r="2"/></svg>Workout</button>
-      <button class="nav-item" onclick="showPage('progress')" data-page="progress"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22,12 18,12 15,21 9,3 6,12 2,12"/></svg>Progress</button>
+      <button class="nav-item" onclick="showPage('workout')" data-page="workout"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6.5 6.5h11M4 12h16M6.5 17.5h11"/><circle cx="6.5" cy="6.5" r="2"/><circle cx="17.5" cy="6.5" r="2"/><circle cx="4" cy="12" r="2"/><circle cx="20" cy="12" r="2"/></svg>Train</button>
+      <button class="nav-item" onclick="showPage('coach')" data-page="coach"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>Coach</button>
+      <button class="nav-item" onclick="showPage('progress')" data-page="progress"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22,12 18,12 15,21 9,3 6,12 2,12"/></svg>Stats</button>
       <button class="nav-item" onclick="showPage('profile')" data-page="profile"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>Me</button>
     </div>
   </div>
@@ -556,6 +630,26 @@ input[type=number]{-moz-appearance:textfield}
   <button class="rest-skip" onclick="skipRest()">Skip Rest</button>
 </div>
 
+<!-- PR CELEBRATION -->
+<div class="pr-overlay" id="prOverlay">
+  <div class="pr-trophy">🏆</div>
+  <div class="pr-title">PERSONAL RECORDS!</div>
+  <div class="pr-sub">You crushed your previous best</div>
+  <div class="pr-list" id="prList"></div>
+  <button class="pr-close" onclick="closePR()">Continue</button>
+</div>
+
+<!-- EXERCISE PICKER MODAL -->
+<div class="modal-overlay" id="exPickerModal" onclick="if(event.target===this)closeExPicker()">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-header"><h3>Add Exercise</h3><div class="search-bar"><input class="search-input" id="exPickerSearch" type="text" placeholder="Search exercises..." oninput="searchExPicker(this.value)"></div></div>
+    <div class="ex-filter" id="exPickerFilter" style="padding:0 20px"></div>
+    <div class="modal-body" id="exPickerBody"></div>
+  </div>
+</div>
+</div>
+
 <script>
 // ==============================
 // FOOD DATABASE (Built-in Bulgarian + Common)
@@ -634,6 +728,77 @@ const PROGRAMS=[
   ]}
 ];
 
+// ==============================
+// EXERCISE LIBRARY (60+ exercises)
+// ==============================
+const EXERCISES=[
+  // Chest
+  {name:'Barbell Bench Press',muscle:'Chest',type:'compound'},{name:'Incline Barbell Press',muscle:'Chest',type:'compound'},{name:'Decline Bench Press',muscle:'Chest',type:'compound'},
+  {name:'Dumbbell Bench Press',muscle:'Chest',type:'compound'},{name:'Incline DB Press',muscle:'Chest',type:'compound'},{name:'Dumbbell Flyes',muscle:'Chest',type:'isolation'},
+  {name:'Cable Crossover',muscle:'Chest',type:'isolation'},{name:'Chest Dips',muscle:'Chest',type:'compound'},{name:'Push-Ups',muscle:'Chest',type:'compound'},
+  {name:'Machine Chest Press',muscle:'Chest',type:'compound'},{name:'Pec Deck',muscle:'Chest',type:'isolation'},
+  // Back
+  {name:'Deadlift',muscle:'Back',type:'compound'},{name:'Barbell Rows',muscle:'Back',type:'compound'},{name:'Pull-Ups',muscle:'Back',type:'compound'},
+  {name:'Lat Pulldown',muscle:'Back',type:'compound'},{name:'Cable Rows',muscle:'Back',type:'compound'},{name:'T-Bar Row',muscle:'Back',type:'compound'},
+  {name:'Dumbbell Rows',muscle:'Back',type:'compound'},{name:'Face Pulls',muscle:'Back',type:'isolation'},{name:'Straight Arm Pulldown',muscle:'Back',type:'isolation'},
+  {name:'Chin-Ups',muscle:'Back',type:'compound'},{name:'Rack Pulls',muscle:'Back',type:'compound'},
+  // Shoulders
+  {name:'Overhead Press',muscle:'Shoulders',type:'compound'},{name:'DB Shoulder Press',muscle:'Shoulders',type:'compound'},{name:'Lateral Raises',muscle:'Shoulders',type:'isolation'},
+  {name:'Front Raises',muscle:'Shoulders',type:'isolation'},{name:'Reverse Flyes',muscle:'Shoulders',type:'isolation'},{name:'Arnold Press',muscle:'Shoulders',type:'compound'},
+  {name:'Upright Rows',muscle:'Shoulders',type:'compound'},{name:'Cable Lateral Raises',muscle:'Shoulders',type:'isolation'},{name:'Machine Shoulder Press',muscle:'Shoulders',type:'compound'},
+  // Biceps
+  {name:'Barbell Curls',muscle:'Biceps',type:'isolation'},{name:'Dumbbell Curls',muscle:'Biceps',type:'isolation'},{name:'Hammer Curls',muscle:'Biceps',type:'isolation'},
+  {name:'Preacher Curls',muscle:'Biceps',type:'isolation'},{name:'Incline DB Curls',muscle:'Biceps',type:'isolation'},{name:'Cable Curls',muscle:'Biceps',type:'isolation'},
+  {name:'Concentration Curls',muscle:'Biceps',type:'isolation'},
+  // Triceps
+  {name:'Tricep Pushdowns',muscle:'Triceps',type:'isolation'},{name:'Overhead Tricep Ext.',muscle:'Triceps',type:'isolation'},{name:'Tricep Dips',muscle:'Triceps',type:'compound'},
+  {name:'Close-Grip Bench Press',muscle:'Triceps',type:'compound'},{name:'Skull Crushers',muscle:'Triceps',type:'isolation'},{name:'Rope Pushdowns',muscle:'Triceps',type:'isolation'},
+  {name:'Diamond Push-Ups',muscle:'Triceps',type:'compound'},
+  // Quads
+  {name:'Squat',muscle:'Quads',type:'compound'},{name:'Front Squat',muscle:'Quads',type:'compound'},{name:'Leg Press',muscle:'Quads',type:'compound'},
+  {name:'Leg Extensions',muscle:'Quads',type:'isolation'},{name:'Bulgarian Split Squat',muscle:'Quads',type:'compound'},{name:'Hack Squat',muscle:'Quads',type:'compound'},
+  {name:'Goblet Squat',muscle:'Quads',type:'compound'},{name:'Walking Lunges',muscle:'Quads',type:'compound'},
+  // Hamstrings
+  {name:'Romanian Deadlift',muscle:'Hamstrings',type:'compound'},{name:'Leg Curls',muscle:'Hamstrings',type:'isolation'},{name:'Stiff-Leg Deadlift',muscle:'Hamstrings',type:'compound'},
+  {name:'Good Mornings',muscle:'Hamstrings',type:'compound'},{name:'Nordic Curls',muscle:'Hamstrings',type:'isolation'},
+  // Glutes
+  {name:'Hip Thrust',muscle:'Glutes',type:'compound'},{name:'Glute Bridge',muscle:'Glutes',type:'isolation'},{name:'Cable Kickbacks',muscle:'Glutes',type:'isolation'},
+  // Calves
+  {name:'Standing Calf Raises',muscle:'Calves',type:'isolation'},{name:'Seated Calf Raises',muscle:'Calves',type:'isolation'},
+  // Core
+  {name:'Plank',muscle:'Core',type:'isolation'},{name:'Hanging Leg Raises',muscle:'Core',type:'isolation'},{name:'Cable Crunches',muscle:'Core',type:'isolation'},
+  {name:'Ab Wheel Rollout',muscle:'Core',type:'isolation'},{name:'Russian Twists',muscle:'Core',type:'isolation'},{name:'Decline Sit-Ups',muscle:'Core',type:'isolation'}
+];
+const MUSCLE_GROUPS=[...new Set(EXERCISES.map(e=>e.muscle))];
+
+// ==============================
+// KNOWLEDGE BASE (Science-backed)
+// ==============================
+const COACH_KB=[
+  {q:['how much protein','колко протеин','protein per day','protein intake'],a:'**Optimal protein intake:** 1.6–2.2g per kg bodyweight per day for muscle growth. Research (Schoenfeld & Aragon, 2018) shows no additional benefit beyond 2.2g/kg. Spread intake across 3-5 meals with 0.4-0.55g/kg per meal for optimal muscle protein synthesis.',cat:'Nutrition'},
+  {q:['creatine','креатин','creatine safe','creatine dosage'],a:'**Creatine monohydrate** is the most researched supplement in sports science with 500+ studies. Take **3-5g daily** — no need for loading phase. It increases strength by 5-10%, muscle mass, and cognitive function. It is safe for long-term use (Kreider et al., 2017). No need to cycle.',cat:'Supplements'},
+  {q:['how many sets','колко серии','optimal volume','training volume'],a:'**Optimal training volume:** 10-20 sets per muscle group per week (Schoenfeld et al., 2017). Beginners: 10-12 sets/week. Intermediate: 14-18 sets. Advanced: 16-20+. More is not always better — exceeding ~20 sets shows diminishing returns and increased fatigue.',cat:'Training'},
+  {q:['rest between sets','почивка между серии','rest time','how long rest'],a:'**Rest periods:** For strength (1-5 reps): 3-5 minutes. For hypertrophy (6-12 reps): 1.5-3 minutes. For endurance (12+ reps): 30-90 seconds. Longer rest = more total volume = more growth. Research shows 3 min rest produces more hypertrophy than 1 min (Schoenfeld et al., 2016).',cat:'Training'},
+  {q:['progressive overload','прогресивно натоварване','how to get stronger','how to progress'],a:'**Progressive overload** is THE key to muscle growth. Methods: 1) Add weight (2.5-5kg). 2) Add reps (same weight, more reps). 3) Add sets. 4) Slow down tempo. 5) Reduce rest time. Aim to beat your logbook every 1-2 weeks. Even 1 extra rep counts.',cat:'Training'},
+  {q:['lose fat','отслабване','calorie deficit','how to cut','weight loss'],a:'**Fat loss fundamentals:** Create a calorie deficit of 300-500 kcal/day. Keep protein HIGH (2g/kg) to preserve muscle. Lift heavy — don\'t switch to high reps. Lose 0.5-1% bodyweight per week maximum. Too aggressive = muscle loss. A 12-week cut is more sustainable than crash dieting.',cat:'Nutrition'},
+  {q:['build muscle','качване на маса','bulk','muscle gain','how to grow'],a:'**Muscle building requirements:** 1) Calorie surplus of 200-400 kcal/day. 2) Protein 1.6-2.2g/kg. 3) Progressive overload. 4) 10-20 sets per muscle/week. 5) Sleep 7-9 hours. 6) Be patient — natural lifters gain 0.25-0.5kg muscle/month. Beginners gain faster (noob gains).',cat:'Training'},
+  {q:['sleep','сън','recovery','how much sleep'],a:'**Sleep is crucial:** 7-9 hours for optimal recovery. Poor sleep reduces testosterone by 10-15%, increases cortisol, reduces muscle protein synthesis, and increases injury risk. Tips: dark room, same bedtime, no screens 1h before bed, room temp 18-20°C.',cat:'Recovery'},
+  {q:['cardio','кардио','cardio and muscle','does cardio kill gains'],a:'**Cardio does NOT kill gains** if done correctly. 2-3 sessions of 20-30 min moderate cardio per week actually improves recovery via blood flow. Separate cardio from leg day by 24h if possible. Excessive cardio (60+ min daily) can impair recovery. Walking is the best cardio for lifters.',cat:'Training'},
+  {q:['supplements','добавки','what supplements','which supplements'],a:'**Evidence-based supplements only:** 1) **Creatine** (5g/day) — proven. 2) **Protein powder** — convenient, not superior to food. 3) **Caffeine** (3-6mg/kg) — performance boost. 4) **Vitamin D** (2000-4000 IU if deficient). 5) **Omega-3** (2-3g EPA+DHA). Everything else has weak or no evidence.',cat:'Supplements'},
+  {q:['warm up','загряване','should i warm up','how to warm up'],a:'**Always warm up.** 5-10 min general warm-up (walking, cycling). Then 2-3 warm-up sets per exercise: 1) 50% working weight × 10 reps. 2) 70% × 5 reps. 3) 85% × 2-3 reps. This increases blood flow, activates muscles, and reduces injury risk by 50%+ (Fradkin et al., 2006).',cat:'Training'},
+  {q:['water','вода','how much water','hydration'],a:'**Hydration:** Drink 30-40ml per kg bodyweight daily (e.g., 80kg = 2.4-3.2L). Add 500-750ml per hour of exercise. Signs of dehydration: dark urine, headache, decreased performance. Even 2% dehydration reduces strength by 5-10%.',cat:'Nutrition'},
+  {q:['stretching','разтягане','flexibility','should i stretch'],a:'**Stretching guidance:** Static stretching BEFORE training can reduce strength by 5%. Do dynamic stretches instead (leg swings, arm circles). Save static stretching for AFTER training or separate sessions. 2-3 sessions/week of 30-60s per stretch improves flexibility over time.',cat:'Recovery'},
+  {q:['meal timing','кога да ям','when to eat','pre workout meal','post workout meal'],a:'**Meal timing matters less than total intake.** But good practices: eat 1-3 hours before training (protein + carbs). Post-workout: eat within 2 hours (protein + carbs). The "anabolic window" is not 30 minutes — it is 4-6 hours. Total daily protein matters most (Aragon & Schoenfeld, 2013).',cat:'Nutrition'},
+  {q:['soreness','мускулна треска','doms','muscle soreness'],a:'**DOMS (Delayed Onset Muscle Soreness):** Normal, especially for beginners or new exercises. It peaks 24-72h after training. It does NOT indicate a good workout — it just means your muscles experienced novel stress. It decreases over time. Light movement, foam rolling, and adequate protein help recovery.',cat:'Recovery'},
+  {q:['overtraining','претрениране','too much training','overtrained'],a:'**Overtraining signs:** Persistent fatigue, decreased performance for 2+ weeks, poor sleep, increased injuries, mood changes, elevated resting heart rate. Fix: take a deload week (50% volume, same intensity) every 4-6 weeks. True overtraining is rare — most people experience under-recovery (poor sleep/nutrition).',cat:'Recovery'},
+  {q:['beginner','начинаещ','new to gym','first time gym','how to start'],a:'**Beginner guide:** Start with a Full Body program 3x/week. Focus on compound movements (squat, bench, deadlift, row, press). Learn proper form FIRST — start light. Progress: add 2.5kg per session for upper body, 5kg for lower. Eat sufficient protein (1.6g/kg). You\'ll see the fastest gains in your first 6-12 months.',cat:'Training'},
+  {q:['abs','корем','six pack','how to get abs','visible abs'],a:'**Visible abs require:** 1) Low body fat: ~10-12% for men, ~16-20% for women. 2) Ab training 2-3x/week (cable crunches, hanging leg raises, ab wheel). 3) Calorie deficit to reveal them. You CANNOT spot-reduce fat — doing 100 crunches won\'t burn belly fat. Abs are built in the gym, revealed in the kitchen.',cat:'Training'},
+  {q:['alcohol','алкохол','drinking','beer and muscle'],a:'**Alcohol and fitness:** 1-2 drinks occasionally has minimal impact. But regular drinking: reduces muscle protein synthesis by 20-30%, disrupts sleep, increases cortisol, dehydrates, adds empty calories (1g alcohol = 7 kcal). If you drink, avoid training the next day and drink extra water.',cat:'Nutrition'},
+  {q:['women','жени','training for women','women and weights'],a:'**Women should lift heavy.** Women have 15-20x less testosterone — you will NOT get "bulky." Resistance training builds lean muscle, increases metabolism, strengthens bones (prevents osteoporosis), and improves body composition better than cardio alone. Same principles apply: progressive overload, adequate protein, compound movements.',cat:'Training'},
+  {q:['plateau','плато','stuck','not progressing','stalled'],a:'**Breaking plateaus:** 1) Increase training volume (+2-3 sets/week). 2) Change rep ranges (if doing 8-10, try 5-6 or 12-15). 3) Add exercise variations. 4) Deload for 1 week then come back. 5) Check your nutrition — are you eating enough? 6) Sleep more. 7) Consider periodization (light/medium/heavy weeks).',cat:'Training'},
+];
+const COACH_TOPICS=['Protein','Creatine','Volume','Rest Times','Fat Loss','Muscle Gain','Sleep','Supplements','Beginner','Plateau'];
+
 const MEALS=['Breakfast','Lunch','Dinner','Snacks'];
 const MEAL_ICONS=['🌅','☀️','🌙','🍎'];
 
@@ -671,9 +836,11 @@ function init(){
   document.getElementById('headerDate').textContent=new Date().toLocaleDateString('bg-BG',{weekday:'short',day:'numeric',month:'short'});
   const saved=LS.get('activeWorkout',null);
   if(saved){activeWorkout=saved;currentProgram=PROGRAMS.find(p=>p.id===saved.programId);currentDay=saved.dayIndex;workoutStartTime=saved.startTime;showPage('active-workout');renderActiveWorkout();startTimer()}
+  // Load saved custom exercises
+  customExercises=LS.get('customExercises',[]);
 }
 
-function updateAll(){updateDashboard();updateNutrition();renderProgramList();updateProfile()}
+function updateAll(){updateDashboard();updateNutrition();renderProgramList();renderExBrowser();updateProfile()}
 
 // ==============================
 // ONBOARDING
@@ -738,7 +905,9 @@ function showPage(page){
   if(page==='nutrition')updateNutrition();
   if(page==='progress')renderProgress();
   if(page==='profile')updateProfile();
-  if(page==='workout')renderProgramList();
+  if(page==='workout'){renderProgramList();renderExBrowser()}
+  if(page==='coach')renderCoachPage();
+  if(page==='custom-workout')renderCustomExList();
   document.querySelector('.app-content').scrollTop=0;
 }
 
@@ -993,12 +1162,238 @@ function startTimer(){clearInterval(timerInterval);timerInterval=setInterval(()=
 function finishWorkout(){
   clearInterval(timerInterval);const elapsed=Math.floor((Date.now()-workoutStartTime)/1000);
   const h=getHistory();
-  h.push({date:new Date().toISOString(),programId:activeWorkout.programId,program:activeWorkout.programName,dayName:activeWorkout.dayName,duration:elapsed,
-    exercises:activeWorkout.exercises.map(ex=>({name:ex.name,muscle:ex.muscle,sets:ex.sets.filter(s=>s.done).map(s=>({kg:parseFloat(s.kg)||0,reps:parseInt(s.reps)||0}))})).filter(ex=>ex.sets.length>0)
+  const completedExercises=activeWorkout.exercises.map(ex=>({name:ex.name,muscle:ex.muscle,sets:ex.sets.filter(s=>s.done).map(s=>({kg:parseFloat(s.kg)||0,reps:parseInt(s.reps)||0}))})).filter(ex=>ex.sets.length>0);
+
+  // Detect Personal Records
+  const prs=[];
+  completedExercises.forEach(ex=>{
+    // Find all previous instances of this exercise
+    const prevSessions=h.filter(w=>w.exercises.some(e=>e.name===ex.name));
+    if(prevSessions.length===0)return; // First time doing exercise, no PR comparison
+    // Get previous best weight for this exercise
+    let prevBestKg=0,prevBestVolume=0;
+    prevSessions.forEach(w=>{
+      const prevEx=w.exercises.find(e=>e.name===ex.name);
+      if(prevEx){prevEx.sets.forEach(s=>{if(s.kg>prevBestKg)prevBestKg=s.kg;prevBestVolume=Math.max(prevBestVolume,s.kg*s.reps)})}
+    });
+    // Check current session for new records
+    let newBestKg=0,newBestVolume=0;
+    ex.sets.forEach(s=>{if(s.kg>newBestKg)newBestKg=s.kg;newBestVolume=Math.max(newBestVolume,s.kg*s.reps)});
+    if(newBestKg>prevBestKg&&prevBestKg>0)prs.push({name:ex.name,type:'weight',value:newBestKg+'kg',prev:prevBestKg+'kg'});
+    else if(newBestVolume>prevBestVolume&&prevBestVolume>0)prs.push({name:ex.name,type:'volume',value:Math.round(newBestVolume)+'kg×reps',prev:Math.round(prevBestVolume)+'kg×reps'});
   });
-  saveHistory(h);LS.set('activeWorkout',null);activeWorkout=null;showPage('home');
+
+  h.push({date:new Date().toISOString(),programId:activeWorkout.programId||'custom',program:activeWorkout.programName||'Custom',dayName:activeWorkout.dayName,duration:elapsed,exercises:completedExercises});
+  saveHistory(h);LS.set('activeWorkout',null);activeWorkout=null;
+
+  if(prs.length>0)showPRCelebration(prs);
+  else showPage('home');
 }
 function cancelWorkout(){if(!confirm('Cancel workout?'))return;clearInterval(timerInterval);LS.set('activeWorkout',null);activeWorkout=null;showPage('workout')}
+
+// ==============================
+// PR CELEBRATION
+// ==============================
+function showPRCelebration(prs){
+  const list=document.getElementById('prList');
+  list.innerHTML=prs.map((pr,i)=>`
+    <div class="pr-item" style="animation-delay:${i*0.15}s">
+      <div class="pr-icon">${pr.type==='weight'?'🏋️':'💪'}</div>
+      <div class="pr-info"><div class="pr-name">${pr.name}</div><div class="pr-detail">${pr.prev} → ${pr.value}</div></div>
+    </div>
+  `).join('');
+  document.getElementById('prOverlay').classList.add('show');
+}
+function closePR(){document.getElementById('prOverlay').classList.remove('show');showPage('home')}
+
+// ==============================
+// EXERCISE BROWSER (Workout page)
+// ==============================
+let exFilterMuscle='All';
+function renderExBrowser(){
+  renderExFilter();
+  filterExercises('All');
+}
+function renderExFilter(){
+  const el=document.getElementById('exFilter');
+  el.innerHTML=['All',...MUSCLE_GROUPS].map(m=>`<button class="ex-filter-btn ${m===exFilterMuscle?'active':''}" onclick="filterExercises('${m}')">${m}</button>`).join('');
+}
+function filterExercises(muscle){
+  exFilterMuscle=muscle;
+  renderExFilter();
+  const filtered=muscle==='All'?EXERCISES:EXERCISES.filter(e=>e.muscle===muscle);
+  const el=document.getElementById('exBrowseList');
+  el.innerHTML=filtered.map(ex=>`
+    <div class="ex-browse-item" onclick="addToCustomFromBrowser('${ex.name.replace(/'/g,"\\'")}')">
+      <div class="ebi-info"><div class="ebi-name">${ex.name}</div><div class="ebi-muscle">${ex.muscle} • ${ex.type}</div></div>
+      <button class="ebi-add">+</button>
+    </div>
+  `).join('');
+}
+function addToCustomFromBrowser(name){
+  const ex=EXERCISES.find(e=>e.name===name);
+  if(ex){addToCustom(ex);showPage('custom-workout')}
+}
+
+// ==============================
+// CUSTOM WORKOUT BUILDER
+// ==============================
+let customExercises=LS.get('customExercises',[]);
+
+function renderCustomExList(){
+  const el=document.getElementById('customExList');
+  const btn=document.getElementById('startCustomBtn');
+  if(customExercises.length===0){
+    el.innerHTML='<div class="empty-state"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg><p>Add exercises to build your workout</p></div>';
+    btn.style.display='none';
+    return;
+  }
+  btn.style.display='flex';
+  el.innerHTML=customExercises.map((ex,i)=>`
+    <div class="card" style="padding:12px 16px;margin-bottom:8px">
+      <div style="display:flex;align-items:center;gap:12px">
+        <div style="flex:1"><div style="font-size:14px;font-weight:600">${ex.name}</div><div style="font-size:12px;color:var(--text2)">${ex.muscle} • 4 sets</div></div>
+        <button style="width:28px;height:28px;border-radius:50%;border:1px solid var(--red);background:none;color:var(--red);cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center" onclick="removeFromCustom(${i})">×</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+function addToCustom(exercise){
+  if(customExercises.find(e=>e.name===exercise.name))return; // prevent duplicates
+  customExercises.push({name:exercise.name,muscle:exercise.muscle,type:exercise.type});
+  LS.set('customExercises',customExercises);
+  renderCustomExList();
+}
+function removeFromCustom(idx){
+  customExercises.splice(idx,1);
+  LS.set('customExercises',customExercises);
+  renderCustomExList();
+}
+
+function startCustomWorkout(){
+  if(customExercises.length===0)return;
+  workoutStartTime=Date.now();
+  const history=getHistory();
+  activeWorkout={programId:'custom',programName:'Custom',dayName:'Custom Workout',dayIndex:0,startTime:workoutStartTime,
+    exercises:customExercises.map(ex=>{
+      // Look for previous best in history for this exercise
+      const prevSessions=history.filter(w=>w.exercises.some(e=>e.name===ex.name));
+      const lastSession=prevSessions.length?prevSessions[prevSessions.length-1]:null;
+      const prevEx=lastSession?lastSession.exercises.find(e=>e.name===ex.name):null;
+      return{name:ex.name,muscle:ex.muscle,targetSets:4,targetReps:'8-12',
+        sets:Array.from({length:4},(_,si)=>{
+          const ps=prevEx&&prevEx.sets[si]?prevEx.sets[si]:null;
+          return{kg:ps?ps.kg:'',reps:ps?ps.reps:'',done:false,prevKg:ps?ps.kg:'',prevReps:ps?ps.reps:''}
+        })
+      }
+    })
+  };
+  LS.set('activeWorkout',activeWorkout);
+  showPage('active-workout');renderActiveWorkout();startTimer();
+}
+
+// ==============================
+// EXERCISE PICKER MODAL (for custom workout)
+// ==============================
+let exPickerFilter='All';
+function openExPickerModal(){
+  exPickerFilter='All';
+  renderExPickerFilter();
+  searchExPicker('');
+  document.getElementById('exPickerModal').classList.add('show');
+  setTimeout(()=>document.getElementById('exPickerSearch').focus(),300);
+}
+function closeExPicker(){document.getElementById('exPickerModal').classList.remove('show')}
+
+function renderExPickerFilter(){
+  const el=document.getElementById('exPickerFilter');
+  el.innerHTML=['All',...MUSCLE_GROUPS].map(m=>`<button class="ex-filter-btn ${m===exPickerFilter?'active':''}" onclick="setExPickerFilter('${m}')">${m}</button>`).join('');
+}
+function setExPickerFilter(muscle){
+  exPickerFilter=muscle;
+  renderExPickerFilter();
+  searchExPicker(document.getElementById('exPickerSearch').value);
+}
+function searchExPicker(q){
+  let filtered=exPickerFilter==='All'?EXERCISES:EXERCISES.filter(e=>e.muscle===exPickerFilter);
+  if(q.length>0)filtered=filtered.filter(e=>e.name.toLowerCase().includes(q.toLowerCase()));
+  const body=document.getElementById('exPickerBody');
+  body.innerHTML=filtered.map(ex=>`
+    <div class="ex-browse-item" onclick="pickExercise('${ex.name.replace(/'/g,"\\'")}')">
+      <div class="ebi-info"><div class="ebi-name">${ex.name}</div><div class="ebi-muscle">${ex.muscle} • ${ex.type}</div></div>
+      <button class="ebi-add">+</button>
+    </div>
+  `).join('')||'<div class="empty-state"><p>No exercises found</p></div>';
+}
+function pickExercise(name){
+  const ex=EXERCISES.find(e=>e.name===name);
+  if(ex){addToCustom(ex);closeExPicker()}
+}
+
+// ==============================
+// COACH (Knowledge Base Chatbot)
+// ==============================
+let chatHistory=[];
+function renderCoachPage(){
+  renderCoachTopics();
+  if(chatHistory.length===0){
+    addChatMsg('Welcome! I\'m your AI coach — powered by science-backed fitness knowledge. Ask me anything about training, nutrition, supplements, or recovery. Tap a topic below or type your question!',false);
+  }
+}
+function renderCoachTopics(){
+  const el=document.getElementById('coachTopics');
+  el.innerHTML=COACH_TOPICS.map(t=>`<button class="coach-topic" onclick="askTopic('${t}')">${t}</button>`).join('');
+}
+function askTopic(topic){
+  document.getElementById('chatInput').value=topic;
+  sendChat();
+}
+function sendChat(){
+  const input=document.getElementById('chatInput');
+  const q=input.value.trim();
+  if(!q)return;
+  input.value='';
+  addChatMsg(q,true);
+  const answer=matchKB(q);
+  setTimeout(()=>addChatMsg(answer,false),400+Math.random()*400);
+}
+function matchKB(query){
+  const ql=query.toLowerCase();
+  // Score each knowledge base entry
+  let bestMatch=null,bestScore=0;
+  COACH_KB.forEach(entry=>{
+    let score=0;
+    entry.q.forEach(keyword=>{
+      if(ql.includes(keyword.toLowerCase()))score+=3;
+      // Partial word matching
+      const words=keyword.toLowerCase().split(' ');
+      words.forEach(w=>{if(ql.includes(w)&&w.length>3)score+=1});
+    });
+    if(score>bestScore){bestScore=score;bestMatch=entry}
+  });
+  if(bestMatch&&bestScore>=1)return bestMatch.a;
+  // Fallback: check for category keywords
+  const catMap={training:['train','exercise','workout','set','rep','program'],nutrition:['eat','food','meal','calorie','diet','macro'],recovery:['rest','sleep','recover','sore','tired'],supplements:['supplement','vitamin','powder','shake']};
+  for(const[cat,words] of Object.entries(catMap)){
+    if(words.some(w=>ql.includes(w))){
+      const catEntries=COACH_KB.filter(e=>e.cat.toLowerCase()===cat);
+      if(catEntries.length)return catEntries[Math.floor(Math.random()*catEntries.length)].a;
+    }
+  }
+  return 'I don\'t have specific research-backed information on that topic yet. Try asking about: **protein intake, creatine, training volume, rest times, fat loss, muscle gain, sleep, supplements, warm-up, or progressive overload**. I only provide science-backed answers!';
+}
+function addChatMsg(text,isUser){
+  chatHistory.push({text,isUser});
+  const container=document.getElementById('chatMessages');
+  // Format text: bold with ** markers
+  const formatted=text.replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>');
+  const msgDiv=document.createElement('div');
+  msgDiv.className='chat-msg '+(isUser?'user':'bot');
+  msgDiv.innerHTML=isUser?`<div class="chat-bubble">${formatted}</div>`:`<div class="chat-avatar">🏆</div><div class="chat-bubble">${formatted}</div>`;
+  container.appendChild(msgDiv);
+  container.scrollTop=container.scrollHeight;
+}
 
 // ==============================
 // REST TIMER
