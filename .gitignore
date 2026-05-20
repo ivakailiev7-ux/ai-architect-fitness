@@ -1,0 +1,7 @@
+# Local Netlify folder
+.netlify
+
+# Local Claude Code / agent tooling (not for repo)
+.claude/
+.agents/
+skills-lock.json
