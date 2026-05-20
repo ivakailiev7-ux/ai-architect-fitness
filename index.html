@@ -1450,10 +1450,10 @@ h1,h2,h3,h4,h5,h6{color:var(--t1)}
 .header-bell svg{width:18px;height:18px;color:var(--t1)}
 .header-bell .bell-dot{position:absolute;top:6px;right:6px;width:8px;height:8px;border-radius:50%;background:var(--acc);box-shadow:0 0 8px var(--acc),0 0 0 2px var(--surface)}
 
-/* Massive 2-line greeting */
+/* Massive 2-line greeting — responsive so long Bulgarian level names don't wrap or clip */
 .greeting-hero{margin:18px 0 6px;line-height:.9}
-.greeting-hero .gh-line1{font-family:var(--font-d);font-size:42px;font-weight:900;color:var(--t1);text-transform:uppercase;letter-spacing:.5px;display:block}
-.greeting-hero .gh-line2{font-family:var(--font-d);font-size:54px;font-weight:900;background:var(--acc-grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-transform:uppercase;letter-spacing:.5px;display:block;line-height:.95;text-shadow:0 0 40px rgba(255,45,85,.3)}
+.greeting-hero .gh-line1{font-family:var(--font-d);font-size:clamp(28px,8vw,42px);font-weight:900;color:var(--t1);text-transform:uppercase;letter-spacing:.5px;display:block;white-space:nowrap;overflow:hidden;text-overflow:clip}
+.greeting-hero .gh-line2{font-family:var(--font-d);font-size:clamp(36px,11vw,54px);font-weight:900;background:var(--acc-grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-transform:uppercase;letter-spacing:.5px;display:block;line-height:1;text-shadow:0 0 40px rgba(255,45,85,.3);padding:.05em 0 .12em;overflow:visible;word-break:keep-all}
 .greeting-hero-sub{font-family:var(--font-b);font-size:11px;color:var(--t3);text-transform:uppercase;letter-spacing:2px;margin-bottom:18px}
 
 /* Weekly Goal card (Седмична цел) */
@@ -3694,6 +3694,8 @@ window.showPage = function(page){
     /* scroll to top */
     const main = document.querySelector('.app-main');
     if(main) main.scrollTop = 0;
+    /* nav-glow indicator stays in sync via the MutationObserver in §8 — no
+       explicit call needed here. */
   }, 120);
 };
 
@@ -3849,9 +3851,19 @@ function updateNavGlow(){
   glow.style.width = rect.width + 'px';
 }
 updateNavGlow();
-document.addEventListener('click', e=>{
-  if(e.target.closest('.nav-item')) setTimeout(updateNavGlow, 50);
-});
+/* Observe the bottom nav for class changes — fires updateNavGlow no matter how the
+   active state moves (clicks, programmatic showPage, sidebar clicks, etc.). This
+   removes the previous click-only handler that left the glow stuck if navigation
+   came from the FAB quick-start menu or any non-click path. */
+(function watchNav(){
+  const nav = document.querySelector('.nav.nav-5') || document.querySelector('.nav');
+  if(!nav) return;
+  const mo = new MutationObserver(()=>{ requestAnimationFrame(updateNavGlow); });
+  nav.querySelectorAll('.nav-item').forEach(item=>{
+    mo.observe(item, {attributes:true, attributeFilter:['class']});
+  });
+})();
+window.addEventListener('resize', updateNavGlow);
 
 /* ── 9. CARD TILT ON HOVER (desktop) ─────────────────────── */
 function addTilt(selector, intensity=6){
