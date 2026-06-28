@@ -10,6 +10,7 @@
 <link rel="apple-touch-icon" href="./icon-192.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500;600;700&family=Manrope:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 <title>PRIME PHYSIQUE</title>
@@ -1515,6 +1516,596 @@ h1,h2,h3,h4,h5,h6{color:var(--t1)}
 .section-h{font-family:var(--font-d);font-size:16px;font-weight:800;color:var(--t1);text-transform:uppercase;letter-spacing:1.5px;margin:20px 0 10px;display:flex;align-items:center;justify-content:space-between}
 .section-h .section-h-link{font-family:var(--font-b);font-size:11px;font-weight:500;color:var(--acc);text-transform:none;letter-spacing:0;cursor:pointer}
 
+/* ════════════════════════════════════════════════════════════════
+   PRIME PHYSIQUE — EDITORIAL ATHLETIC v4 (FINAL LAYER · WINS CASCADE)
+   Magazine-cover · Acid lime signature · Mobile-WOW · 28 Jun 2026
+   ════════════════════════════════════════════════════════════════ */
+:root{
+  --bg:#08080a; --paper:#0F0F12; --paper2:#16161B; --paper3:#1E1E26;
+  --hair:rgba(255,255,255,.06); --hair2:rgba(255,255,255,.11);
+  --acc:#C8FF1A; --acc-dim:#A8E600; --acc-deep:#7CB800;
+  --acc-soft:rgba(200,255,26,.12); --acc-glow:rgba(200,255,26,.28);
+  --acc-grad:linear-gradient(135deg,#C8FF1A 0%,#88E200 100%);
+  --acc-grad-v:linear-gradient(180deg,#C8FF1A 0%,#88E200 100%);
+  --ink:#F4F4ED; --ink2:#B7B7AF; --ink3:#6A6A65; --ink4:#3A3A38;
+  --t1:var(--ink); --t2:var(--ink2); --t3:var(--ink3); --t4:var(--ink4);
+  --font-d:'Oswald','Barlow Condensed',system-ui,sans-serif;
+  --font-b:'Manrope','Inter',system-ui,-apple-system,sans-serif;
+  --font-m:'JetBrains Mono','SF Mono',ui-monospace,monospace;
+  --r-card:22px; --r-inner:16px; --r-pill:999px;
+  --spring:cubic-bezier(.32,.72,0,1); --spring-soft:cubic-bezier(.22,1,.36,1);
+  --tr:.35s var(--spring);
+}
+body{font-family:var(--font-b);letter-spacing:-.005em;background:var(--bg);color:var(--ink)}
+
+/* Fixed grain overlay — feels like printed paper, GPU-free */
+body::before{
+  content:""; position:fixed; inset:0; pointer-events:none; z-index:9999;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.92' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 .42 0'/></filter><rect width='220' height='220' filter='url(%23n)'/></svg>");
+  mix-blend-mode:overlay; opacity:.5;
+}
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms !important;transition-duration:.01ms !important}
+}
+
+/* ── EDITORIAL TICKER BAR (above greeting) ──────────────── */
+.ed-bar{
+  display:flex; align-items:center; gap:10px; flex-wrap:wrap;
+  padding:14px 2px 6px;
+  font-family:var(--font-m);
+  font-size:10px; letter-spacing:.16em;
+  color:var(--ink3); text-transform:uppercase;
+}
+.ed-bar .ed-dot{
+  width:7px; height:7px; border-radius:50%;
+  background:var(--acc); box-shadow:0 0 10px var(--acc-glow);
+  animation:edPulse 1.8s ease-in-out infinite;
+}
+@keyframes edPulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.45;transform:scale(.75)}}
+.ed-bar .ed-edition{color:var(--ink2);font-weight:600}
+.ed-bar .ed-divider{color:var(--ink4)}
+.ed-bar .ed-time{color:var(--ink);font-variant-numeric:tabular-nums lining-nums;font-weight:600}
+.ed-bar .ed-status{
+  padding:3px 7px; border-radius:4px;
+  background:var(--acc); color:#0a0a0a; font-weight:700; letter-spacing:.18em;
+}
+
+/* ── MARQUEE TICKER (under sub-greeting) ────────────────── */
+.marquee{
+  position:relative; height:34px; overflow:hidden;
+  margin:14px -16px 18px;
+  border-top:1px solid var(--hair); border-bottom:1px solid var(--hair);
+  background:linear-gradient(180deg,rgba(200,255,26,.04),transparent 70%);
+  -webkit-mask-image:linear-gradient(90deg,transparent 0,#000 8%,#000 92%,transparent 100%);
+  mask-image:linear-gradient(90deg,transparent 0,#000 8%,#000 92%,transparent 100%);
+}
+.marquee-track{
+  position:absolute; top:0; left:0; height:100%;
+  display:flex; align-items:center; gap:28px;
+  padding-left:16px; white-space:nowrap;
+  animation:marqueeRun 36s linear infinite; will-change:transform;
+}
+.mq-item{
+  font-family:var(--font-m);
+  font-size:11px; letter-spacing:.18em;
+  text-transform:uppercase; color:var(--ink2); flex-shrink:0;
+}
+.mq-item .mq-acc{color:var(--acc);font-weight:700}
+.mq-sep{
+  width:5px; height:5px; border-radius:50%;
+  background:var(--ink4); flex-shrink:0;
+}
+@keyframes marqueeRun{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+/* ── HEADER (mobile top bar) — drop crimson, use lime ───── */
+.header{
+  background:rgba(8,8,10,.62) !important;
+  backdrop-filter:blur(40px) saturate(180%) !important;
+  -webkit-backdrop-filter:blur(40px) saturate(180%) !important;
+  border-bottom:1px solid var(--hair) !important;
+  padding:13px 16px !important;
+}
+.header::after{display:none !important}
+.header .logo span{
+  font-family:var(--font-d) !important; font-size:13px !important;
+  font-weight:700 !important; letter-spacing:.34em !important;
+  background:none !important; -webkit-text-fill-color:var(--ink) !important;
+  color:var(--ink) !important;
+}
+.header .date{
+  font-family:var(--font-m) !important; font-size:10px !important;
+  letter-spacing:.1em !important; color:var(--ink3) !important;
+  font-variant-numeric:tabular-nums;
+}
+
+/* ── GREETING HERO — magazine cover treatment ──────────── */
+.greeting-hero{margin:6px 0 4px;line-height:.86}
+.greeting-hero .gh-line1{
+  font-family:var(--font-d) !important;
+  font-size:clamp(34px,10vw,46px) !important;
+  font-weight:400 !important;
+  text-transform:uppercase !important;
+  letter-spacing:.01em !important;
+  color:var(--ink2) !important;
+  opacity:.85;
+  white-space:normal !important; overflow:visible !important;
+  display:block;
+}
+.greeting-hero .gh-line2{
+  font-family:var(--font-d) !important;
+  font-size:clamp(60px,18vw,86px) !important;
+  font-weight:700 !important;
+  text-transform:uppercase !important;
+  letter-spacing:0 !important;
+  color:var(--acc) !important;
+  -webkit-text-fill-color:var(--acc) !important;
+  background:none !important;
+  display:block; line-height:.88 !important;
+  text-shadow:none !important;
+  padding:.02em 0 .1em !important;
+  word-break:keep-all !important;
+}
+.greeting-hero-sub{
+  font-family:var(--font-m) !important;
+  font-size:10px !important; color:var(--ink3) !important;
+  letter-spacing:.24em !important; text-transform:uppercase !important;
+  margin:10px 0 0 !important;
+  display:flex; align-items:center; gap:10px;
+}
+.greeting-hero-sub::before{
+  content:""; flex:0 0 22px; height:1px; background:var(--acc); display:block;
+}
+
+/* ── DOUBLE-BEZEL CARD SYSTEM (overrides) ──────────────── */
+.weekly-goal-card, .last-workout-card, .trend-card,
+.calorie-card, .tdee-card, .recovery-card, .sleep-card,
+.cycle-card, .progress-chart, .quick-action, .program-card, .card{
+  background:var(--paper) !important;
+  border:1px solid var(--hair) !important;
+  border-radius:var(--r-card) !important;
+  position:relative; isolation:isolate;
+}
+.weekly-goal-card, .last-workout-card, .trend-card,
+.calorie-card, .tdee-card, .recovery-card, .sleep-card,
+.cycle-card, .progress-chart{
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.045),
+    0 1px 2px rgba(0,0,0,.5),
+    0 14px 36px -18px rgba(0,0,0,.65);
+}
+
+/* ── HERO CALORIE CARD — cover-art treatment ───────────── */
+.calorie-card{
+  background:linear-gradient(180deg,var(--paper) 0%,var(--paper2) 100%) !important;
+  border:1px solid var(--hair2) !important;
+  padding:24px 22px 22px !important;
+  border-radius:24px !important;
+  overflow:hidden;
+}
+.calorie-card::before{
+  content:"CALORIE BUDGET / TODAY";
+  position:absolute; top:14px; right:18px; z-index:2;
+  font-family:var(--font-m);
+  font-size:8.5px; letter-spacing:.22em;
+  color:var(--ink3); text-transform:uppercase;
+}
+.calorie-card::after{
+  background:radial-gradient(circle at 85% -10%,var(--acc-soft) 0%,transparent 58%) !important;
+  width:300px !important; height:300px !important;
+  top:-30% !important; right:-15% !important;
+}
+.cal-center .num{
+  font-family:var(--font-d) !important;
+  font-size:38px !important; font-weight:700 !important;
+  letter-spacing:-.01em !important; color:var(--ink) !important;
+  font-variant-numeric:tabular-nums lining-nums;
+}
+.cal-center .lbl{
+  font-family:var(--font-m) !important;
+  font-size:9px !important; letter-spacing:.22em !important;
+  text-transform:uppercase !important; color:var(--ink3) !important;
+  margin-top:5px !important;
+}
+.cal-ring .progress{stroke:var(--acc) !important}
+.cal-ring .bg{stroke:rgba(255,255,255,.06) !important}
+.ci-label{font-family:var(--font-m) !important;font-size:10px !important;letter-spacing:.14em !important;text-transform:uppercase;color:var(--ink3) !important}
+.ci-val{font-family:var(--font-d) !important;font-size:16px !important;font-weight:600 !important;color:var(--ink) !important;font-variant-numeric:tabular-nums}
+
+/* ── WEEKLY GOAL CARD ──────────────────────────────────── */
+.weekly-goal-card{padding:18px !important;border-radius:24px !important}
+.wgr-progress{stroke:var(--acc) !important}
+.wgr-bg{stroke:rgba(255,255,255,.06) !important}
+.wgc-num{
+  font-family:var(--font-d) !important;
+  font-size:24px !important; font-weight:700 !important;
+  color:var(--ink) !important;
+  font-variant-numeric:tabular-nums lining-nums;
+}
+.wgc-lbl{
+  font-family:var(--font-m) !important;
+  font-size:8.5px !important; letter-spacing:.2em !important;
+  color:var(--ink3) !important; text-transform:uppercase;
+}
+.wg-title{
+  font-family:var(--font-d) !important;
+  font-size:20px !important; font-weight:600 !important;
+  text-transform:uppercase; letter-spacing:.02em !important;
+  color:var(--ink) !important;
+}
+.wg-sub{
+  font-family:var(--font-m) !important;
+  font-size:10px !important; letter-spacing:.13em !important;
+  color:var(--ink2) !important; text-transform:uppercase;
+  margin-top:3px;
+}
+.wg-remaining{
+  font-family:var(--font-b) !important; font-size:11.5px !important;
+  color:var(--ink3) !important; margin-top:10px !important;
+}
+.wg-bars{margin-top:10px !important}
+.wg-bar{background:rgba(255,255,255,.06) !important}
+.wg-bar.done{background:var(--acc) !important;box-shadow:0 0 8px var(--acc-glow)}
+
+/* ── STAT BOXES 3-UP (newspaper data) ──────────────────── */
+.stat-boxes-new{grid-template-columns:1fr 1fr 1fr;gap:8px !important;margin-bottom:16px !important}
+.stat-box-new{
+  background:var(--paper) !important;
+  border:1px solid var(--hair) !important;
+  border-radius:18px !important;
+  padding:14px 12px 14px !important;
+  position:relative; overflow:hidden;
+}
+.stat-box-new::after{
+  content:""; position:absolute; top:0; left:14px;
+  width:24px; height:2px; background:var(--acc);
+  box-shadow:0 0 8px var(--acc-glow);
+}
+.sbn-label{
+  font-family:var(--font-m) !important;
+  font-size:8.5px !important; letter-spacing:.2em !important;
+  color:var(--ink3) !important; text-transform:uppercase;
+  margin-bottom:8px !important;
+}
+.sbn-num{
+  font-family:var(--font-d) !important;
+  font-size:30px !important; font-weight:700 !important;
+  color:var(--ink) !important; line-height:1 !important;
+  font-variant-numeric:tabular-nums lining-nums;
+}
+.sbn-sub{
+  font-family:var(--font-b) !important;
+  font-size:9.5px !important; color:var(--ink3) !important;
+  margin-top:4px !important;
+}
+.sbn-icon{color:var(--ink4) !important;opacity:.6}
+.sbn-icon svg{width:14px !important;height:14px !important}
+
+/* ── SECTION HEADERS — eyebrow tags ────────────────────── */
+.section-h, .section-title{
+  font-family:var(--font-m) !important;
+  font-size:10px !important; letter-spacing:.24em !important;
+  color:var(--ink3) !important; text-transform:uppercase !important;
+  margin:26px 0 12px !important; font-weight:600 !important;
+  display:flex; align-items:center; gap:10px;
+}
+.section-h::before, .section-title::before{
+  content:""; flex:0 0 18px; height:1px; background:var(--acc); display:block;
+}
+.section-h .section-h-link{
+  font-family:var(--font-m) !important; font-size:10px !important;
+  letter-spacing:.16em !important; text-transform:uppercase !important;
+  color:var(--acc) !important; font-weight:600 !important;
+  margin-left:auto;
+}
+
+/* ── QUICK ACTIONS — magnetic CTAs ─────────────────────── */
+.quick-actions{
+  display:grid; grid-template-columns:1fr 1fr;
+  gap:10px; margin-bottom:14px;
+}
+.quick-action{
+  padding:18px 16px 16px !important;
+  border-radius:20px !important;
+  transition:transform var(--tr), border-color var(--tr) !important;
+  cursor:pointer; overflow:hidden;
+}
+.quick-action:active{transform:scale(.97)}
+.quick-action::before{
+  content:""; position:absolute; inset:0;
+  background:radial-gradient(circle at 30% 20%,var(--acc-soft),transparent 65%);
+  opacity:0; transition:opacity var(--tr); pointer-events:none;
+}
+.quick-action:hover{border-color:var(--hair2) !important}
+.quick-action:hover::before{opacity:1}
+.quick-action .qa-icon{
+  width:38px !important; height:38px !important;
+  border-radius:50% !important;
+  background:var(--acc-soft) !important;
+  border:1px solid var(--acc) !important;
+  color:var(--acc) !important;
+  display:flex; align-items:center; justify-content:center;
+  margin-bottom:14px !important;
+}
+.quick-action .qa-icon svg{width:16px !important;height:16px !important;stroke:var(--acc) !important;stroke-width:2.2 !important}
+.quick-action .qa-text h4{
+  font-family:var(--font-d) !important;
+  font-size:14px !important; font-weight:700 !important;
+  text-transform:uppercase !important; letter-spacing:.01em !important;
+  color:var(--ink) !important;
+  line-height:1.05;
+  white-space:normal; word-break:keep-all;
+}
+.quick-action{display:flex !important;flex-direction:column !important;align-items:flex-start !important}
+.quick-action .qa-text{width:100%}
+.quick-action .qa-text p{
+  font-family:var(--font-m) !important;
+  font-size:9px !important; letter-spacing:.16em !important;
+  text-transform:uppercase !important; color:var(--ink3) !important;
+  margin-top:3px;
+}
+
+/* ── LAST WORKOUT + TREND CARDS ────────────────────────── */
+.last-workout-card, .trend-card{padding:18px !important;border-radius:20px !important}
+.lwc-label, .tc-label{
+  font-family:var(--font-m) !important;
+  font-size:9px !important; letter-spacing:.22em !important;
+  color:var(--ink3) !important; text-transform:uppercase !important;
+}
+.lwc-name{
+  font-family:var(--font-d) !important;
+  font-size:20px !important; font-weight:600 !important;
+  text-transform:uppercase; color:var(--ink) !important;
+  letter-spacing:.01em;
+}
+.lwc-meta{font-family:var(--font-m) !important;font-size:10px !important;letter-spacing:.06em !important;color:var(--ink3) !important}
+.lwc-arrow{color:var(--acc) !important;font-weight:300}
+.tc-value{
+  font-family:var(--font-d) !important;
+  font-size:36px !important; font-weight:700 !important;
+  color:var(--acc) !important; line-height:1 !important;
+  font-variant-numeric:tabular-nums lining-nums;
+  margin-top:4px;
+}
+.tc-sub{font-family:var(--font-b) !important;font-size:11px !important;color:var(--ink3) !important;margin-top:4px}
+
+/* ── BOTTOM NAV — FLOATING GLASS ISLAND ────────────────── */
+.nav.nav-5{
+  position:absolute !important;
+  left:12px !important; right:12px !important;
+  bottom:calc(env(safe-area-inset-bottom,0px) + 10px) !important;
+  background:rgba(13,13,16,.78) !important;
+  backdrop-filter:blur(36px) saturate(180%) !important;
+  -webkit-backdrop-filter:blur(36px) saturate(180%) !important;
+  border:1px solid var(--hair2) !important;
+  border-top:1px solid var(--hair2) !important;
+  border-radius:28px !important;
+  padding:8px 6px !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.05),
+    0 14px 40px -10px rgba(0,0,0,.7),
+    0 2px 6px rgba(0,0,0,.4);
+}
+.nav.nav-5 .nav-item{
+  color:var(--ink3) !important;
+  font-family:var(--font-m) !important;
+  font-size:8.5px !important; letter-spacing:.14em !important;
+  text-transform:uppercase !important;
+  padding:8px 0 !important; gap:4px !important;
+  transition:color var(--tr) !important;
+}
+.nav.nav-5 .nav-item svg{width:20px !important;height:20px !important;stroke-width:1.8 !important}
+.nav.nav-5 .nav-item.active{color:var(--acc) !important}
+.nav-glow-indicator{
+  background:var(--acc) !important;
+  box-shadow:0 0 14px var(--acc-glow), 0 0 28px var(--acc-soft) !important;
+  height:3px !important; border-radius:2px !important;
+}
+.nav-action-btn{
+  background:var(--acc-grad) !important;
+  border:4px solid var(--bg) !important;
+  width:54px !important; height:54px !important;
+  border-radius:50% !important;
+  color:#0a0a0a !important;
+  box-shadow:
+    0 8px 26px var(--acc-glow),
+    inset 0 1px 0 rgba(255,255,255,.45),
+    0 0 0 1px var(--acc) !important;
+  margin:-22px 4px 0 !important;
+  transition:transform var(--tr) !important;
+}
+.nav-action-btn:active{transform:scale(.9) !important}
+.nav-action-btn svg{stroke:#0a0a0a !important;stroke-width:2.6 !important;width:24px !important;height:24px !important}
+
+/* push scroll content above floating nav */
+.app-content{padding-bottom:120px !important}
+
+/* ── TDEE CARD — featured w/ lime tint ─────────────────── */
+.tdee-card{
+  background:linear-gradient(135deg,var(--acc-soft) 0%,var(--paper) 60%) !important;
+  border:1px solid var(--acc) !important;
+  border-radius:20px !important; padding:18px !important;
+}
+.tdee-card h4{
+  color:var(--ink) !important;
+  font-family:var(--font-d) !important;
+  font-size:14px !important; font-weight:700 !important;
+  text-transform:uppercase !important; letter-spacing:.04em !important;
+}
+.tdee-row .tdee-label{
+  font-family:var(--font-m) !important; font-size:10px !important;
+  letter-spacing:.12em !important; text-transform:uppercase !important;
+  color:var(--ink3) !important;
+}
+.tdee-row .tdee-val{
+  font-family:var(--font-d) !important; font-size:18px !important;
+  font-weight:700 !important; color:var(--ink) !important;
+  font-variant-numeric:tabular-nums;
+}
+.pro-tag{
+  background:var(--acc) !important; color:#0a0a0a !important;
+  font-family:var(--font-m) !important; font-weight:700 !important;
+  font-size:8.5px !important; letter-spacing:.22em !important;
+  border-radius:4px !important; padding:2px 6px !important;
+}
+
+/* ── PROFILE / GENERIC STAT BOX ────────────────────────── */
+.stat-box .num{
+  color:var(--acc) !important;
+  font-family:var(--font-d) !important;
+  font-size:28px !important; font-weight:700;
+  font-variant-numeric:tabular-nums;
+}
+.stat-box .label{
+  color:var(--ink3) !important;
+  font-family:var(--font-m) !important;
+  font-size:9px !important; letter-spacing:.16em !important;
+  text-transform:uppercase;
+}
+.profile-stat .ps-num{
+  color:var(--acc) !important;
+  font-family:var(--font-d) !important;
+  font-size:28px !important; font-weight:700;
+  font-variant-numeric:tabular-nums;
+}
+.profile-stat .ps-label{
+  color:var(--ink3) !important;
+  font-family:var(--font-m) !important;
+  font-size:9px !important; letter-spacing:.16em !important;
+  text-transform:uppercase;
+}
+
+/* ── MEAL / FOOD ───────────────────────────────────────── */
+.meal-header h3{
+  font-family:var(--font-d) !important;
+  font-weight:700 !important; text-transform:uppercase !important;
+  letter-spacing:.02em !important; font-size:18px !important;
+}
+.meal-cal{font-family:var(--font-m) !important;font-size:10px !important;letter-spacing:.12em !important;text-transform:uppercase}
+.food-item .fi-cal{color:var(--acc) !important;font-family:var(--font-d) !important;font-weight:600}
+
+/* ── MACRO BARS — lime spectrum ────────────────────────── */
+.macro-protein .macro-bar-fill{background:var(--acc) !important}
+.macro-carbs .macro-bar-fill{background:linear-gradient(90deg,var(--acc) 0%,var(--acc-dim) 100%) !important}
+.macro-fat .macro-bar-fill{background:var(--acc-deep) !important}
+.macro-label{font-family:var(--font-m) !important;font-size:9.5px !important;letter-spacing:.12em !important;text-transform:uppercase}
+.macro-val{font-family:var(--font-m) !important;font-size:10px !important;font-variant-numeric:tabular-nums;color:var(--ink2) !important}
+
+/* ── ONBOARDING — premium polish ───────────────────────── */
+.ob-title{
+  font-family:var(--font-d) !important;
+  font-weight:700 !important; text-transform:uppercase !important;
+  letter-spacing:.02em !important; font-size:34px !important;
+  color:var(--ink) !important;
+}
+.ob-sub{font-family:var(--font-b) !important;font-size:13px !important;color:var(--ink2) !important;line-height:1.55 !important}
+.ob-label{font-family:var(--font-m) !important;font-size:9.5px !important;letter-spacing:.18em !important;color:var(--ink3) !important}
+.ob-btn{
+  background:var(--acc) !important; color:#0a0a0a !important;
+  font-family:var(--font-m) !important;
+  font-size:12.5px !important; letter-spacing:.22em !important;
+  text-transform:uppercase !important; font-weight:700 !important;
+  border-radius:var(--r-pill) !important;
+  box-shadow:0 10px 28px var(--acc-glow), inset 0 1px 0 rgba(255,255,255,.4) !important;
+  padding:18px !important;
+  transition:transform var(--tr) !important;
+}
+.ob-btn:active{transform:scale(.97) !important}
+.ob-select-btn.selected{
+  border-color:var(--acc) !important;
+  background:var(--acc-soft) !important;
+  color:var(--acc) !important;
+}
+.ob-dot.active{background:var(--acc) !important;width:28px !important}
+.ob-input{
+  background:var(--paper) !important;
+  border:1px solid var(--hair2) !important;
+  color:var(--ink) !important;
+  font-family:var(--font-m) !important;
+  font-variant-numeric:tabular-nums;
+  border-radius:14px !important;
+}
+.ob-input:focus{border-color:var(--acc) !important;box-shadow:0 0 0 3px var(--acc-soft) !important;outline:none !important}
+
+/* ── RECOVERY / SLEEP / CYCLE ──────────────────────────── */
+.recovery-card, .sleep-card, .cycle-card{padding:18px !important;border-radius:20px !important}
+.sleep-header h4, .cycle-phase-info .cp-name{
+  font-family:var(--font-d) !important;
+  font-weight:700 !important; text-transform:uppercase !important;
+  letter-spacing:.02em !important; font-size:16px !important;
+}
+.sleep-bar.optimal{background:var(--acc) !important;box-shadow:0 0 8px var(--acc-glow)}
+.sleep-bar.good{background:var(--acc-dim) !important}
+.sleep-bar.poor{background:#FF6B35 !important}
+.sb-label{font-family:var(--font-m) !important;font-size:9px !important;font-variant-numeric:tabular-nums}
+.recovery-score-num{font-family:var(--font-d) !important;font-weight:700 !important;font-variant-numeric:tabular-nums}
+
+/* ── PROGRESS / HISTORY ────────────────────────────────── */
+.progress-chart h3{
+  font-family:var(--font-d) !important;
+  font-weight:700 !important; text-transform:uppercase !important;
+  letter-spacing:.02em !important; color:var(--ink) !important;
+}
+.history-info h4{font-family:var(--font-d) !important;text-transform:uppercase;font-weight:700 !important}
+
+/* ── WORKOUT / EXERCISES ───────────────────────────────── */
+.program-card .info h3, .workout-header h2, .back-header h2{
+  font-family:var(--font-d) !important;
+  font-weight:700 !important; text-transform:uppercase !important;
+  letter-spacing:.02em !important;
+}
+.exercise-item .ex-name{font-family:var(--font-d) !important;font-weight:600 !important;text-transform:uppercase;letter-spacing:.01em}
+
+/* ── PAGE TRANSITIONS — smoother spring ────────────────── */
+.page{
+  transition:opacity .42s var(--spring-soft),
+             transform .42s var(--spring-soft) !important;
+}
+/* Force active page visible — beats any stuck inline styles */
+.page.active{
+  opacity:1 !important;
+  transform:translateY(0) scale(1) !important;
+}
+.page.active .card,
+.page.active .calorie-card,
+.page.active .stat-box,
+.page.active .quick-action,
+.page.active .weekly-goal-card,
+.page.active .stat-box-new,
+.page.active .greeting-hero,
+.page.active .ed-bar,
+.page.active .marquee{
+  animation:staggerUpV2 .55s var(--spring-soft) both;
+}
+.page.active .ed-bar{animation-delay:.02s}
+.page.active .greeting-hero{animation-delay:.06s}
+.page.active .marquee{animation-delay:.1s}
+.page.active .weekly-goal-card{animation-delay:.14s}
+.page.active .stat-boxes-new .stat-box-new:nth-child(1){animation-delay:.18s}
+.page.active .stat-boxes-new .stat-box-new:nth-child(2){animation-delay:.22s}
+.page.active .stat-boxes-new .stat-box-new:nth-child(3){animation-delay:.26s}
+.page.active .calorie-card{animation-delay:.3s}
+.page.active .quick-action:nth-child(1){animation-delay:.34s}
+.page.active .quick-action:nth-child(2){animation-delay:.38s}
+@keyframes staggerUpV2{
+  from{opacity:0;transform:translateY(22px) scale(.965);filter:blur(6px)}
+  to  {opacity:1;transform:translateY(0) scale(1);filter:blur(0)}
+}
+
+/* numbers always tabular */
+.num,.ci-val,.macro-val,.sbn-num,.wgc-num,.ps-num,.tc-value,.cal-center .num,
+.tdee-row .tdee-val,.recovery-score-num{
+  font-variant-numeric:tabular-nums lining-nums !important;
+}
+
+/* selection */
+::selection{background:var(--acc);color:#0a0a0a}
+
+/* hide legacy stat-row pulled into editorial flow */
+.stat-row[aria-hidden="true"]{display:none !important}
+
+/* ambient canvas softer in editorial mode */
+#ambientCanvas{opacity:.35 !important}
+
 </style>
 </head>
 <body>
@@ -1536,7 +2127,7 @@ h1,h2,h3,h4,h5,h6{color:var(--t1)}
   <!-- Desktop Sidebar -->
   <div class="desktop-sidebar">
     <div class="logo">
-      <svg viewBox="0 0 120 28" width="120" height="28" xmlns="http://www.w3.org/2000/svg"><text x="0" y="19" font-family="'Barlow Condensed',sans-serif" font-weight="900" font-size="19" fill="#F2F2F7" letter-spacing="2.5">PRIME</text><rect x="0" y="21.5" width="120" height="0.8" fill="#FF2D55" opacity="0.65"/><text x="0" y="27" font-family="'Barlow Condensed',sans-serif" font-weight="700" font-size="9.5" fill="#FF2D55" letter-spacing="3.8">PHYSIQUE</text></svg>
+      <svg viewBox="0 0 120 28" width="120" height="28" xmlns="http://www.w3.org/2000/svg"><text x="0" y="19" font-family="'Oswald','Barlow Condensed',sans-serif" font-weight="700" font-size="19" fill="#F4F4ED" letter-spacing="2.5">PRIME</text><rect x="0" y="21.5" width="120" height="0.8" fill="#C8FF1A" opacity="0.9"/><text x="0" y="27" font-family="'Oswald','Barlow Condensed',sans-serif" font-weight="600" font-size="9.5" fill="#C8FF1A" letter-spacing="3.8">PHYSIQUE</text></svg>
       <span>PRIME PHYSIQUE</span>
     </div>
     <div class="sidebar-nav">
@@ -1555,8 +2146,8 @@ h1,h2,h3,h4,h5,h6{color:var(--t1)}
       <div class="logo-p">
         <div class="logo-p-icon">
           <svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
-            <rect x="2" y="2" width="36" height="36" rx="9" fill="none" stroke="#FF2D55" stroke-width="2.5"/>
-            <path d="M13 11h10c4 0 7 3 7 7s-3 7-7 7h-5v6h-5V11z M18 16v4h5c1.5 0 2.5-1 2.5-2s-1-2-2.5-2h-5z" fill="#FF2D55"/>
+            <rect x="2" y="2" width="36" height="36" rx="9" fill="none" stroke="#C8FF1A" stroke-width="2.5"/>
+            <path d="M13 11h10c4 0 7 3 7 7s-3 7-7 7h-5v6h-5V11z M18 16v4h5c1.5 0 2.5-1 2.5-2s-1-2-2.5-2h-5z" fill="#C8FF1A"/>
           </svg>
         </div>
         <div class="logo-p-text">
@@ -1584,12 +2175,46 @@ h1,h2,h3,h4,h5,h6{color:var(--t1)}
     <div class="app-content">
       <!-- HOME / DASHBOARD -->
       <div class="page active" id="page-home">
+        <!-- Editorial ticker bar (LIVE / EDITION / DATE / TIME) -->
+        <div class="ed-bar" id="edBar">
+          <span class="ed-dot"></span>
+          <span class="ed-edition" id="edEdition">ED. № 178</span>
+          <span class="ed-divider">/</span>
+          <span class="ed-day" id="edDay">WED</span>
+          <span class="ed-divider">/</span>
+          <span class="ed-time" id="edTime">18:42</span>
+          <span class="ed-divider">/</span>
+          <span class="ed-status">LIVE</span>
+        </div>
+
         <!-- Massive 2-line greeting -->
         <div class="greeting-hero" id="greetingHero">
           <span class="gh-line1" id="ghLine1">Добре дошъл,</span>
           <span class="gh-line2" id="ghLine2">Builder</span>
         </div>
         <div class="greeting-hero-sub">Проследявай напредъка</div>
+
+        <!-- Marquee ticker -->
+        <div class="marquee" aria-hidden="true">
+          <div class="marquee-track" id="marqueeTrack">
+            <span class="mq-item">PRIME // PHYSIQUE — <span class="mq-acc">SESSION <span id="mqSession">17</span></span></span>
+            <span class="mq-sep"></span>
+            <span class="mq-item">ENERGY <span class="mq-acc" id="mqEnergy">84%</span></span>
+            <span class="mq-sep"></span>
+            <span class="mq-item">STREAK <span class="mq-acc"><span id="mqStreak">0</span> DAYS</span></span>
+            <span class="mq-sep"></span>
+            <span class="mq-item">FOCUS — STRENGTH</span>
+            <span class="mq-sep"></span>
+            <span class="mq-item">PRIME // PHYSIQUE — <span class="mq-acc">SESSION <span>17</span></span></span>
+            <span class="mq-sep"></span>
+            <span class="mq-item">ENERGY <span class="mq-acc">84%</span></span>
+            <span class="mq-sep"></span>
+            <span class="mq-item">STREAK <span class="mq-acc"><span>0</span> DAYS</span></span>
+            <span class="mq-sep"></span>
+            <span class="mq-item">FOCUS — STRENGTH</span>
+            <span class="mq-sep"></span>
+          </div>
+        </div>
 
         <!-- Weekly Goal Card -->
         <div class="weekly-goal-card" id="weeklyGoalCard">
@@ -1637,7 +2262,7 @@ h1,h2,h3,h4,h5,h6{color:var(--t1)}
               <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12,6 12,12 16,14"/></svg><span id="lwcDuration">--</span></span>
             </div>
           </div>
-          <div class="lwc-img">💪</div>
+          <div class="lwc-img"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--acc)"><path d="M14.4 14.4 9.6 9.6m4.8 4.8a2 2 0 1 1 0 2.83l-1.4 1.4a2 2 0 1 1-2.83-2.83l4.23-1.4zm-4.8-4.8a2 2 0 1 1 0-2.83l1.4-1.4a2 2 0 1 1 2.83 2.83L9.6 9.6zM18 22l4-4M3 18l4 4M2 6l4-4M6 2l4 4"/></svg></div>
           <div class="lwc-arrow">›</div>
         </div>
 
@@ -1674,7 +2299,7 @@ h1,h2,h3,h4,h5,h6{color:var(--t1)}
 
         <!-- Adaptive TDEE Card (PRO) -->
         <div class="tdee-card" id="tdeeCard" style="display:none">
-          <h4>🧠 Адаптивен TDEE <span class="pro-tag">PRO</span></h4>
+          <h4><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:-2px;margin-right:8px;color:var(--acc)"><path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96.44 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24A2.5 2.5 0 0 1 7 2.04 2.5 2.5 0 0 1 9.5 2zM14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96.44 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24A2.5 2.5 0 0 0 17 2.04 2.5 2.5 0 0 0 14.5 2z"/></svg>Адаптивен TDEE <span class="pro-tag">PRO</span></h4>
           <div class="tdee-row"><span class="tdee-label">Изчислен TDEE</span><span class="tdee-val" id="tdeeCurrent">--</span></div>
           <div class="tdee-row"><span class="tdee-label">Адаптивен TDEE</span><span class="tdee-val" id="tdeeAdaptive">--</span></div>
           <div class="tdee-row"><span class="tdee-label">Седмична промяна</span><span class="tdee-val" id="tdeeWeeklyChange">--</span></div>
@@ -1703,7 +2328,7 @@ h1,h2,h3,h4,h5,h6{color:var(--t1)}
 
         <!-- Sleep Tracker -->
         <div class="sleep-card">
-          <div class="sleep-header"><h4>😴 Сън (последни 7 дни)</h4><button class="sleep-log-btn" onclick="logSleep()">+ Логни</button></div>
+          <div class="sleep-header"><h4><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:-3px;margin-right:8px;color:var(--acc)"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>Сън — последни 7 дни</h4><button class="sleep-log-btn" onclick="logSleep()">+ Логни</button></div>
           <div class="sleep-bars" id="sleepBars"></div>
           <div class="sleep-avg"><span>Средно: <span id="sleepAvg">--</span>ч</span><span>Цел: 7-9ч</span></div>
         </div>
@@ -1864,7 +2489,7 @@ h1,h2,h3,h4,h5,h6{color:var(--t1)}
 <!-- ONBOARDING -->
 <div class="onboarding" id="onboarding">
   <div class="ob-step active" id="ob-0">
-    <div class="ob-logo"><svg viewBox="0 0 210 54" width="210" height="54" xmlns="http://www.w3.org/2000/svg"><text x="0" y="38" font-family="'Barlow Condensed',sans-serif" font-weight="900" font-size="42" fill="#F2F2F7" letter-spacing="4">PRIME</text><rect x="0" y="42" width="210" height="1.5" fill="#FF2D55" opacity="0.9"/><text x="2" y="52" font-family="'Barlow Condensed',sans-serif" font-weight="700" font-size="18" fill="#FF2D55" letter-spacing="5.5">PHYSIQUE</text></svg></div>
+    <div class="ob-logo"><svg viewBox="0 0 210 54" width="210" height="54" xmlns="http://www.w3.org/2000/svg"><text x="0" y="38" font-family="'Oswald','Barlow Condensed',sans-serif" font-weight="700" font-size="42" fill="#F4F4ED" letter-spacing="4">PRIME</text><rect x="0" y="42" width="210" height="1.5" fill="#C8FF1A" opacity="0.95"/><text x="2" y="52" font-family="'Oswald','Barlow Condensed',sans-serif" font-weight="600" font-size="18" fill="#C8FF1A" letter-spacing="5.5">PHYSIQUE</text></svg></div>
     <div class="ob-title">PRIME PHYSIQUE</div>
     <div class="ob-sub">Твоят фитнес и хранителен тракер. Нека настроим профила ти.</div>
     <button class="ob-btn" onclick="obNext()">Започни</button>
@@ -2229,7 +2854,52 @@ function updateAll(){
   updateXPBar();renderAchievements();renderMeasurements();renderStreakCalendar();renderAdaptiveTDEE();
   renderSleepTracker();renderRecoveryScore();renderCycleTracker();
   checkAchievements();
+  updateEditorialBar();
 }
+
+// ════ EDITORIAL TICKER BAR + MARQUEE ═══════════════════════════
+function updateEditorialBar(){
+  const now=new Date();
+  const dayMap=['SUN','MON','TUE','WED','THU','FRI','SAT'];
+  const day=dayMap[now.getDay()];
+  const hh=String(now.getHours()).padStart(2,'0');
+  const mm=String(now.getMinutes()).padStart(2,'0');
+  // Edition number: days since project epoch (1 Jun 2026)
+  const epoch=new Date('2026-06-01T00:00:00');
+  const edition=Math.max(1,Math.floor((now-epoch)/86400000)+1);
+  const streak=(typeof calcStreak==='function')?calcStreak():0;
+  // Energy = recovery score if available, else placeholder 84
+  let energy=84;
+  try{
+    const rs=LS.get('recoveryScore',null);
+    if(rs && typeof rs.score==='number') energy=Math.round(rs.score);
+  }catch(e){}
+  // Session # = total workouts
+  const history=(typeof getHistory==='function')?getHistory():[];
+  const sessionNum=history.length||1;
+  const set=(id,val)=>{const el=document.getElementById(id);if(el)el.textContent=val};
+  set('edEdition','ED. № '+edition);
+  set('edDay',day);
+  set('edTime',hh+':'+mm);
+  set('mqSession',sessionNum);
+  set('mqEnergy',energy+'%');
+  set('mqStreak',streak);
+  // Update duplicated marquee items too (second half of track)
+  const track=document.getElementById('marqueeTrack');
+  if(track){
+    const items=track.querySelectorAll('.mq-item');
+    if(items.length>=8){
+      items[0].innerHTML='PRIME // PHYSIQUE — <span class="mq-acc">SESSION '+sessionNum+'</span>';
+      items[1].innerHTML='ENERGY <span class="mq-acc">'+energy+'%</span>';
+      items[2].innerHTML='STREAK <span class="mq-acc">'+streak+' DAYS</span>';
+      items[4].innerHTML='PRIME // PHYSIQUE — <span class="mq-acc">SESSION '+sessionNum+'</span>';
+      items[5].innerHTML='ENERGY <span class="mq-acc">'+energy+'%</span>';
+      items[6].innerHTML='STREAK <span class="mq-acc">'+streak+' DAYS</span>';
+    }
+  }
+}
+// keep the editorial time live
+setInterval(()=>{ if(document.getElementById('edTime')) updateEditorialBar(); },30000);
 
 // ==============================
 // ONBOARDING
