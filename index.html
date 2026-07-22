@@ -2414,6 +2414,40 @@ body::before{display:none !important}          /* grain overlay off */
 
 ::selection{background:var(--acc);color:#fff}
 
+/* ── EXERCISE PROGRESS: picker · PR tiles · trend note ─── */
+.ex-select{
+  width:100%;appearance:none;-webkit-appearance:none;
+  background:var(--paper) url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='rgba(235,235,245,.5)' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'><polyline points='6 9 12 15 18 9'/></svg>") no-repeat right 16px center;
+  border:none;border-radius:14px;
+  color:var(--ink);font-family:var(--font-b);
+  font-size:16px;font-weight:600;letter-spacing:-.01em;
+  padding:15px 44px 15px 16px;margin-bottom:12px;
+  cursor:pointer;outline:none;
+  box-shadow:0 1px 1px rgba(0,0,0,.4),0 8px 24px -12px rgba(0,0,0,.5);
+}
+.ex-select:focus{box-shadow:0 0 0 3px var(--acc-soft)}
+.ex-select option{background:#1C1C1E;color:var(--ink)}
+.pr-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:12px}
+.pr-box{
+  background:var(--paper);border-radius:18px;padding:14px 12px;text-align:center;
+  box-shadow:0 1px 1px rgba(0,0,0,.4),0 8px 24px -12px rgba(0,0,0,.5);
+}
+.pr-num{
+  font-family:var(--font-d);font-size:22px;font-weight:700;
+  letter-spacing:-.03em;color:var(--acc);line-height:1.1;
+  font-variant-numeric:tabular-nums lining-nums;
+}
+.pr-lbl{
+  font-family:var(--font-b);font-size:11px;font-weight:500;
+  color:var(--ink3);letter-spacing:-.01em;margin-top:4px;
+}
+.ex-progress-note{
+  font-family:var(--font-b);font-size:13px;color:var(--ink2);
+  letter-spacing:-.01em;margin:10px 2px 4px;
+}
+.ex-progress-note .up{color:#34C759;font-weight:600}
+.ex-progress-note .down{color:var(--acc);font-weight:600}
+
 /* ── PERSONAL PROGRAM: superset badge + day focus ──────── */
 .ss-badge{
   display:inline-block;vertical-align:middle;margin-left:7px;
@@ -2772,6 +2806,20 @@ body::before{display:none !important}          /* grain overlay off */
         <div class="photo-grid" id="photoGrid">
           <div class="photo-item photo-add" onclick="takeProgressPhoto()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z"/><circle cx="12" cy="13" r="4"/></svg><span>Добави снимка</span></div>
         </div>
+        <div class="section-title">Прогрес по упражнение</div>
+        <div id="exProgressEmpty" class="card" style="padding:22px;text-align:center;display:none">
+          <p style="color:var(--ink3);font-size:14px;margin:0">Завърши тренировка, за да видиш прогрес по упражнение</p>
+        </div>
+        <div id="exProgressWrap" style="display:none">
+          <select id="exProgressSelect" class="ex-select" onchange="selectExProgress(this.value)" aria-label="Избери упражнение"></select>
+          <div class="pr-row">
+            <div class="pr-box"><div class="pr-num" id="prBestKg">--</div><div class="pr-lbl">Най-тежко</div></div>
+            <div class="pr-box"><div class="pr-num" id="prBest1rm">--</div><div class="pr-lbl">Прогн. 1ПМ</div></div>
+            <div class="pr-box"><div class="pr-num" id="prSessions">--</div><div class="pr-lbl">Сесии</div></div>
+          </div>
+          <div class="progress-chart"><div class="chart-canvas"><canvas id="exChart"></canvas></div></div>
+          <div class="ex-progress-note" id="exProgressNote"></div>
+        </div>
         <div class="section-title">История</div>
         <div id="historyList"></div>
       </div>
@@ -2806,7 +2854,9 @@ body::before{display:none !important}          /* grain overlay off */
           <div class="setting-item" onclick="showOnboarding()"><div class="si-left"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg><span class="si-label">Цели и профил</span></div><span class="si-val">›</span></div>
           <div class="setting-item" onclick="logWeight()"><div class="si-left"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v18M3 12h18"/></svg><span class="si-label">Запиши тегло</span></div><span class="si-val">›</span></div>
           <div class="setting-item" onclick="logSleep()"><div class="si-left"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg><span class="si-label">Запиши сън</span></div><span class="si-val">›</span></div>
-          <div class="setting-item" onclick="exportData()"><div class="si-left"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg><span class="si-label">Експорт на данни</span></div><span class="si-val">CSV</span></div>
+          <div class="setting-item" onclick="exportBackup()"><div class="si-left"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg><span class="si-label">Свали бекъп</span></div><span class="si-val">JSON</span></div>
+          <div class="setting-item" onclick="importBackup()"><div class="si-left"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M17 8l-5-5-5 5M12 3v12"/></svg><span class="si-label">Възстанови от бекъп</span></div><span class="si-val">›</span></div>
+          <div class="setting-item" onclick="exportData()"><div class="si-left"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg><span class="si-label">Експорт на тренировки</span></div><span class="si-val">CSV</span></div>
           <div class="setting-item" onclick="clearAllData()"><div class="si-left"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3,6 5,6 21,6"/><path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/></svg><span class="si-label" style="color:var(--red)">Изтрий всички данни</span></div><span class="si-val">›</span></div>
         </div>
       </div>
@@ -2950,6 +3000,9 @@ body::before{display:none !important}          /* grain overlay off */
     <button class="upgrade-close" onclick="closeUpgrade()">Може би по-късно</button>
   </div>
 </div>
+
+<!-- Hidden file input for backup restore -->
+<input type="file" id="backupFileInput" accept="application/json,.json" style="display:none" onchange="handleBackupFile(event)">
 
 <!-- TOAST -->
 <div class="toast" id="toast"><span class="toast-icon" id="toastIcon"></span><span class="toast-text" id="toastText"></span><span class="toast-xp" id="toastXP"></span></div>
@@ -4021,7 +4074,130 @@ function setRestTime(t){restDuration=t;restRemaining=t;document.getElementById('
 // PROGRESS
 // ==============================
 function renderProgress(){
-  renderWeightChart();renderHistoryList();
+  renderWeightChart();renderExProgress();renderHistoryList();
+}
+
+// ══════════ ПРОГРЕС ПО УПРАЖНЕНИЕ + РЕКОРДИ ══════════
+let currentExProgress=null;
+
+// Упражнения, за които има поне една логната серия
+function getTrackedExercises(){
+  const s=new Set();
+  getHistory().forEach(w=>(w.exercises||[]).forEach(ex=>{
+    if((ex.sets||[]).some(st=>+st.kg>0&&+st.reps>0))s.add(ex.name);
+  }));
+  return[...s].sort((a,b)=>a.localeCompare(b,'bg'));
+}
+
+// Една точка на сесия: най-тежка серия, обем, прогнозен 1ПМ (Epley)
+function getExerciseHistory(name){
+  return getHistory().map(w=>{
+    const ex=(w.exercises||[]).find(e=>e.name===name);
+    if(!ex)return null;
+    const sets=(ex.sets||[]).filter(s=>+s.kg>0&&+s.reps>0);
+    if(!sets.length)return null;
+    const maxKg=Math.max(...sets.map(s=>+s.kg));
+    const volume=sets.reduce((a,s)=>a+(+s.kg)*(+s.reps),0);
+    let e1rm=0;
+    sets.forEach(s=>{const v=(+s.kg)*(1+(+s.reps)/30);if(v>e1rm)e1rm=v});
+    return{date:w.date,maxKg,volume,e1rm:Math.round(e1rm),sets:sets.length};
+  }).filter(Boolean).sort((a,b)=>new Date(a.date)-new Date(b.date));
+}
+
+function selectExProgress(v){currentExProgress=v;renderExProgress()}
+
+function renderExProgress(){
+  const wrap=document.getElementById('exProgressWrap');
+  const empty=document.getElementById('exProgressEmpty');
+  if(!wrap||!empty)return;
+  const list=getTrackedExercises();
+  if(!list.length){wrap.style.display='none';empty.style.display='block';return}
+  wrap.style.display='block';empty.style.display='none';
+  if(!currentExProgress||list.indexOf(currentExProgress)===-1)currentExProgress=list[0];
+  const sel=document.getElementById('exProgressSelect');
+  const esc=s=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/"/g,'&quot;');
+  sel.innerHTML=list.map(n=>`<option value="${esc(n)}"${n===currentExProgress?' selected':''}>${esc(n)}</option>`).join('');
+  const data=getExerciseHistory(currentExProgress);
+  const set=(id,v)=>{const el=document.getElementById(id);if(el)el.textContent=v};
+  if(!data.length){set('prBestKg','--');set('prBest1rm','--');set('prSessions','0');drawExChart([]);return}
+  set('prBestKg',Math.max(...data.map(d=>d.maxKg))+' кг');
+  set('prBest1rm',Math.max(...data.map(d=>d.e1rm))+' кг');
+  set('prSessions',data.length);
+  // Промяна между първата и последната сесия
+  const note=document.getElementById('exProgressNote');
+  if(note){
+    if(data.length<2){note.textContent='Още една сесия и ще видиш тренда.';}
+    else{
+      const first=data[0].maxKg,last=data[data.length-1].maxKg,diff=last-first;
+      const pct=first?Math.round(diff/first*100):0;
+      note.innerHTML=diff>0
+        ?`<span class="up">▲ +${diff} кг (${pct}%)</span> от първата сесия`
+        :diff<0
+          ?`<span class="down">▼ ${diff} кг</span> от първата сесия`
+          :`Без промяна спрямо първата сесия`;
+    }
+  }
+  drawExChart(data);
+}
+
+function drawExChart(data){
+  const canvas=document.getElementById('exChart');
+  if(!canvas)return;
+  const ctx=canvas.getContext('2d');
+  const dpr=window.devicePixelRatio||1;
+  const rect=canvas.parentElement.getBoundingClientRect();
+  if(rect.width<=0)return;
+  canvas.width=rect.width*dpr;canvas.height=rect.height*dpr;
+  canvas.style.width=rect.width+'px';canvas.style.height=rect.height+'px';
+  ctx.setTransform(1,0,0,1,0,0);ctx.scale(dpr,dpr);
+  const w=rect.width,h=rect.height;
+  ctx.clearRect(0,0,w,h);
+  const css=getComputedStyle(document.documentElement);
+  const acc=(css.getPropertyValue('--acc')||'#FF375F').trim();
+  const muted='rgba(235,235,245,.32)';
+  if(data.length<2){
+    ctx.fillStyle=muted;ctx.font='14px -apple-system,system-ui,sans-serif';ctx.textAlign='center';
+    ctx.fillText(data.length?'Нужни са поне 2 сесии за графика':'Няма данни',w/2,h/2);
+    return;
+  }
+  const pts=data.slice(-20);
+  const vals=pts.map(p=>p.maxKg);
+  let min=Math.min(...vals),max=Math.max(...vals);
+  if(min===max){min-=2.5;max+=2.5}else{const pad=(max-min)*0.15;min-=pad;max+=pad}
+  const pad={t:12,r:12,b:28,l:42};
+  const cw=w-pad.l-pad.r,ch=h-pad.t-pad.b;
+  const X=i=>pad.l+cw*i/(pts.length-1);
+  const Y=v=>pad.t+ch*(1-(v-min)/(max-min));
+  // Мрежа + стойности
+  ctx.strokeStyle='rgba(255,255,255,.07)';ctx.lineWidth=1;
+  ctx.font='11px -apple-system,system-ui,sans-serif';ctx.textAlign='right';
+  for(let i=0;i<=4;i++){
+    const y=pad.t+ch*i/4;
+    ctx.beginPath();ctx.moveTo(pad.l,y);ctx.lineTo(w-pad.r,y);ctx.stroke();
+    ctx.fillStyle=muted;ctx.fillText(Math.round(max-(max-min)*i/4),pad.l-8,y+4);
+  }
+  // Площ под кривата
+  ctx.beginPath();ctx.moveTo(X(0),Y(pts[0].maxKg));
+  pts.forEach((p,i)=>ctx.lineTo(X(i),Y(p.maxKg)));
+  ctx.lineTo(X(pts.length-1),pad.t+ch);ctx.lineTo(X(0),pad.t+ch);ctx.closePath();
+  const g=ctx.createLinearGradient(0,pad.t,0,pad.t+ch);
+  g.addColorStop(0,'rgba(255,55,95,.28)');g.addColorStop(1,'rgba(255,55,95,0)');
+  ctx.fillStyle=g;ctx.fill();
+  // Линия
+  ctx.beginPath();ctx.strokeStyle=acc;ctx.lineWidth=2.5;ctx.lineJoin='round';ctx.lineCap='round';
+  pts.forEach((p,i)=>{const x=X(i),y=Y(p.maxKg);i?ctx.lineTo(x,y):ctx.moveTo(x,y)});
+  ctx.stroke();
+  // Точки (последната по-голяма)
+  pts.forEach((p,i)=>{
+    const x=X(i),y=Y(p.maxKg),lastOne=i===pts.length-1;
+    ctx.beginPath();ctx.arc(x,y,lastOne?5:3,0,Math.PI*2);
+    ctx.fillStyle=acc;ctx.fill();
+    if(lastOne){ctx.strokeStyle='#000';ctx.lineWidth=2;ctx.stroke()}
+  });
+  // Дати
+  ctx.fillStyle=muted;ctx.font='10px -apple-system,system-ui,sans-serif';ctx.textAlign='center';
+  const idx=pts.length<=3?pts.map((_,i)=>i):[0,Math.floor((pts.length-1)/2),pts.length-1];
+  idx.forEach(i=>{const d=new Date(pts[i].date);ctx.fillText(d.getDate()+'/'+(d.getMonth()+1),X(i),h-8)});
 }
 function renderWeightChart(){
   const canvas=document.getElementById('weightChart');
@@ -4094,11 +4270,77 @@ function logWeight(){
   updateProfile();
 }
 
+// ══════════ BACKUP / RESTORE (пълни данни) ══════════
+function collectAllData(){
+  const data={};
+  Object.keys(localStorage).filter(k=>k.startsWith('aia_')).forEach(k=>{data[k]=localStorage.getItem(k)});
+  return data;
+}
+function exportBackup(){
+  const data=collectAllData();
+  const keyCount=Object.keys(data).length;
+  if(!keyCount){alert('Няма данни за бекъп.');return}
+  const payload={app:'PRIME PHYSIQUE',format:'full-backup',version:1,exportedAt:new Date().toISOString(),workouts:getHistory().length,keys:keyCount,data};
+  const blob=new Blob([JSON.stringify(payload,null,2)],{type:'application/json'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');
+  a.href=url;a.download=`prime-physique-backup-${new Date().toISOString().slice(0,10)}.json`;a.click();
+  setTimeout(()=>URL.revokeObjectURL(url),1000);
+  if(typeof showToast==='function')showToast('✓','Бекъпът е свален',`${payload.workouts} тренировки`);
+}
+function importBackup(){
+  const inp=document.getElementById('backupFileInput');
+  if(!inp)return;
+  inp.value='';
+  inp.click();
+}
+function handleBackupFile(e){
+  const file=e.target.files&&e.target.files[0];
+  if(!file)return;
+  const reader=new FileReader();
+  reader.onload=ev=>{
+    try{
+      const payload=JSON.parse(ev.target.result);
+      if(!payload||typeof payload.data!=='object'||payload.data===null)throw new Error('файлът не е бекъп на PRIME PHYSIQUE');
+      const keys=Object.keys(payload.data).filter(k=>k.startsWith('aia_'));
+      if(!keys.length)throw new Error('няма данни за възстановяване');
+      let workouts=payload.workouts;
+      if(typeof workouts!=='number'){try{workouts=JSON.parse(payload.data['aia_history']||'[]').length}catch(_){workouts='?'}}
+      const when=payload.exportedAt?new Date(payload.exportedAt).toLocaleDateString('bg-BG',{day:'numeric',month:'long',year:'numeric'}):'неизвестна дата';
+      const current=getHistory().length;
+      if(!confirm(`Възстанови бекъп от ${when}?\n\nБекъпът съдържа: ${workouts} тренировки\nСега в приложението: ${current} тренировки\n\nТОВА ЩЕ ЗАМЕНИ ВСИЧКИ ТЕКУЩИ ДАННИ.`))return;
+      Object.keys(localStorage).filter(k=>k.startsWith('aia_')).forEach(k=>localStorage.removeItem(k));
+      keys.forEach(k=>localStorage.setItem(k,payload.data[k]));
+      alert('Данните са възстановени. Приложението ще се презареди.');
+      location.reload();
+    }catch(err){
+      alert('Възстановяването се провали: '+err.message);
+    }
+  };
+  reader.onerror=()=>alert('Файлът не можа да бъде прочетен.');
+  reader.readAsText(file);
+}
+
+// Пълен CSV — всяка серия на отделен ред
 function exportData(){
-  const h=getHistory();const wl=getWeightLog();
-  let csv='Date,Program,Day,Duration(min),Exercises\n';
-  h.forEach(w=>{csv+=`${w.date},${w.program},${w.dayName},${Math.floor(w.duration/60)},${w.exercises.length}\n`});
-  const blob=new Blob([csv],{type:'text/csv'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='ai-architect-fitness.csv';a.click();
+  const h=getHistory().slice().sort((a,b)=>new Date(a.date)-new Date(b.date));
+  if(!h.length){alert('Няма тренировки за експорт.');return}
+  const q=v=>`"${String(v==null?'':v).replace(/"/g,'""')}"`;
+  let csv='Дата,Програма,Ден,Времетраене(мин),Упражнение,Мускул,Серия,Килограми,Повторения\n';
+  h.forEach(w=>{
+    const d=new Date(w.date).toISOString().slice(0,10);
+    const dur=Math.floor((w.duration||0)/60);
+    (w.exercises||[]).forEach(ex=>{
+      (ex.sets||[]).forEach((s,si)=>{
+        csv+=[d,q(w.program),q(w.dayName),dur,q(ex.name),q(ex.muscle),si+1,s.kg||'',s.reps||''].join(',')+'\n';
+      });
+    });
+  });
+  const blob=new Blob(['﻿'+csv],{type:'text/csv;charset=utf-8'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');
+  a.href=url;a.download=`prime-physique-тренировки-${new Date().toISOString().slice(0,10)}.csv`;a.click();
+  setTimeout(()=>URL.revokeObjectURL(url),1000);
 }
 
 function clearAllData(){if(!confirm('Изтрий ВСИЧКИ данни? Това е необратимо.'))return;Object.keys(localStorage).filter(k=>k.startsWith('aia_')).forEach(k=>localStorage.removeItem(k));location.reload()}
