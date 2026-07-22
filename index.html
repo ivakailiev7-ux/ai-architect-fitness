@@ -1682,24 +1682,35 @@ body::before{
   border-radius:24px !important;
   overflow:hidden;
 }
+/* clean lime top hairline — fully overrides v3 crimson ::before */
 .calorie-card::before{
-  content:"CALORIE BUDGET / TODAY";
-  position:absolute; top:14px; right:18px; z-index:2;
-  font-family:var(--font-m);
-  font-size:8.5px; letter-spacing:.22em;
-  color:var(--ink3); text-transform:uppercase;
+  content:"" !important;
+  position:absolute !important; top:0 !important; left:0 !important; right:0 !important;
+  bottom:auto !important; height:1px !important; width:auto !important;
+  background:linear-gradient(90deg,transparent,var(--acc),transparent) !important;
+  opacity:.55; font-size:0 !important; letter-spacing:0 !important; z-index:2;
 }
 .calorie-card::after{
   background:radial-gradient(circle at 85% -10%,var(--acc-soft) 0%,transparent 58%) !important;
   width:300px !important; height:300px !important;
   top:-30% !important; right:-15% !important;
 }
+/* editorial micro-label — HOME hero calorie card only (real element, no overlap) */
+.cal-eyebrow{
+  display:block; font-family:var(--font-m);
+  font-size:8.5px; letter-spacing:.22em; text-transform:uppercase;
+  color:var(--ink3); margin-bottom:14px;
+}
+#page-nutrition .cal-eyebrow{display:none}
 .cal-center .num{
   font-family:var(--font-d) !important;
-  font-size:38px !important; font-weight:700 !important;
+  font-weight:700 !important;
   letter-spacing:-.01em !important; color:var(--ink) !important;
   font-variant-numeric:tabular-nums lining-nums;
 }
+/* font-size scoped per card: big ring on home, small ring on nutrition */
+#page-home .calorie-card .cal-center .num{font-size:36px !important}
+#page-nutrition .calorie-card .cal-center .num{font-size:21px !important}
 .cal-center .lbl{
   font-family:var(--font-m) !important;
   font-size:9px !important; letter-spacing:.22em !important;
@@ -2106,18 +2117,345 @@ body::before{
 /* ambient canvas softer in editorial mode */
 #ambientCanvas{opacity:.35 !important}
 
+/* ════════════════════════════════════════════════════════════════
+   PRIME PHYSIQUE — APPLE FITNESS v5 (FINAL LAYER · WINS CASCADE)
+   San Francisco · Activity-ring palette · clean vibrancy · 28 Jun 2026
+   ════════════════════════════════════════════════════════════════ */
+:root{
+  /* Apple system dark-mode greys (exact) */
+  --bg:#000000; --paper:#1C1C1E; --paper2:#2C2C2E; --paper3:#3A3A3C;
+  --hair:rgba(255,255,255,.08); --hair2:rgba(255,255,255,.14);
+  /* Activity-ring trio */
+  --move:#FA114F; --move2:#FF6482;          /* red/pink  (protein) */
+  --exercise:#A6FF00; --exercise2:#C5FF4A;  /* green     (carbs)   */
+  --stand:#16E7E1; --stand2:#1AF2A8;        /* cyan/teal (fat)     */
+  --acc:#FF375F; --acc-dim:#FA114F; --acc-deep:#D70036;  /* systemPink primary */
+  --acc-soft:rgba(255,55,95,.14); --acc-glow:rgba(255,55,95,.32);
+  --acc-grad:linear-gradient(135deg,#FF375F 0%,#FF6482 100%);
+  --acc-grad-v:linear-gradient(180deg,#FF375F 0%,#FA114F 100%);
+  /* Apple label colours */
+  --ink:#FFFFFF; --ink2:rgba(235,235,245,.62); --ink3:rgba(235,235,245,.32); --ink4:rgba(235,235,245,.18);
+  --t1:var(--ink); --t2:var(--ink2); --t3:var(--ink3); --t4:var(--ink4);
+  /* San Francisco — real SF on iPhone/Mac, clean fallback elsewhere */
+  --font-d:-apple-system,BlinkMacSystemFont,"SF Pro Display","SF Pro Rounded",ui-rounded,system-ui,"Inter",sans-serif;
+  --font-b:-apple-system,BlinkMacSystemFont,"SF Pro Text",system-ui,"Inter",sans-serif;
+  --font-m:ui-monospace,"SF Mono","JetBrains Mono",monospace;
+  --font-round:-apple-system,ui-rounded,"SF Pro Rounded",BlinkMacSystemFont,system-ui,sans-serif;
+  --r-card:22px; --r-inner:16px; --r-pill:999px;
+  --spring:cubic-bezier(.32,.72,0,1); --spring-soft:cubic-bezier(.22,1,.36,1);
+  --tr:.4s var(--spring);
+}
+body{
+  background:var(--bg) !important; color:var(--ink) !important;
+  font-family:var(--font-b) !important;
+  letter-spacing:-.015em !important;
+  -webkit-font-smoothing:antialiased;
+}
+html,body{background:#000 !important}
+.app{background:#000 !important}
+
+/* kill editorial textures — Apple is clean */
+body::before{display:none !important}          /* grain overlay off */
+#ambientCanvas{display:none !important}         /* particles off */
+.marquee{display:none !important}               /* magazine ticker off */
+
+/* ── DATE OVERLINE (was the editorial ED. bar) ─────────── */
+.ed-bar{
+  padding:16px 2px 2px !important;
+  font-family:var(--font-b) !important;
+  font-size:13px !important; letter-spacing:-.01em !important;
+  text-transform:uppercase !important;
+  color:var(--ink3) !important; font-weight:600 !important;
+  gap:0 !important;
+}
+.ed-bar .ed-dot,.ed-bar .ed-divider,.ed-bar .ed-time,.ed-bar .ed-status{display:none !important}
+.ed-bar .ed-edition{display:none !important}
+.ed-bar .ed-day::after{content:""}
+.ed-bar .ed-day{color:var(--ink3) !important;font-weight:600 !important}
+
+/* ── GREETING — Apple large title ──────────────────────── */
+.greeting-hero{margin:2px 0 0 !important;line-height:1.04 !important}
+.greeting-hero .gh-line1{
+  font-family:var(--font-d) !important;
+  font-size:34px !important; font-weight:700 !important;
+  letter-spacing:-.02em !important;
+  text-transform:none !important;
+  color:var(--ink) !important; opacity:1 !important;
+  display:inline !important;
+}
+.greeting-hero .gh-line2{
+  font-family:var(--font-d) !important;
+  font-size:34px !important; font-weight:700 !important;
+  letter-spacing:-.02em !important;
+  text-transform:none !important;
+  color:var(--acc) !important; -webkit-text-fill-color:var(--acc) !important;
+  background:none !important; text-shadow:none !important;
+  display:inline !important; line-height:1.04 !important; padding:0 !important;
+}
+.greeting-hero-sub{
+  font-family:var(--font-b) !important;
+  font-size:15px !important; color:var(--ink2) !important;
+  letter-spacing:-.01em !important; text-transform:none !important;
+  margin:4px 0 0 !important; font-weight:400 !important;
+}
+.greeting-hero-sub::before{display:none !important}
+
+/* ── CARDS — Apple elevated surfaces ───────────────────── */
+.weekly-goal-card,.last-workout-card,.trend-card,.calorie-card,
+.tdee-card,.recovery-card,.sleep-card,.cycle-card,.progress-chart,
+.quick-action,.program-card,.card,.water-card,.profile-stats,
+.stat-box-new,.meal-section{
+  background:var(--paper) !important;
+  border:none !important;
+  border-radius:var(--r-card) !important;
+  box-shadow:0 1px 1px rgba(0,0,0,.4),0 8px 24px -12px rgba(0,0,0,.5) !important;
+  position:relative; isolation:isolate;
+}
+.calorie-card::before,.calorie-card::after{display:none !important}
+.cal-eyebrow{display:none !important}   /* editorial holdover — not Apple */
+
+/* ── SECTION HEADERS — Apple grouped-list style ────────── */
+.section-h,.section-title{
+  font-family:var(--font-d) !important;
+  font-size:22px !important; font-weight:700 !important;
+  letter-spacing:-.02em !important; text-transform:none !important;
+  color:var(--ink) !important;
+  margin:28px 0 12px !important; display:flex; align-items:center; gap:8px;
+}
+.section-h::before,.section-title::before{display:none !important}
+.section-h .section-h-link{
+  font-family:var(--font-b) !important; font-size:15px !important;
+  font-weight:400 !important; letter-spacing:-.01em !important;
+  text-transform:none !important; color:var(--acc) !important; margin-left:auto;
+}
+
+/* ── CALORIE / ACTIVITY RING — thick Apple ring ────────── */
+.cal-ring .progress,.cal-ring .bg{stroke-width:11 !important;stroke-linecap:round !important}
+#page-nutrition .cal-ring .progress,#page-nutrition .cal-ring .bg{stroke-width:9 !important}
+.cal-ring .bg{stroke:rgba(255,255,255,.08) !important}
+.cal-ring .progress{stroke:url(#ringGrad) !important;filter:drop-shadow(0 0 4px rgba(250,17,79,.5))}
+.cal-center .num{
+  font-family:var(--font-d) !important; font-weight:700 !important;
+  letter-spacing:-.03em !important; color:var(--ink) !important;
+}
+.cal-center .lbl{
+  font-family:var(--font-b) !important; font-size:11px !important;
+  letter-spacing:0 !important; text-transform:uppercase !important;
+  color:var(--ink3) !important; font-weight:600 !important; margin-top:3px !important;
+}
+.ci-label{font-family:var(--font-b) !important;font-size:14px !important;letter-spacing:-.01em !important;text-transform:none !important;color:var(--ink2) !important;font-weight:400 !important}
+.ci-val{font-family:var(--font-d) !important;font-size:16px !important;font-weight:600 !important;letter-spacing:-.01em !important;color:var(--ink) !important}
+
+/* ── WEEKLY GOAL ───────────────────────────────────────── */
+.wgr-progress{stroke:url(#ringGrad) !important;stroke-width:8 !important;filter:drop-shadow(0 0 4px rgba(250,17,79,.5)) !important}
+.wgr-bg{stroke:rgba(255,255,255,.08) !important}
+.wgc-num{font-family:var(--font-d) !important;font-weight:700 !important;letter-spacing:-.02em !important;color:var(--ink) !important}
+.wgc-lbl{font-family:var(--font-b) !important;font-size:10px !important;letter-spacing:0 !important;text-transform:uppercase !important;color:var(--ink3) !important;font-weight:600 !important}
+.wg-title{font-family:var(--font-d) !important;font-size:20px !important;font-weight:700 !important;letter-spacing:-.02em !important;text-transform:none !important;color:var(--ink) !important}
+.wg-sub{font-family:var(--font-b) !important;font-size:14px !important;letter-spacing:-.01em !important;text-transform:none !important;color:var(--ink2) !important;font-weight:400 !important;margin-top:2px}
+.wg-remaining{font-family:var(--font-b) !important;font-size:13px !important;color:var(--ink3) !important}
+.wg-bar{background:rgba(255,255,255,.1) !important;box-shadow:none !important}
+.wg-bar.done{background:var(--acc) !important;box-shadow:none !important}
+
+/* ── STAT BOXES ────────────────────────────────────────── */
+.stat-boxes-new{gap:10px !important;margin-bottom:18px !important}
+.stat-box-new{border-radius:18px !important;padding:16px 14px !important}
+.stat-box-new::after{display:none !important}
+.sbn-label{font-family:var(--font-b) !important;font-size:13px !important;letter-spacing:-.01em !important;text-transform:none !important;color:var(--ink2) !important;font-weight:500 !important;margin-bottom:6px !important}
+.sbn-num{font-family:var(--font-d) !important;font-size:30px !important;font-weight:700 !important;letter-spacing:-.03em !important;color:var(--ink) !important;line-height:1 !important}
+.sbn-sub{font-family:var(--font-b) !important;font-size:12px !important;letter-spacing:-.01em !important;color:var(--ink3) !important;margin-top:3px !important}
+.sbn-icon{color:var(--ink4) !important;opacity:1}
+
+/* ── QUICK ACTIONS — Apple tappable tiles ──────────────── */
+.quick-action{padding:18px !important;border-radius:20px !important;transition:transform var(--tr),background var(--tr) !important}
+.quick-action::before{display:none !important}
+.quick-action:active{transform:scale(.97);background:var(--paper2) !important}
+.quick-action .qa-icon{
+  width:40px !important;height:40px !important;border-radius:50% !important;
+  background:var(--acc) !important;border:none !important;color:#fff !important;
+  margin-bottom:14px !important;box-shadow:0 4px 14px var(--acc-glow) !important;
+}
+.quick-action .qa-icon svg{width:18px !important;height:18px !important;stroke:#fff !important;stroke-width:2.4 !important}
+.quick-action .qa-text h4{font-family:var(--font-d) !important;font-size:17px !important;font-weight:600 !important;letter-spacing:-.02em !important;text-transform:none !important;color:var(--ink) !important;white-space:normal}
+.quick-action .qa-text p{font-family:var(--font-b) !important;font-size:13px !important;letter-spacing:-.01em !important;text-transform:none !important;color:var(--ink3) !important;margin-top:2px}
+
+/* ── LAST WORKOUT + TREND ──────────────────────────────── */
+.last-workout-card,.trend-card{padding:18px !important;border-radius:20px !important}
+.lwc-label,.tc-label{font-family:var(--font-b) !important;font-size:13px !important;letter-spacing:-.01em !important;text-transform:none !important;color:var(--ink2) !important;font-weight:400 !important}
+.lwc-name{font-family:var(--font-d) !important;font-size:20px !important;font-weight:600 !important;letter-spacing:-.02em !important;text-transform:none !important;color:var(--ink) !important}
+.lwc-meta{font-family:var(--font-b) !important;font-size:13px !important;letter-spacing:-.01em !important;color:var(--ink3) !important}
+.lwc-arrow{color:var(--ink4) !important;font-weight:300}
+.tc-value{font-family:var(--font-d) !important;font-size:32px !important;font-weight:700 !important;letter-spacing:-.03em !important;color:var(--exercise) !important}
+.tc-sub{font-family:var(--font-b) !important;font-size:13px !important;color:var(--ink3) !important}
+
+/* ── MACRO BARS → Activity-ring trio ───────────────────── */
+.macro-protein .macro-bar-fill{background:linear-gradient(90deg,var(--move),var(--move2)) !important}
+.macro-carbs .macro-bar-fill{background:linear-gradient(90deg,var(--exercise),var(--exercise2)) !important}
+.macro-fat .macro-bar-fill{background:linear-gradient(90deg,var(--stand),var(--stand2)) !important}
+.macro-bar-bg{background:rgba(255,255,255,.1) !important;border-radius:999px !important;overflow:hidden}
+.macro-bar-fill{border-radius:999px !important}
+.macro-label{font-family:var(--font-b) !important;font-size:13px !important;letter-spacing:-.01em !important;text-transform:none !important;color:var(--ink2) !important;font-weight:400}
+.macro-val{font-family:var(--font-d) !important;font-size:13px !important;color:var(--ink) !important;font-weight:600}
+
+/* ── TDEE ──────────────────────────────────────────────── */
+.tdee-card{background:var(--paper) !important;border:none !important;border-radius:20px !important;padding:18px !important}
+.tdee-card h4{font-family:var(--font-d) !important;font-size:18px !important;font-weight:700 !important;letter-spacing:-.02em !important;text-transform:none !important;color:var(--ink) !important}
+.tdee-row .tdee-label{font-family:var(--font-b) !important;font-size:14px !important;letter-spacing:-.01em !important;text-transform:none !important;color:var(--ink2) !important;font-weight:400}
+.tdee-row .tdee-val{font-family:var(--font-d) !important;font-size:17px !important;font-weight:600 !important;letter-spacing:-.01em !important;color:var(--ink) !important}
+.pro-tag{background:var(--acc) !important;color:#fff !important;font-family:var(--font-b) !important;font-weight:700 !important;font-size:10px !important;letter-spacing:.04em !important;border-radius:6px !important;padding:2px 7px !important;text-transform:uppercase}
+
+/* ── PROFILE / STAT BOXES ──────────────────────────────── */
+.stat-box .num,.profile-stat .ps-num{font-family:var(--font-d) !important;font-size:28px !important;font-weight:700 !important;letter-spacing:-.03em !important;color:var(--acc) !important}
+.stat-box .label,.profile-stat .ps-label{font-family:var(--font-b) !important;font-size:13px !important;letter-spacing:-.01em !important;text-transform:none !important;color:var(--ink2) !important;font-weight:400}
+.profile-stats{background:var(--paper) !important;border-radius:18px !important}
+.profile-stat{background:transparent !important}
+.profile-name{font-family:var(--font-d) !important;font-weight:700 !important;letter-spacing:-.02em !important;color:var(--ink) !important}
+.profile-sub{font-family:var(--font-b) !important;color:var(--ink2) !important;letter-spacing:-.01em}
+
+/* ── MEAL / FOOD ───────────────────────────────────────── */
+.meal-header h3{font-family:var(--font-d) !important;font-weight:600 !important;text-transform:none !important;letter-spacing:-.02em !important;font-size:18px !important;color:var(--ink) !important}
+.meal-cal{font-family:var(--font-b) !important;font-size:13px !important;letter-spacing:-.01em !important;text-transform:none !important;color:var(--ink3) !important}
+.food-item .fi-cal{color:var(--acc) !important;font-family:var(--font-d) !important;font-weight:600}
+.food-item .fi-name{font-family:var(--font-b) !important;color:var(--ink) !important;letter-spacing:-.01em}
+
+/* ── RECOVERY / SLEEP / CYCLE ──────────────────────────── */
+.recovery-card,.sleep-card,.cycle-card{padding:18px !important;border-radius:20px !important}
+.sleep-header h4,.cycle-phase-info .cp-name{font-family:var(--font-d) !important;font-weight:600 !important;text-transform:none !important;letter-spacing:-.02em !important;font-size:18px !important;color:var(--ink) !important}
+.sleep-bar.optimal{background:linear-gradient(180deg,var(--exercise),var(--exercise2)) !important;box-shadow:none}
+.sleep-bar.good{background:var(--stand) !important}
+.sleep-bar.poor{background:var(--acc) !important}
+.sb-label{font-family:var(--font-b) !important;font-size:11px !important;color:var(--ink3) !important}
+
+/* ── PROGRESS / WORKOUT ────────────────────────────────── */
+.progress-chart h3,.history-info h4{font-family:var(--font-d) !important;font-weight:600 !important;text-transform:none !important;letter-spacing:-.02em !important;color:var(--ink) !important}
+.program-card .info h3,.workout-header h2,.back-header h2{font-family:var(--font-d) !important;font-weight:700 !important;text-transform:none !important;letter-spacing:-.02em !important;color:var(--ink) !important}
+.program-card .info p{font-family:var(--font-b) !important;letter-spacing:-.01em !important;color:var(--ink2) !important}
+.exercise-item .ex-name{font-family:var(--font-d) !important;font-weight:600 !important;text-transform:none !important;letter-spacing:-.01em !important;color:var(--ink) !important}
+
+/* ── BOTTOM NAV — Apple frosted tab bar ────────────────── */
+.nav.nav-5{
+  position:absolute !important; left:0 !important; right:0 !important; bottom:0 !important;
+  background:rgba(20,20,22,.72) !important;
+  backdrop-filter:blur(28px) saturate(180%) !important;
+  -webkit-backdrop-filter:blur(28px) saturate(180%) !important;
+  border:none !important; border-top:.5px solid rgba(255,255,255,.12) !important;
+  border-radius:0 !important;
+  padding:8px 0 calc(env(safe-area-inset-bottom,6px) + 4px) !important;
+  box-shadow:none !important;
+}
+.nav.nav-5 .nav-item{
+  color:var(--ink3) !important;
+  font-family:var(--font-b) !important;
+  font-size:10px !important; letter-spacing:-.01em !important;
+  text-transform:none !important; font-weight:500 !important;
+  padding:6px 0 !important; gap:3px !important;
+  transition:color var(--tr) !important;
+}
+.nav.nav-5 .nav-item svg{width:24px !important;height:24px !important;stroke-width:1.9 !important}
+.nav.nav-5 .nav-item.active{color:var(--acc) !important}
+.nav-glow-indicator{display:none !important}   /* Apple tab bars have no underline */
+.nav-action-btn{
+  background:var(--acc-grad) !important; border:4px solid #000 !important;
+  width:54px !important;height:54px !important;border-radius:50% !important;color:#fff !important;
+  box-shadow:0 6px 20px var(--acc-glow),inset 0 1px 0 rgba(255,255,255,.3) !important;
+  margin:-20px 4px 0 !important; transition:transform var(--tr) !important;
+}
+.nav-action-btn:active{transform:scale(.9) !important}
+.nav-action-btn svg{stroke:#fff !important;stroke-width:2.6 !important;width:24px !important;height:24px !important}
+.app-content{padding-bottom:108px !important}
+
+/* ── HEADER ────────────────────────────────────────────── */
+.header{
+  background:rgba(0,0,0,.6) !important;
+  backdrop-filter:blur(28px) saturate(180%) !important;
+  -webkit-backdrop-filter:blur(28px) saturate(180%) !important;
+  border-bottom:.5px solid rgba(255,255,255,.1) !important;
+}
+.header::after{display:none !important}
+.logo-p-text .lt-prime{font-family:var(--font-d) !important;font-weight:700 !important;letter-spacing:-.01em !important;color:var(--ink) !important}
+.logo-p-text .lt-physique{font-family:var(--font-d) !important;font-weight:600 !important;letter-spacing:.02em !important;color:var(--acc) !important}
+
+/* ── ONBOARDING ────────────────────────────────────────── */
+.ob-title{font-family:var(--font-d) !important;font-weight:700 !important;text-transform:none !important;letter-spacing:-.02em !important;font-size:32px !important;color:var(--ink) !important}
+.ob-sub{font-family:var(--font-b) !important;font-size:15px !important;color:var(--ink2) !important;letter-spacing:-.01em !important}
+.ob-label{font-family:var(--font-b) !important;font-size:13px !important;letter-spacing:-.01em !important;text-transform:none !important;color:var(--ink2) !important;font-weight:500 !important}
+.ob-btn{
+  background:var(--acc) !important;color:#fff !important;
+  font-family:var(--font-d) !important;font-size:17px !important;
+  letter-spacing:-.01em !important;text-transform:none !important;font-weight:600 !important;
+  border-radius:14px !important;box-shadow:0 6px 18px var(--acc-glow) !important;padding:17px !important;
+  transition:transform var(--tr) !important;
+}
+.ob-btn:active{transform:scale(.97) !important}
+.ob-select-btn{border-radius:14px !important}
+.ob-select-btn.selected{border-color:var(--acc) !important;background:var(--acc-soft) !important;color:var(--acc) !important}
+.ob-dot.active{background:var(--acc) !important}
+.ob-input{background:var(--paper) !important;border:1px solid var(--hair) !important;color:var(--ink) !important;font-family:var(--font-b) !important;border-radius:12px !important}
+.ob-input:focus{border-color:var(--acc) !important;box-shadow:0 0 0 3px var(--acc-soft) !important;outline:none !important}
+
+/* ── PAGE TRANSITIONS — Apple gentle ───────────────────── */
+.page.active{opacity:1 !important;transform:translateY(0) scale(1) !important}
+.page.active .card,.page.active .calorie-card,.page.active .stat-box,
+.page.active .quick-action,.page.active .weekly-goal-card,.page.active .stat-box-new,
+.page.active .greeting-hero,.page.active .ed-bar{
+  animation:staggerApple .5s var(--spring-soft) both !important;
+}
+.page.active .ed-bar{animation-delay:.02s !important}
+.page.active .greeting-hero{animation-delay:.05s !important}
+.page.active .weekly-goal-card{animation-delay:.1s !important}
+.page.active .stat-boxes-new .stat-box-new:nth-child(1){animation-delay:.14s !important}
+.page.active .stat-boxes-new .stat-box-new:nth-child(2){animation-delay:.17s !important}
+.page.active .stat-boxes-new .stat-box-new:nth-child(3){animation-delay:.2s !important}
+.page.active .calorie-card{animation-delay:.24s !important}
+@keyframes staggerApple{
+  from{opacity:0;transform:translateY(14px) scale(.98)}
+  to{opacity:1;transform:translateY(0) scale(1)}
+}
+
+::selection{background:var(--acc);color:#fff}
+
+/* ── PERSONAL PROGRAM: superset badge + day focus ──────── */
+.ss-badge{
+  display:inline-block;vertical-align:middle;margin-left:7px;
+  background:rgba(255,55,95,.16);color:var(--acc);
+  font-family:var(--font-b);font-size:9.5px;font-weight:700;
+  letter-spacing:.06em;text-transform:uppercase;
+  padding:3px 7px;border-radius:6px;white-space:nowrap;
+}
+.day-focus{
+  font-family:var(--font-b);font-size:13px;font-weight:500;
+  color:var(--ink2);margin:0 0 14px;letter-spacing:-.01em;
+}
+.day-focus::before{content:"Акцент: ";color:var(--ink3)}
+/* visually group superset pairs with a lime-free accent rail */
+.exercise-item.in-ss{
+  border-left:2px solid rgba(255,55,95,.45) !important;
+  padding-left:12px !important;
+  border-radius:0 var(--r-inner) var(--r-inner) 0 !important;
+}
+
+/* ── SF-Symbol-style icons (meal / water / last-workout) ── */
+.meal-ic{display:inline-flex;align-items:center;justify-content:center;vertical-align:-3px;margin-right:2px}
+.meal-ic svg{width:19px;height:19px}
+.water-card .water-icon{font-size:0 !important;display:flex;align-items:center;justify-content:center}
+.lwc-img{
+  background:rgba(255,55,95,.12) !important;
+  filter:none !important;
+  border-radius:18px !important;
+}
+
 </style>
 </head>
 <body>
 <svg class="cal-svg-defs" aria-hidden="true">
   <defs>
     <linearGradient id="ringGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#FF2D55"/>
-      <stop offset="100%" stop-color="#FF6B35"/>
+      <stop offset="0%" stop-color="#FA114F"/>
+      <stop offset="100%" stop-color="#FF6482"/>
     </linearGradient>
     <linearGradient id="ringGrad2" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#FF2D55"/>
-      <stop offset="100%" stop-color="#FF6B35"/>
+      <stop offset="0%" stop-color="#FA114F"/>
+      <stop offset="100%" stop-color="#FF6482"/>
     </linearGradient>
   </defs>
 </svg>
@@ -2279,6 +2617,7 @@ body::before{
         <!-- Existing calorie tracking -->
         <div class="section-h">Хранене днес</div>
         <div class="calorie-card">
+          <span class="cal-eyebrow">Calorie Budget / Today</span>
           <div class="cal-top">
             <div class="cal-ring">
               <svg viewBox="0 0 120 120"><circle class="bg" cx="60" cy="60" r="52"/><circle class="progress" id="calRing" cx="60" cy="60" r="52" stroke-dasharray="326.7" stroke-dashoffset="326.7"/></svg>
@@ -2367,7 +2706,7 @@ body::before{
         </div>
         <div id="mealSections"></div>
         <div class="card water-card">
-          <div class="water-icon">💧</div>
+          <div class="water-icon"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:#0AB6E8"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></svg></div>
           <div class="water-info"><h4>Вода</h4><p id="waterText">0 / 8 чаши</p></div>
           <div class="water-btns">
             <button class="water-btn" onclick="addWater(-1)">−</button>
@@ -2675,6 +3014,44 @@ const FOODS = [
 // WORKOUT PROGRAMS
 // ==============================
 const PROGRAMS=[
+  // ── ЛИЧНА ПРОГРАМА (Иво) — 4 тренировки, ротация 2 вкл / 2 почивка ──
+  {id:'ivo-ul',name:'Моята програма',desc:'Горна-Долна • 2 вкл / 2 почивка',icon:'🎯',personal:true,days:[
+    {name:'Долна А',focus:'клек акцент',exercises:[
+      {name:'Клек с щанга',en:'Squat',muscle:'Quads',sets:4,reps:'4-6',rir:'RIR 1-2',rest:'3-4 мин'},
+      {name:'Румънска тяга',en:'Romanian Deadlift',muscle:'Hamstrings',sets:3,reps:'6-8',rir:'RIR 1-2',rest:'3 мин'},
+      {name:'Преса с крака',en:'Leg Press',muscle:'Quads',sets:3,reps:'8-10',rir:'RIR 1-2',rest:'2 мин'},
+      {name:'Сгъване задно бедро (седеж)',en:'Leg Curls',muscle:'Hamstrings',sets:3,reps:'10-12',rir:'последна до отказ',rest:'90 сек'},
+      {name:'Прасци от стоеж',en:'Standing Calf Raises',muscle:'Calves',sets:4,reps:'8-12',ss:'А',rest:'60-90 сек'},
+      {name:'Корем на скрипец',en:'Cable Crunches',muscle:'Core',sets:3,reps:'10-15',ss:'А',rest:'60-90 сек'},
+      {name:'Странично рамо с дъмбели',en:'Lateral Raises',muscle:'Shoulders',sets:3,reps:'12-15',rir:'последна до отказ',rest:'60 сек'}
+    ]},
+    {name:'Горна А',focus:'бенч акцент',exercises:[
+      {name:'Бенч прес с щанга',en:'Barbell Bench Press',muscle:'Chest',sets:4,reps:'4-6',rir:'RIR 1-2',rest:'3 мин'},
+      {name:'Набирания с тежест',en:'Pull-Ups',muscle:'Back',sets:4,reps:'5-8',rir:'RIR 1-2',rest:'3 мин'},
+      {name:'Раменна преса с дъмбели (седеж)',en:'DB Shoulder Press',muscle:'Shoulders',sets:3,reps:'6-10',rir:'RIR 1-2',rest:'2 мин'},
+      {name:'Гребане с опора на гърди',en:'Dumbbell Rows',muscle:'Back',sets:3,reps:'8-10',rest:'2 мин'},
+      {name:'Бицепс на наклонена пейка',en:'Incline DB Curls',muscle:'Biceps',sets:3,reps:'8-12',ss:'А',rir:'последна до отказ',rest:'60-90 сек'},
+      {name:'Трицепс над глава с въже',en:'Overhead Tricep Ext.',muscle:'Triceps',sets:3,reps:'10-12',ss:'А',rir:'последна до отказ',rest:'60-90 сек'}
+    ]},
+    {name:'Долна Б',focus:'тяга акцент',exercises:[
+      {name:'Мъртва тяга',en:'Deadlift',muscle:'Back',sets:3,reps:'3-5',rir:'RIR 2',rest:'4-5 мин'},
+      {name:'Хак клек (или преса)',en:'Hack Squat',muscle:'Quads',sets:3,reps:'8-10',rir:'RIR 1-2',rest:'2-3 мин'},
+      {name:'Разгъване за бедро',en:'Leg Extensions',muscle:'Quads',sets:3,reps:'12-15',rir:'последна до отказ',rest:'90 сек'},
+      {name:'Сгъване от лег',en:'Leg Curls',muscle:'Hamstrings',sets:3,reps:'8-12',rest:'90 сек'},
+      {name:'Прасци от седеж',en:'Seated Calf Raises',muscle:'Calves',sets:4,reps:'10-15',rest:'60 сек'},
+      {name:'Хамър сгъвания',en:'Hammer Curls',muscle:'Biceps',sets:3,reps:'10-12',ss:'А',rest:'60-90 сек'},
+      {name:'Разгъване над глава на скрипец',en:'Overhead Tricep Ext.',muscle:'Triceps',sets:3,reps:'10-12',ss:'А',rest:'60-90 сек'}
+    ]},
+    {name:'Горна Б',focus:'преси акцент',exercises:[
+      {name:'Военна преса с щанга',en:'Overhead Press',muscle:'Shoulders',sets:4,reps:'5-8',rir:'RIR 1-2',rest:'3 мин'},
+      {name:'Гребане с опора (T-bar)',en:'T-Bar Row',muscle:'Back',sets:4,reps:'6-8',rest:'2-3 мин'},
+      {name:'Дъмбел преса на наклон',en:'Incline DB Press',muscle:'Chest',sets:3,reps:'8-12',rest:'2 мин'},
+      {name:'Пулдаун с неутрален хват',en:'Lat Pulldown',muscle:'Back',sets:3,reps:'10-12',rest:'90 сек'},
+      {name:'Странично рамо на кабел',en:'Cable Lateral Raises',muscle:'Shoulders',sets:3,reps:'12-15',rir:'последна до отказ',rest:'60 сек'},
+      {name:'Бицепс с EZ-лост',en:'Barbell Curls',muscle:'Biceps',sets:3,reps:'8-12',ss:'А',rest:'60-90 сек'},
+      {name:'Трицепс на скрипец',en:'Tricep Pushdowns',muscle:'Triceps',sets:3,reps:'10-15',ss:'А',rest:'60-90 сек'}
+    ]}
+  ]},
   {id:'ppl',name:'Push / Pull / Legs',desc:'6 дни/седмица • Средно ниво',icon:'💪',days:[
     {name:'Push',exercises:[{name:'Bench Press',muscle:'Chest',sets:4,reps:'8-10'},{name:'Overhead Press',muscle:'Shoulders',sets:4,reps:'8-10'},{name:'Incline DB Press',muscle:'Chest',sets:3,reps:'10-12'},{name:'Lateral Raises',muscle:'Shoulders',sets:4,reps:'12-15'},{name:'Tricep Pushdowns',muscle:'Triceps',sets:3,reps:'10-12'},{name:'Overhead Tricep Ext.',muscle:'Triceps',sets:3,reps:'10-12'}]},
     {name:'Pull',exercises:[{name:'Deadlift',muscle:'Back',sets:4,reps:'5-6'},{name:'Pull-Ups',muscle:'Back',sets:4,reps:'8-10'},{name:'Barbell Rows',muscle:'Back',sets:4,reps:'8-10'},{name:'Face Pulls',muscle:'Rear Delts',sets:3,reps:'15-20'},{name:'Barbell Curls',muscle:'Biceps',sets:3,reps:'10-12'},{name:'Hammer Curls',muscle:'Biceps',sets:3,reps:'10-12'}]},
@@ -2765,7 +3142,12 @@ const COACH_KB=[
 const COACH_TOPICS=['Протеин','Креатин','Обем','Почивка','Отслабване','Качване на маса','Сън','Добавки','Начинаещи','Плато'];
 
 const MEALS=['Закуска','Обяд','Вечеря','Снакс'];
-const MEAL_ICONS=['🌅','☀️','🌙','🍎'];
+const MEAL_ICONS=[
+  '<span class="meal-ic" style="color:#FA114F"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 18a5 5 0 0 0-10 0"/><line x1="12" y1="2" x2="12" y2="9"/><line x1="4.22" y1="10.22" x2="5.64" y2="11.64"/><line x1="1" y1="18" x2="3" y2="18"/><line x1="21" y1="18" x2="23" y2="18"/><line x1="18.36" y1="11.64" x2="19.78" y2="10.22"/><line x1="23" y1="22" x2="1" y2="22"/><polyline points="8 6 12 2 16 6"/></svg></span>',
+  '<span class="meal-ic" style="color:#FF9500"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></span>',
+  '<span class="meal-ic" style="color:#5E5CE6"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg></span>',
+  '<span class="meal-ic" style="color:#34C759"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20c4 0 6-3.5 6-7s-2.5-6-5.5-6c-.8 0-1.5.2-2.5.5-1-.3-1.7-.5-2.5-.5C4.5 7 2 10 2 13s2 7 6 7c.7 0 1.3-.2 2-.4.7.2 1.3.4 2 .4z"/><path d="M12 7c0-1.5 1-3.5 3-3.5"/></svg></span>'
+];
 
 // ==============================
 // ACHIEVEMENTS DEFINITIONS
@@ -2861,7 +3243,15 @@ function updateAll(){
 function updateEditorialBar(){
   const now=new Date();
   const dayMap=['SUN','MON','TUE','WED','THU','FRI','SAT'];
-  const day=dayMap[now.getDay()];
+  // Apple-style date overline (Bulgarian locale), e.g. "СРЯДА, 28 ЮНИ"
+  let day;
+  try{
+    day=now.toLocaleDateString('bg-BG',{weekday:'long',day:'numeric',month:'long'}).toUpperCase();
+    if(!/[А-Я]/.test(day)) throw new Error('no bg locale'); // fell back to ASCII
+  }catch(e){
+    try{ day=now.toLocaleDateString('en-US',{weekday:'long',day:'numeric',month:'long'}).toUpperCase(); }
+    catch(e2){ day=dayMap[now.getDay()]; }
+  }
   const hh=String(now.getHours()).padStart(2,'0');
   const mm=String(now.getMinutes()).padStart(2,'0');
   // Edition number: days since project epoch (1 Jun 2026)
@@ -3092,13 +3482,8 @@ function updateNewDashboardCards(){
       const muscles=new Set();last.exercises.forEach(ex=>muscles.add(ex.muscle));
       const lwcImg=card.querySelector('.lwc-img');
       if(lwcImg){
-        let emoji='💪';
-        if(muscles.has('Chest')||muscles.has('Triceps'))emoji='💪';
-        else if(muscles.has('Back')||muscles.has('Biceps'))emoji='🔱';
-        else if(muscles.has('Quads')||muscles.has('Hamstrings')||muscles.has('Glutes'))emoji='🦵';
-        else if(muscles.has('Shoulders'))emoji='🏋️';
-        else if(muscles.has('Core'))emoji='🔥';
-        lwcImg.textContent=emoji;
+        // clean SF-Symbol-style dumbbell (Apple look) instead of emoji
+        lwcImg.innerHTML='<svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="color:var(--acc)"><path d="m6.5 6.5 11 11"/><path d="m21 21-1-1"/><path d="m3 3 1 1"/><path d="m18 22 4-4"/><path d="m2 6 4-4"/><path d="m3 10 7-7"/><path d="m14 21 7-7"/></svg>';
       }
     }
   }
@@ -3298,7 +3683,14 @@ function renderProgramDetail(){
 function selectDay(i){currentDay=i;document.querySelectorAll('.day-btn').forEach((b,j)=>b.classList.toggle('active',j===i));renderExerciseList()}
 function renderExerciseList(){
   const day=currentProgram.days[currentDay];
-  document.getElementById('exerciseList').innerHTML=day.exercises.map(ex=>`<div class="exercise-item"><div class="ex-info"><div class="ex-name">${ex.name}</div><div class="ex-detail">${ex.sets} sets × ${ex.reps} reps</div></div><span class="muscle-tag">${ex.muscle}</span></div>`).join('');
+  const focus=day.focus?`<div class="day-focus">${day.focus}</div>`:'';
+  document.getElementById('exerciseList').innerHTML=focus+day.exercises.map(ex=>{
+    const meta=[`${ex.sets} × ${ex.reps}`];
+    if(ex.rir)meta.push(ex.rir);
+    if(ex.rest)meta.push(`почивка ${ex.rest}`);
+    const ssBadge=ex.ss?`<span class="ss-badge">СУПЕРСЕТ ${ex.ss}</span>`:'';
+    return`<div class="exercise-item${ex.ss?' in-ss':''}"><div class="ex-info"><div class="ex-name">${ex.name}${ssBadge}</div><div class="ex-detail">${meta.join(' • ')}</div></div><span class="muscle-tag">${ex.muscle}</span></div>`;
+  }).join('');
 }
 
 function startWorkout(){
@@ -3310,7 +3702,7 @@ function startWorkout(){
   activeWorkout={programId:currentProgram.id,programName:currentProgram.name,dayName:day.name,dayIndex:currentDay,startTime:workoutStartTime,
     exercises:day.exercises.map((ex,ei)=>{
       const prevEx=prev?prev.exercises.find(e=>e.name===ex.name):null;
-      return{name:ex.name,muscle:ex.muscle,targetSets:ex.sets,targetReps:ex.reps,
+      return{name:ex.name,en:ex.en,muscle:ex.muscle,targetSets:ex.sets,targetReps:ex.reps,rir:ex.rir,rest:ex.rest,ss:ex.ss,
         sets:Array.from({length:ex.sets},(_,si)=>{
           const ps=prevEx&&prevEx.sets[si]?prevEx.sets[si]:null;
           return{kg:ps?ps.kg:'',reps:ps?ps.reps:'',done:false,prevKg:ps?ps.kg:'',prevReps:ps?ps.reps:''}
@@ -3328,7 +3720,7 @@ function renderActiveWorkout(){
   document.getElementById('workoutExercises').innerHTML=activeWorkout.exercises.map((ex,ei)=>`
     <div class="card" style="margin-bottom:12px">
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
-        <div><div style="font-size:15px;font-weight:600">${ex.name} ${(()=>{const e=EXERCISES.find(x=>x.name===ex.name);return e&&e.vid?`<button class="ex-video-btn" onclick="openVideo('${e.vid}')" style="vertical-align:middle">▶ Видео</button>`:''})()}</div><div style="font-size:12px;color:var(--text2)">${ex.targetSets} × ${ex.targetReps}</div></div>
+        <div><div style="font-size:15px;font-weight:600">${ex.name}${ex.ss?`<span class="ss-badge">СУПЕРСЕТ ${ex.ss}</span>`:''} ${(()=>{const e=EXERCISES.find(x=>x.name===(ex.en||ex.name));return e&&e.vid?`<button class="ex-video-btn" onclick="openVideo('${e.vid}')" style="vertical-align:middle">▶ Видео</button>`:''})()}</div><div style="font-size:12px;color:var(--text2)">${[`${ex.targetSets} × ${ex.targetReps}`,ex.rir,ex.rest?`почивка ${ex.rest}`:''].filter(Boolean).join(' • ')}</div></div>
         <span class="muscle-tag">${ex.muscle}</span>
       </div>
       <div class="set-table-head"><div>СЕТ</div><div>ПРЕД.</div><div>КГ</div><div>ПОВТ.</div><div></div></div>
