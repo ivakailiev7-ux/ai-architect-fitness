@@ -2468,6 +2468,25 @@ body::before{display:none !important}          /* grain overlay off */
   border-radius:0 var(--r-inner) var(--r-inner) 0 !important;
 }
 
+/* ── PREVIOUS SESSION RECALL (в активна тренировка) ────── */
+.prev-session{
+  display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 10px;
+  padding:9px 11px;margin-bottom:10px;
+  background:rgba(255,55,95,.06);
+  border-radius:10px;
+  font-family:var(--font-b);font-size:12px;letter-spacing:-.01em;
+}
+.prev-session .prev-label{
+  font-size:9.5px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;
+  color:var(--acc);white-space:nowrap;
+}
+.prev-session .prev-sets{color:var(--ink2);font-variant-numeric:tabular-nums;flex:1}
+.prev-session .prev-delta{font-weight:700;font-variant-numeric:tabular-nums;white-space:nowrap}
+.prev-session .prev-delta.up{color:#34C759}
+.prev-session .prev-delta.down{color:#FF9500}
+.prev-session .prev-delta.same{color:var(--ink3)}
+.prev-session.prev-none{color:var(--ink3);background:rgba(127,127,127,.07)}
+
 /* ── SF-Symbol-style icons (meal / water / last-workout) ── */
 .meal-ic{display:inline-flex;align-items:center;justify-content:center;vertical-align:-3px;margin-right:2px}
 .meal-ic svg{width:19px;height:19px}
@@ -3080,11 +3099,13 @@ const PROGRAMS=[
     ]},
     {name:'Горна А',focus:'бенч акцент',exercises:[
       {name:'Бенч прес с щанга',en:'Barbell Bench Press',muscle:'Chest',sets:4,reps:'4-6',rir:'RIR 1-2',rest:'3 мин'},
+      {name:'Кросоувър на скрипец',en:'Cable Crossover',muscle:'Chest',sets:3,reps:'10-12',rir:'последна до отказ',rest:'90 сек'},
       {name:'Набирания с тежест',en:'Pull-Ups',muscle:'Back',sets:4,reps:'5-8',rir:'RIR 1-2',rest:'3 мин'},
       {name:'Раменна преса с дъмбели (седеж)',en:'DB Shoulder Press',muscle:'Shoulders',sets:3,reps:'6-10',rir:'RIR 1-2',rest:'2 мин'},
       {name:'Гребане с опора на гърди',en:'Dumbbell Rows',muscle:'Back',sets:3,reps:'8-10',rest:'2 мин'},
       {name:'Бицепс на наклонена пейка',en:'Incline DB Curls',muscle:'Biceps',sets:3,reps:'8-12',ss:'А',rir:'последна до отказ',rest:'60-90 сек'},
-      {name:'Трицепс над глава с въже',en:'Overhead Tricep Ext.',muscle:'Triceps',sets:3,reps:'10-12',ss:'А',rir:'последна до отказ',rest:'60-90 сек'}
+      {name:'Трицепс над глава с въже',en:'Overhead Tricep Ext.',muscle:'Triceps',sets:3,reps:'10-12',ss:'А',rir:'последна до отказ',rest:'60-90 сек'},
+      {name:'Разпъване назад (заден делт)',en:'Reverse Flyes',muscle:'Rear Delts',sets:3,reps:'12-15',ss:'А',rir:'последна до отказ',rest:'60-90 сек'}
     ]},
     {name:'Долна Б',focus:'тяга акцент',exercises:[
       {name:'Мъртва тяга',en:'Deadlift',muscle:'Back',sets:3,reps:'3-5',rir:'RIR 2',rest:'4-5 мин'},
@@ -3092,17 +3113,19 @@ const PROGRAMS=[
       {name:'Разгъване за бедро',en:'Leg Extensions',muscle:'Quads',sets:3,reps:'12-15',rir:'последна до отказ',rest:'90 сек'},
       {name:'Сгъване от лег',en:'Leg Curls',muscle:'Hamstrings',sets:3,reps:'8-12',rest:'90 сек'},
       {name:'Прасци от седеж',en:'Seated Calf Raises',muscle:'Calves',sets:4,reps:'10-15',rest:'60 сек'},
+      {name:'Странично рамо с дъмбели',en:'Lateral Raises',muscle:'Shoulders',sets:3,reps:'12-15',rir:'последна до отказ',rest:'60 сек'},
       {name:'Хамър сгъвания',en:'Hammer Curls',muscle:'Biceps',sets:3,reps:'10-12',ss:'А',rest:'60-90 сек'},
       {name:'Разгъване над глава на скрипец',en:'Overhead Tricep Ext.',muscle:'Triceps',sets:3,reps:'10-12',ss:'А',rest:'60-90 сек'}
     ]},
     {name:'Горна Б',focus:'преси акцент',exercises:[
-      {name:'Военна преса с щанга',en:'Overhead Press',muscle:'Shoulders',sets:4,reps:'5-8',rir:'RIR 1-2',rest:'3 мин'},
+      {name:'Военна преса от седеж',en:'Overhead Press',muscle:'Shoulders',sets:4,reps:'5-8',rir:'RIR 1-2',rest:'3 мин'},
       {name:'Гребане с опора (T-bar)',en:'T-Bar Row',muscle:'Back',sets:4,reps:'6-8',rest:'2-3 мин'},
-      {name:'Дъмбел преса на наклон',en:'Incline DB Press',muscle:'Chest',sets:3,reps:'8-12',rest:'2 мин'},
+      {name:'Дъмбел преса на наклон',en:'Incline DB Press',muscle:'Chest',sets:4,reps:'8-12',rest:'2 мин'},
       {name:'Пулдаун с неутрален хват',en:'Lat Pulldown',muscle:'Back',sets:3,reps:'10-12',rest:'90 сек'},
       {name:'Странично рамо на кабел',en:'Cable Lateral Raises',muscle:'Shoulders',sets:3,reps:'12-15',rir:'последна до отказ',rest:'60 сек'},
       {name:'Бицепс с EZ-лост',en:'Barbell Curls',muscle:'Biceps',sets:3,reps:'8-12',ss:'А',rest:'60-90 сек'},
-      {name:'Трицепс на скрипец',en:'Tricep Pushdowns',muscle:'Triceps',sets:3,reps:'10-15',ss:'А',rest:'60-90 сек'}
+      {name:'Трицепс на скрипец',en:'Tricep Pushdowns',muscle:'Triceps',sets:3,reps:'10-15',ss:'А',rest:'60-90 сек'},
+      {name:'Разпъване назад (заден делт)',en:'Reverse Flyes',muscle:'Rear Delts',sets:3,reps:'12-15',ss:'А',rir:'последна до отказ',rest:'60-90 сек'}
     ]}
   ]},
   {id:'ppl',name:'Push / Pull / Legs',desc:'6 дни/седмица • Средно ниво',icon:'💪',days:[
@@ -3275,7 +3298,10 @@ function init(){
   loadProStatus();
   if(!profile){document.getElementById('onboarding').classList.remove('hidden');renderObDots()}
   else{document.getElementById('onboarding').classList.add('hidden');updateAll()}
-  document.getElementById('headerDate').textContent=new Date().toLocaleDateString('bg-BG',{weekday:'short',day:'numeric',month:'short'});
+  // Елементът отпадна при редизайна — без проверката init() крашва тук
+  // и всичко под него (възстановяване на прекъсната тренировка) не се изпълнява.
+  const _hd=document.getElementById('headerDate');
+  if(_hd)_hd.textContent=new Date().toLocaleDateString('bg-BG',{weekday:'short',day:'numeric',month:'short'});
   const saved=LS.get('activeWorkout',null);
   if(saved){activeWorkout=saved;currentProgram=PROGRAMS.find(p=>p.id===saved.programId);currentDay=saved.dayIndex;workoutStartTime=saved.startTime;showPage('active-workout');renderActiveWorkout();startTimer()}
   customExercises=LS.get('customExercises',[]);
@@ -3755,7 +3781,11 @@ function startWorkout(){
   activeWorkout={programId:currentProgram.id,programName:currentProgram.name,dayName:day.name,dayIndex:currentDay,startTime:workoutStartTime,
     exercises:day.exercises.map((ex,ei)=>{
       const prevEx=prev?prev.exercises.find(e=>e.name===ex.name):null;
+      // Пълният запис от предишния път — за реда „Предишно" и сравнението на обема
+      const prevSets=prevEx?prevEx.sets.filter(s=>+s.reps>0):[];
+      const prevVolume=prevSets.reduce((a,s)=>a+(+s.kg||0)*(+s.reps||0),0);
       return{name:ex.name,en:ex.en,muscle:ex.muscle,targetSets:ex.sets,targetReps:ex.reps,rir:ex.rir,rest:ex.rest,ss:ex.ss,
+        prevDate:prev?prev.date:null,prevSets,prevVolume,
         sets:Array.from({length:ex.sets},(_,si)=>{
           const ps=prevEx&&prevEx.sets[si]?prevEx.sets[si]:null;
           return{kg:ps?ps.kg:'',reps:ps?ps.reps:'',done:false,prevKg:ps?ps.kg:'',prevReps:ps?ps.reps:''}
@@ -3776,6 +3806,7 @@ function renderActiveWorkout(){
         <div><div style="font-size:15px;font-weight:600">${ex.name}${ex.ss?`<span class="ss-badge">СУПЕРСЕТ ${ex.ss}</span>`:''} ${(()=>{const e=EXERCISES.find(x=>x.name===(ex.en||ex.name));return e&&e.vid?`<button class="ex-video-btn" onclick="openVideo('${e.vid}')" style="vertical-align:middle">▶ Видео</button>`:''})()}</div><div style="font-size:12px;color:var(--text2)">${[`${ex.targetSets} × ${ex.targetReps}`,ex.rir,ex.rest?`почивка ${ex.rest}`:''].filter(Boolean).join(' • ')}</div></div>
         <span class="muscle-tag">${ex.muscle}</span>
       </div>
+      ${prevSessionRow(ex,ei)}
       <div class="set-table-head"><div>СЕТ</div><div>ПРЕД.</div><div>КГ</div><div>ПОВТ.</div><div></div></div>
       ${ex.sets.map((s,si)=>`
         <div class="set-row ${s.done?'done':''}" id="set-${ei}-${si}">
@@ -3789,9 +3820,46 @@ function renderActiveWorkout(){
       <button class="add-set-btn" onclick="addSet(${ei})">+ Добави сет</button>
     </div>
   `).join('');
+  refreshAllDeltas();
 }
 
-function updateSet(ei,si,field,val){activeWorkout.exercises[ei].sets[si][field]=val;LS.set('activeWorkout',activeWorkout)}
+// ══════════ ПРЕДИШНА СЕСИЯ: припомняне + жив сравнителен обем ══════════
+// Показва целия минал запис на упражнението и дали текущият обем го надминава.
+function prevSessionRow(ex,ei){
+  if(!ex.prevSets||!ex.prevSets.length)
+    return`<div class="prev-session prev-none">Първи път — днешните числа стават твоята база</div>`;
+  const d=ex.prevDate?new Date(ex.prevDate):null;
+  const when=d?`${String(d.getDate()).padStart(2,'0')}.${String(d.getMonth()+1).padStart(2,'0')}`:'';
+  const sets=ex.prevSets.map(s=>+s.kg>0?`${s.kg}×${s.reps}`:`${s.reps} повт.`).join(' · ');
+  return`<div class="prev-session">
+    <span class="prev-label">Предишно ${when}</span>
+    <span class="prev-sets">${sets}</span>
+    <span class="prev-delta" id="delta-${ei}"></span>
+  </div>`;
+}
+
+// Текущ обем на упражнението (кг × повторения по всички попълнени серии)
+function exVolumeNow(ei){
+  return activeWorkout.exercises[ei].sets.reduce((a,s)=>{
+    const kg=parseFloat(s.kg)||0,reps=parseInt(s.reps)||0;
+    return a+(reps>0?kg*reps:0);
+  },0);
+}
+
+function updateExDelta(ei){
+  const el=document.getElementById('delta-'+ei);
+  if(!el)return;
+  const ex=activeWorkout.exercises[ei];
+  const prev=ex.prevVolume||0,now=exVolumeNow(ei);
+  if(!prev||!now){el.textContent='';el.className='prev-delta';return}
+  const diff=Math.round(now-prev),pct=Math.round(diff/prev*100);
+  el.className='prev-delta '+(diff>0?'up':diff<0?'down':'same');
+  el.textContent=diff>0?`▲ +${pct}%`:diff<0?`▼ ${pct}%`:'= еднакво';
+}
+
+function refreshAllDeltas(){activeWorkout.exercises.forEach((_,ei)=>updateExDelta(ei))}
+
+function updateSet(ei,si,field,val){activeWorkout.exercises[ei].sets[si][field]=val;LS.set('activeWorkout',activeWorkout);updateExDelta(ei)}
 function toggleSet(ei,si){
   const s=activeWorkout.exercises[ei].sets[si];s.done=!s.done;LS.set('activeWorkout',activeWorkout);
   const row=document.getElementById(`set-${ei}-${si}`);
@@ -3805,7 +3873,9 @@ function startTimer(){clearInterval(timerInterval);timerInterval=setInterval(()=
 function finishWorkout(){
   clearInterval(timerInterval);const elapsed=Math.floor((Date.now()-workoutStartTime)/1000);
   const h=getHistory();
-  const completedExercises=activeWorkout.exercises.map(ex=>({name:ex.name,muscle:ex.muscle,sets:ex.sets.filter(s=>s.done).map(s=>({kg:parseFloat(s.kg)||0,reps:parseInt(s.reps)||0}))})).filter(ex=>ex.sets.length>0);
+  // Запазва всеки сет с въведени повторения — дори без отметка.
+  // (Преди се пазеха само отметнатите и въведените числа се губеха при финиш.)
+  const completedExercises=activeWorkout.exercises.map(ex=>({name:ex.name,muscle:ex.muscle,sets:ex.sets.filter(s=>s.done||parseInt(s.reps)>0).map(s=>({kg:parseFloat(s.kg)||0,reps:parseInt(s.reps)||0}))})).filter(ex=>ex.sets.length>0);
 
   // Detect Personal Records
   const prs=[];
