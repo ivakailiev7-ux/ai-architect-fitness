@@ -2468,6 +2468,21 @@ body::before{display:none !important}          /* grain overlay off */
   border-radius:0 var(--r-inner) var(--r-inner) 0 !important;
 }
 
+/* ── WARM-UP NOTE (в активна тренировка) ───────────────── */
+.warmup-note{
+  display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 10px;
+  padding:11px 13px;margin-bottom:14px;
+  background:rgba(90,200,250,.08);
+  border-radius:12px;
+  font-family:var(--font-b);font-size:12px;line-height:1.45;letter-spacing:-.01em;
+}
+.warmup-note .wn-label{
+  font-size:9.5px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;
+  color:#0A84FF;white-space:nowrap;
+}
+.warmup-note .wn-text{color:var(--ink2);flex:1;min-width:200px}
+.warmup-note b{color:var(--ink);font-weight:700}
+
 /* ── PREVIOUS SESSION RECALL (в активна тренировка) ────── */
 .prev-session{
   display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 10px;
@@ -2816,6 +2831,11 @@ body::before{display:none !important}          /* grain overlay off */
       <!-- ACTIVE WORKOUT -->
       <div class="page" id="page-active-workout">
         <div class="workout-header"><h2 id="workoutTitle"></h2><div class="timer" id="workoutTimer">00:00</div><p id="workoutExCount"></p></div>
+        <div class="warmup-note">
+          <span class="wn-label">Загряване</span>
+          <span class="wn-text"><b>2–3 загряващи серии</b> само за първите тежки движения, <b>30–45 сек</b> между тях.
+          Загряващите не се броят и не се логват. Дълга почивка при загряването е чиста загуба на време.</span>
+        </div>
         <div id="workoutExercises"></div>
         <div class="workout-actions">
           <button class="btn-finish" onclick="finishWorkout()">✓ Завърши тренировка</button>
@@ -3097,41 +3117,39 @@ const PROGRAMS=[
     {name:'Долна А',focus:'клек акцент',exercises:[
       {name:'Клек с щанга',en:'Squat',muscle:'Quads',sets:4,reps:'4-6',rir:'RIR 1-2',rest:'3-4 мин'},
       {name:'Румънска тяга',en:'Romanian Deadlift',muscle:'Hamstrings',sets:3,reps:'6-8',rir:'RIR 1-2',rest:'3 мин'},
-      {name:'Преса с крака',en:'Leg Press',muscle:'Quads',sets:3,reps:'8-10',rir:'RIR 1-2',rest:'2 мин'},
-      {name:'Сгъване задно бедро (седеж)',en:'Leg Curls',muscle:'Hamstrings',sets:3,reps:'10-12',rir:'последна до отказ',rest:'90 сек'},
-      {name:'Прасци от стоеж',en:'Standing Calf Raises',muscle:'Calves',sets:4,reps:'8-12',ss:'А',rest:'60-90 сек'},
-      {name:'Корем на скрипец',en:'Cable Crunches',muscle:'Core',sets:3,reps:'10-15',ss:'А',rest:'60-90 сек'},
-      {name:'Странично рамо с дъмбели',en:'Lateral Raises',muscle:'Shoulders',sets:3,reps:'12-15',rir:'последна до отказ',rest:'90 сек'}
+      {name:'Сгъване задно бедро (седеж)',en:'Leg Curls',muscle:'Hamstrings',sets:3,reps:'10-12',ss:'А',rir:'последна до отказ',rest:'60-90 сек'},
+      {name:'Странично рамо с дъмбели',en:'Lateral Raises',muscle:'Shoulders',sets:3,reps:'12-15',ss:'А',rir:'последна до отказ',rest:'60-90 сек'},
+      {name:'Прасци от стоеж',en:'Standing Calf Raises',muscle:'Calves',sets:4,reps:'8-12',ss:'Б',rest:'60-90 сек'},
+      {name:'Корем на скрипец',en:'Cable Crunches',muscle:'Core',sets:3,reps:'10-15',ss:'Б',rest:'60-90 сек'}
     ]},
     {name:'Горна А',focus:'бенч акцент',exercises:[
       {name:'Бенч прес с щанга',en:'Barbell Bench Press',muscle:'Chest',sets:4,reps:'4-6',rir:'RIR 1-2',rest:'3 мин'},
-      {name:'Кросоувър на скрипец',en:'Cable Crossover',muscle:'Chest',sets:3,reps:'10-12',rir:'последна до отказ',rest:'90 сек'},
       {name:'Набирания с тежест',en:'Pull-Ups',muscle:'Back',sets:4,reps:'5-8',rir:'RIR 1-2',rest:'3 мин'},
+      {name:'Кросоувър на скрипец',en:'Cable Crossover',muscle:'Chest',sets:3,reps:'10-12',ss:'А',rir:'последна до отказ',rest:'60-90 сек'},
+      {name:'Гребане с опора на гърди',en:'Dumbbell Rows',muscle:'Back',sets:3,reps:'8-10',ss:'А',rest:'60-90 сек'},
       {name:'Раменна преса с дъмбели (седеж)',en:'DB Shoulder Press',muscle:'Shoulders',sets:3,reps:'6-10',rir:'RIR 1-2',rest:'2 мин'},
-      {name:'Гребане с опора на гърди',en:'Dumbbell Rows',muscle:'Back',sets:3,reps:'8-10',rest:'2 мин'},
-      {name:'Бицепс на наклонена пейка',en:'Incline DB Curls',muscle:'Biceps',sets:3,reps:'8-12',ss:'А',rir:'последна до отказ',rest:'60-90 сек'},
-      {name:'Трицепс над глава с въже',en:'Overhead Tricep Ext.',muscle:'Triceps',sets:3,reps:'10-12',ss:'А',rir:'последна до отказ',rest:'60-90 сек'},
-      {name:'Разпъване назад (заден делт)',en:'Reverse Flyes',muscle:'Rear Delts',sets:3,reps:'12-15',ss:'А',rir:'последна до отказ',rest:'60-90 сек'}
+      {name:'Бицепс на наклонена пейка',en:'Incline DB Curls',muscle:'Biceps',sets:3,reps:'8-12',ss:'Б',rir:'последна до отказ',rest:'60-90 сек'},
+      {name:'Трицепс над глава с въже',en:'Overhead Tricep Ext.',muscle:'Triceps',sets:3,reps:'10-12',ss:'Б',rir:'последна до отказ',rest:'60-90 сек'},
+      {name:'Разпъване назад (заден делт)',en:'Reverse Flyes',muscle:'Rear Delts',sets:3,reps:'12-15',ss:'Б',rir:'последна до отказ',rest:'60-90 сек'}
     ]},
     {name:'Долна Б',focus:'тяга акцент',exercises:[
       {name:'Мъртва тяга',en:'Deadlift',muscle:'Back',sets:3,reps:'3-5',rir:'RIR 2',rest:'4-5 мин'},
       {name:'Хак клек (или преса)',en:'Hack Squat',muscle:'Quads',sets:3,reps:'8-10',rir:'RIR 1-2',rest:'2-3 мин'},
-      {name:'Разгъване за бедро',en:'Leg Extensions',muscle:'Quads',sets:3,reps:'12-15',rir:'последна до отказ',rest:'90 сек'},
-      {name:'Сгъване от лег',en:'Leg Curls',muscle:'Hamstrings',sets:3,reps:'8-12',rest:'90 сек'},
-      {name:'Прасци от седеж',en:'Seated Calf Raises',muscle:'Calves',sets:4,reps:'10-15',rest:'90 сек'},
-      {name:'Странично рамо с дъмбели',en:'Lateral Raises',muscle:'Shoulders',sets:3,reps:'12-15',rir:'последна до отказ',rest:'90 сек'},
-      {name:'Хамър сгъвания',en:'Hammer Curls',muscle:'Biceps',sets:3,reps:'10-12',ss:'А',rest:'60-90 сек'},
-      {name:'Разгъване над глава на скрипец',en:'Overhead Tricep Ext.',muscle:'Triceps',sets:3,reps:'10-12',ss:'А',rest:'60-90 сек'}
+      {name:'Разгъване за бедро',en:'Leg Extensions',muscle:'Quads',sets:3,reps:'12-15',ss:'А',rir:'последна до отказ',rest:'60-90 сек'},
+      {name:'Сгъване от лег',en:'Leg Curls',muscle:'Hamstrings',sets:3,reps:'8-12',ss:'А',rest:'60-90 сек'},
+      {name:'Прасци от седеж',en:'Seated Calf Raises',muscle:'Calves',sets:4,reps:'10-15',ss:'Б',rest:'60-90 сек'},
+      {name:'Странично рамо с дъмбели',en:'Lateral Raises',muscle:'Shoulders',sets:3,reps:'12-15',ss:'Б',rir:'последна до отказ',rest:'60-90 сек'},
+      {name:'Хамър сгъвания',en:'Hammer Curls',muscle:'Biceps',sets:3,reps:'10-12',ss:'В',rest:'60-90 сек'},
+      {name:'Разгъване над глава на скрипец',en:'Overhead Tricep Ext.',muscle:'Triceps',sets:3,reps:'10-12',ss:'В',rest:'60-90 сек'}
     ]},
     {name:'Горна Б',focus:'преси акцент',exercises:[
       {name:'Военна преса от седеж',en:'Overhead Press',muscle:'Shoulders',sets:4,reps:'5-8',rir:'RIR 1-2',rest:'3 мин'},
       {name:'Гребане с опора (T-bar)',en:'T-Bar Row',muscle:'Back',sets:4,reps:'6-8',rest:'2-3 мин'},
       {name:'Дъмбел преса на наклон',en:'Incline DB Press',muscle:'Chest',sets:4,reps:'8-12',rest:'2 мин'},
-      {name:'Пулдаун с неутрален хват',en:'Lat Pulldown',muscle:'Back',sets:3,reps:'10-12',rest:'90 сек'},
-      {name:'Странично рамо на кабел',en:'Cable Lateral Raises',muscle:'Shoulders',sets:3,reps:'12-15',rir:'последна до отказ',rest:'90 сек'},
-      {name:'Бицепс с EZ-лост',en:'Barbell Curls',muscle:'Biceps',sets:3,reps:'8-12',ss:'А',rest:'60-90 сек'},
-      {name:'Трицепс на скрипец',en:'Tricep Pushdowns',muscle:'Triceps',sets:3,reps:'10-15',ss:'А',rest:'60-90 сек'},
-      {name:'Разпъване назад (заден делт)',en:'Reverse Flyes',muscle:'Rear Delts',sets:3,reps:'12-15',ss:'А',rir:'последна до отказ',rest:'60-90 сек'}
+      {name:'Странично рамо на кабел',en:'Cable Lateral Raises',muscle:'Shoulders',sets:3,reps:'12-15',ss:'А',rir:'последна до отказ',rest:'60-90 сек'},
+      {name:'Разпъване назад (заден делт)',en:'Reverse Flyes',muscle:'Rear Delts',sets:3,reps:'12-15',ss:'А',rir:'последна до отказ',rest:'60-90 сек'},
+      {name:'Бицепс с EZ-лост',en:'Barbell Curls',muscle:'Biceps',sets:3,reps:'8-12',ss:'Б',rest:'60-90 сек'},
+      {name:'Трицепс на скрипец',en:'Tricep Pushdowns',muscle:'Triceps',sets:3,reps:'10-15',ss:'Б',rest:'60-90 сек'}
     ]}
   ]},
   {id:'ppl',name:'Push / Pull / Legs',desc:'6 дни/седмица • Средно ниво',icon:'💪',days:[
