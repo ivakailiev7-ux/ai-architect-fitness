@@ -2468,6 +2468,20 @@ body::before{display:none !important}          /* grain overlay off */
   border-radius:0 var(--r-inner) var(--r-inner) 0 !important;
 }
 
+/* ── ALTERNATIVE EXERCISE (когато уредът е зает) ───────── */
+.alt-swap{
+  display:flex;align-items:baseline;gap:7px;flex-wrap:wrap;
+  margin-top:5px;
+  font-family:var(--font-b);font-size:11.5px;letter-spacing:-.01em;
+  color:var(--ink2);
+}
+.alt-swap .alt-label{
+  font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;
+  color:var(--ink3);
+  border:1px solid currentColor;border-radius:5px;
+  padding:1px 5px;white-space:nowrap;opacity:.75;
+}
+
 /* ── WARM-UP NOTE (в активна тренировка) ───────────────── */
 .warmup-note{
   display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 10px;
@@ -2902,6 +2916,7 @@ body::before{display:none !important}          /* grain overlay off */
           <div class="setting-item" onclick="exportBackup()"><div class="si-left"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg><span class="si-label">Свали бекъп</span></div><span class="si-val">JSON</span></div>
           <div class="setting-item" onclick="importBackup()"><div class="si-left"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M17 8l-5-5-5 5M12 3v12"/></svg><span class="si-label">Възстанови от бекъп</span></div><span class="si-val">›</span></div>
           <div class="setting-item" onclick="exportData()"><div class="si-left"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg><span class="si-label">Експорт на тренировки</span></div><span class="si-val">CSV</span></div>
+          <div class="setting-item" onclick="clearWorkoutHistory()"><div class="si-left"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 109-9 9 9 0 00-6.36 2.64L3 8"/><path d="M3 3v5h5M12 7v5l3 2"/></svg><span class="si-label" style="color:var(--gold)">Изчисти историята на тренировките</span></div><span class="si-val">›</span></div>
           <div class="setting-item" onclick="clearAllData()"><div class="si-left"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3,6 5,6 21,6"/><path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/></svg><span class="si-label" style="color:var(--red)">Изтрий всички данни</span></div><span class="si-val">›</span></div>
         </div>
       </div>
@@ -3115,41 +3130,41 @@ const PROGRAMS=[
   // ── ЛИЧНА ПРОГРАМА (Иво) — 4 тренировки, ротация 2 вкл / 2 почивка ──
   {id:'ivo-ul',name:'Моята програма',desc:'Горна-Долна • 2 вкл / 2 почивка',icon:'🎯',personal:true,days:[
     {name:'Долна А',focus:'клек акцент',exercises:[
-      {name:'Клек с щанга',en:'Squat',muscle:'Quads',sets:4,reps:'4-6',rir:'RIR 1-2',rest:'3-4 мин'},
-      {name:'Румънска тяга',en:'Romanian Deadlift',muscle:'Hamstrings',sets:3,reps:'6-8',rir:'RIR 1-2',rest:'3 мин'},
-      {name:'Сгъване задно бедро (седеж)',en:'Leg Curls',muscle:'Hamstrings',sets:3,reps:'10-12',rir:'последна до отказ',rest:'90 сек'},
-      {name:'Странично рамо с дъмбели',en:'Lateral Raises',muscle:'Shoulders',sets:3,reps:'12-15',rir:'последна до отказ',rest:'90 сек'},
-      {name:'Прасци от стоеж',en:'Standing Calf Raises',muscle:'Calves',sets:4,reps:'8-12',rest:'90 сек'},
-      {name:'Корем на скрипец',en:'Cable Crunches',muscle:'Core',sets:3,reps:'10-15',rest:'90 сек'}
+      {name:'Клек с щанга',en:'Squat',muscle:'Quads',sets:3,reps:'4-6',rir:'RIR 1-2',rest:'3-4 мин',alt:'Хак клек'},
+      {name:'Румънска тяга',en:'Romanian Deadlift',muscle:'Hamstrings',sets:3,reps:'6-8',rir:'RIR 1-2',rest:'3 мин',alt:'Румънска с дъмбели'},
+      {name:'Сгъване за задно бедро',en:'Leg Curls',muscle:'Hamstrings',sets:3,reps:'10-12',rir:'последна до отказ',rest:'90 сек',alt:'Нордическо сгъване'},
+      {name:'Странично рамо с дъмбели',en:'Lateral Raises',muscle:'Shoulders',sets:3,reps:'12-15',rir:'последна до отказ',rest:'90 сек',alt:'Странично рамо на кабел'},
+      {name:'Прасци от стоеж',en:'Standing Calf Raises',muscle:'Calves',sets:3,reps:'8-12',rest:'90 сек',alt:'Прасци на пресата за крака'},
+      {name:'Корем на скрипец',en:'Cable Crunches',muscle:'Core',sets:3,reps:'10-15',rest:'90 сек',alt:'Вдигане на крака от вис'}
     ]},
     {name:'Горна А',focus:'бенч акцент',exercises:[
-      {name:'Бенч прес с щанга',en:'Barbell Bench Press',muscle:'Chest',sets:4,reps:'4-6',rir:'RIR 1-2',rest:'3 мин'},
-      {name:'Набирания с тежест',en:'Pull-Ups',muscle:'Back',sets:4,reps:'5-8',rir:'RIR 1-2',rest:'3 мин'},
-      {name:'Кросоувър на скрипец',en:'Cable Crossover',muscle:'Chest',sets:3,reps:'10-12',rir:'последна до отказ',rest:'90 сек'},
-      {name:'Гребане с опора на гърди',en:'Dumbbell Rows',muscle:'Back',sets:3,reps:'8-10',rest:'2 мин'},
-      {name:'Раменна преса с дъмбели (седеж)',en:'DB Shoulder Press',muscle:'Shoulders',sets:3,reps:'6-10',rir:'RIR 1-2',rest:'2 мин'},
-      {name:'Бицепс на наклонена пейка',en:'Incline DB Curls',muscle:'Biceps',sets:3,reps:'8-12',rir:'последна до отказ',rest:'90 сек'},
-      {name:'Трицепс над глава с въже',en:'Overhead Tricep Ext.',muscle:'Triceps',sets:3,reps:'10-12',rir:'последна до отказ',rest:'90 сек'},
-      {name:'Разпъване назад (заден делт)',en:'Reverse Flyes',muscle:'Rear Delts',sets:3,reps:'12-15',rir:'последна до отказ',rest:'90 сек'}
+      {name:'Бенч прес с щанга',en:'Barbell Bench Press',muscle:'Chest',sets:3,reps:'4-6',rir:'RIR 1-2',rest:'3 мин',alt:'Дъмбел преса, хоризонтално'},
+      {name:'Набирания с тежест',en:'Pull-Ups',muscle:'Back',sets:3,reps:'5-8',rir:'RIR 1-2',rest:'3 мин',alt:'Пулдаун с неутрален хват'},
+      {name:'Кросоувър на скрипец',en:'Cable Crossover',muscle:'Chest',sets:3,reps:'10-12',rir:'последна до отказ',rest:'90 сек',alt:'Пек дек'},
+      {name:'Гребане с опора на гърди',en:'Dumbbell Rows',muscle:'Back',sets:3,reps:'8-10',rest:'2 мин',alt:'Гребане на скрипец, седеж'},
+      {name:'Раменна преса с дъмбели (седеж)',en:'DB Shoulder Press',muscle:'Shoulders',sets:3,reps:'6-10',rir:'RIR 1-2',rest:'2 мин',alt:'Раменна преса на машина'},
+      {name:'Бицепс на наклонена пейка',en:'Incline DB Curls',muscle:'Biceps',sets:3,reps:'8-12',rir:'последна до отказ',rest:'90 сек',alt:'Бицепс на нисък скрипец'},
+      {name:'Трицепс над глава с въже',en:'Overhead Tricep Ext.',muscle:'Triceps',sets:3,reps:'10-12',rir:'последна до отказ',rest:'90 сек',alt:'Френска преса с EZ, над глава'},
+      {name:'Разпъване назад (заден делт)',en:'Reverse Flyes',muscle:'Rear Delts',sets:3,reps:'12-15',rir:'последна до отказ',rest:'90 сек',alt:'Обратен пек дек'}
     ]},
     {name:'Долна Б',focus:'тяга акцент',exercises:[
-      {name:'Мъртва тяга',en:'Deadlift',muscle:'Back',sets:3,reps:'3-5',rir:'RIR 2',rest:'4-5 мин'},
-      {name:'Хак клек (или преса)',en:'Hack Squat',muscle:'Quads',sets:3,reps:'8-10',rir:'RIR 1-2',rest:'2-3 мин'},
-      {name:'Разгъване за бедро',en:'Leg Extensions',muscle:'Quads',sets:3,reps:'12-15',rir:'последна до отказ',rest:'90 сек'},
-      {name:'Сгъване от лег',en:'Leg Curls',muscle:'Hamstrings',sets:3,reps:'8-12',rest:'90 сек'},
-      {name:'Прасци от седеж',en:'Seated Calf Raises',muscle:'Calves',sets:4,reps:'10-15',rest:'90 сек'},
-      {name:'Странично рамо с дъмбели',en:'Lateral Raises',muscle:'Shoulders',sets:3,reps:'12-15',rir:'последна до отказ',rest:'90 сек'},
-      {name:'Хамър сгъвания',en:'Hammer Curls',muscle:'Biceps',sets:3,reps:'10-12',rest:'90 сек'},
-      {name:'Разгъване над глава на скрипец',en:'Overhead Tricep Ext.',muscle:'Triceps',sets:3,reps:'10-12',rest:'90 сек'}
+      {name:'Мъртва тяга',en:'Deadlift',muscle:'Back',sets:3,reps:'3-5',rir:'RIR 2',rest:'4-5 мин',alt:'Мъртва тяга от рак'},
+      {name:'Хак клек (или преса)',en:'Hack Squat',muscle:'Quads',sets:3,reps:'8-10',rir:'RIR 1-2',rest:'2-3 мин',alt:'Преса с крака'},
+      {name:'Разгъване за бедро',en:'Leg Extensions',muscle:'Quads',sets:3,reps:'12-15',rir:'последна до отказ',rest:'90 сек',alt:'Българско клекче'},
+      {name:'Сгъване за задно бедро',en:'Leg Curls',muscle:'Hamstrings',sets:3,reps:'8-12',rest:'90 сек',alt:'Нордическо сгъване'},
+      {name:'Прасци от седеж',en:'Seated Calf Raises',muscle:'Calves',sets:3,reps:'10-15',rest:'90 сек',alt:'Прасци от стоеж'},
+      {name:'Странично рамо с дъмбели',en:'Lateral Raises',muscle:'Shoulders',sets:3,reps:'12-15',rir:'последна до отказ',rest:'90 сек',alt:'Странично рамо на кабел'},
+      {name:'Хамър сгъвания',en:'Hammer Curls',muscle:'Biceps',sets:3,reps:'10-12',rest:'90 сек',alt:'Бицепс с въже на скрипец'},
+      {name:'Френска преса с EZ (лежешком)',en:'Skull Crushers',muscle:'Triceps',sets:3,reps:'8-12',rir:'последна до отказ',rest:'90 сек',alt:'Бенч с тесен хват'}
     ]},
     {name:'Горна Б',focus:'преси акцент',exercises:[
-      {name:'Военна преса от седеж',en:'Overhead Press',muscle:'Shoulders',sets:4,reps:'5-8',rir:'RIR 1-2',rest:'3 мин'},
-      {name:'Гребане с опора (T-bar)',en:'T-Bar Row',muscle:'Back',sets:4,reps:'6-8',rest:'2-3 мин'},
-      {name:'Дъмбел преса на наклон',en:'Incline DB Press',muscle:'Chest',sets:4,reps:'8-12',rest:'2 мин'},
-      {name:'Странично рамо на кабел',en:'Cable Lateral Raises',muscle:'Shoulders',sets:3,reps:'12-15',rir:'последна до отказ',rest:'90 сек'},
-      {name:'Разпъване назад (заден делт)',en:'Reverse Flyes',muscle:'Rear Delts',sets:3,reps:'12-15',rir:'последна до отказ',rest:'90 сек'},
-      {name:'Бицепс с EZ-лост',en:'Barbell Curls',muscle:'Biceps',sets:3,reps:'8-12',rest:'90 сек'},
-      {name:'Трицепс на скрипец',en:'Tricep Pushdowns',muscle:'Triceps',sets:3,reps:'10-15',rest:'90 сек'}
+      {name:'Военна преса от седеж',en:'Overhead Press',muscle:'Shoulders',sets:3,reps:'5-8',rir:'RIR 1-2',rest:'3 мин',alt:'Раменна преса на машина'},
+      {name:'Гребане с опора (T-bar)',en:'T-Bar Row',muscle:'Back',sets:3,reps:'6-8',rest:'2-3 мин',alt:'Гребане с щанга'},
+      {name:'Дъмбел преса на наклон',en:'Incline DB Press',muscle:'Chest',sets:3,reps:'8-12',rest:'2 мин',alt:'Наклонена преса на машина'},
+      {name:'Странично рамо на кабел',en:'Cable Lateral Raises',muscle:'Shoulders',sets:3,reps:'12-15',rir:'последна до отказ',rest:'90 сек',alt:'Странично рамо с дъмбели'},
+      {name:'Разпъване назад (заден делт)',en:'Reverse Flyes',muscle:'Rear Delts',sets:3,reps:'12-15',rir:'последна до отказ',rest:'90 сек',alt:'Обратен пек дек'},
+      {name:'Бицепс с EZ-лост',en:'Barbell Curls',muscle:'Biceps',sets:3,reps:'8-12',rest:'90 сек',alt:'Бицепс с дъмбели, прав'},
+      {name:'Трицепс на скрипец',en:'Tricep Pushdowns',muscle:'Triceps',sets:3,reps:'10-15',rest:'90 сек',alt:'Трицепс на машина'}
     ]}
   ]},
   {id:'ppl',name:'Push / Pull / Legs',desc:'6 дни/седмица • Средно ниво',icon:'💪',days:[
@@ -3792,7 +3807,7 @@ function renderExerciseList(){
     if(ex.rir)meta.push(ex.rir);
     if(ex.rest)meta.push(`почивка ${ex.rest}`);
     const ssBadge=ex.ss?`<span class="ss-badge">СУПЕРСЕТ ${ex.ss}</span>`:'';
-    return`<div class="exercise-item${ex.ss?' in-ss':''}"><div class="ex-info"><div class="ex-name">${ex.name}${ssBadge}</div><div class="ex-detail">${meta.join(' • ')}</div></div><span class="muscle-tag">${ex.muscle}</span></div>`;
+    return`<div class="exercise-item${ex.ss?' in-ss':''}"><div class="ex-info"><div class="ex-name">${ex.name}${ssBadge}</div><div class="ex-detail">${meta.join(' • ')}</div>${ex.alt?`<div class="alt-swap"><span class="alt-label">ако е заето</span>${ex.alt}</div>`:''}</div><span class="muscle-tag">${ex.muscle}</span></div>`;
   }).join('');
 }
 
@@ -3808,7 +3823,7 @@ function startWorkout(){
       // Пълният запис от предишния път — за реда „Предишно" и сравнението на обема
       const prevSets=prevEx?prevEx.sets.filter(s=>+s.reps>0):[];
       const prevVolume=prevSets.reduce((a,s)=>a+(+s.kg||0)*(+s.reps||0),0);
-      return{name:ex.name,en:ex.en,muscle:ex.muscle,targetSets:ex.sets,targetReps:ex.reps,rir:ex.rir,rest:ex.rest,ss:ex.ss,
+      return{name:ex.name,en:ex.en,muscle:ex.muscle,targetSets:ex.sets,targetReps:ex.reps,rir:ex.rir,rest:ex.rest,ss:ex.ss,alt:ex.alt,
         prevDate:prev?prev.date:null,prevSets,prevVolume,
         sets:Array.from({length:ex.sets},(_,si)=>{
           const ps=prevEx&&prevEx.sets[si]?prevEx.sets[si]:null;
@@ -3827,7 +3842,7 @@ function renderActiveWorkout(){
   document.getElementById('workoutExercises').innerHTML=activeWorkout.exercises.map((ex,ei)=>`
     <div class="card" style="margin-bottom:12px">
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
-        <div><div style="font-size:15px;font-weight:600">${ex.name}${ex.ss?`<span class="ss-badge">СУПЕРСЕТ ${ex.ss}</span>`:''} ${(()=>{const e=EXERCISES.find(x=>x.name===(ex.en||ex.name));return e&&e.vid?`<button class="ex-video-btn" onclick="openVideo('${e.vid}')" style="vertical-align:middle">▶ Видео</button>`:''})()}</div><div style="font-size:12px;color:var(--text2)">${[`${ex.targetSets} × ${ex.targetReps}`,ex.rir,ex.rest?`почивка ${ex.rest}`:''].filter(Boolean).join(' • ')}</div></div>
+        <div><div style="font-size:15px;font-weight:600">${ex.name}${ex.ss?`<span class="ss-badge">СУПЕРСЕТ ${ex.ss}</span>`:''} ${(()=>{const e=EXERCISES.find(x=>x.name===(ex.en||ex.name));return e&&e.vid?`<button class="ex-video-btn" onclick="openVideo('${e.vid}')" style="vertical-align:middle">▶ Видео</button>`:''})()}</div><div style="font-size:12px;color:var(--text2)">${[`${ex.targetSets} × ${ex.targetReps}`,ex.rir,ex.rest?`почивка ${ex.rest}`:''].filter(Boolean).join(' • ')}</div>${ex.alt?`<div class="alt-swap"><span class="alt-label">ако е заето</span>${ex.alt}</div>`:''}</div>
         <span class="muscle-tag">${ex.muscle}</span>
       </div>
       ${prevSessionRow(ex,ei)}
@@ -4454,6 +4469,19 @@ function exportData(){
 }
 
 function clearAllData(){if(!confirm('Изтрий ВСИЧКИ данни? Това е необратимо.'))return;Object.keys(localStorage).filter(k=>k.startsWith('aia_')).forEach(k=>localStorage.removeItem(k));location.reload()}
+
+// Трие САМО тренировъчната история и рекордите.
+// Профилът, теглото, мерките и храната остават непокътнати.
+function clearWorkoutHistory(){
+  const n=getHistory().length;
+  if(!n){alert('Историята вече е празна.');return}
+  if(!confirm(`Изчисти историята на тренировките?\n\n${n} записани тренировки и личните рекорди ще бъдат изтрити.\nПрофилът, теглото, мерките и храната остават.\n\nТова е необратимо.`))return;
+  saveHistory([]);
+  LS.set('activeWorkout',null);
+  LS.set('totalPRs',0);
+  activeWorkout=null;
+  location.reload();
+}
 
 // ==============================
 // SLEEP TRACKER
