@@ -3128,14 +3128,8 @@ const FOODS = [
 // ==============================
 const PROGRAMS=[
   // ── ЛИЧНА ПРОГРАМА (Иво): В3, специализация за ръце и рамене, 4 тренировки седмично ──
+  // Ред Горна → Долна (31.10.2026): при две на две всяка горна идва 72 ч след последната пряка работа за ръце
   {id:'ivo-ul',name:'Моята програма',desc:'Горна/Долна • 4 тренировки седмично',icon:'🎯',personal:true,days:[
-    {name:'Долна А',focus:'клек акцент',exercises:[
-      {name:'Клек с щанга',en:'Squat',muscle:'Quads',sets:3,reps:'4-6',rir:'RIR 1-2',rest:'3-4 мин',alt:'Преса с крака'},
-      {name:'Румънска тяга',en:'Romanian Deadlift',muscle:'Hamstrings',sets:3,reps:'6-8',rir:'RIR 1-2',rest:'3 мин',alt:'Румънска с дъмбели'},
-      {name:'Странично рамо с дъмбели',en:'Lateral Raises',muscle:'Shoulders',sets:4,reps:'12-15',rir:'последна до отказ',rest:'90 сек',alt:'Странично рамо на кабел'},
-      {name:'Прасци от стоеж',en:'Standing Calf Raises',muscle:'Calves',sets:3,reps:'8-12',rest:'90 сек',alt:'Прасци на пресата за крака'},
-      {name:'Бицепс с EZ-лост',en:'Barbell Curls',muscle:'Biceps',sets:3,reps:'8-12',rest:'90 сек',alt:'Бицепс с дъмбели, прав'}
-    ]},
     {name:'Горна А',focus:'бенч акцент',exercises:[
       {name:'Бенч прес с щанга',en:'Barbell Bench Press',muscle:'Chest',sets:3,reps:'4-6',rir:'RIR 1-2',rest:'3 мин',alt:'Дъмбел преса, хоризонтално'},
       {name:'Набирания с тежест',en:'Pull-Ups',muscle:'Back',sets:3,reps:'5-8',rir:'RIR 1-2',rest:'3 мин',alt:'Пулдаун с неутрален хват'},
@@ -3144,13 +3138,12 @@ const PROGRAMS=[
       {name:'Бицепс на наклонена пейка',en:'Incline DB Curls',muscle:'Biceps',sets:3,reps:'8-12',rir:'последна до отказ',rest:'90 сек',alt:'Бицепс на нисък скрипец'},
       {name:'Трицепс над глава с въже',en:'Overhead Tricep Ext.',muscle:'Triceps',sets:3,reps:'10-12',rir:'последна до отказ',rest:'90 сек',alt:'Френска преса с EZ, над глава'}
     ]},
-    {name:'Долна Б',focus:'преса и задно бедро',exercises:[
-      {name:'Преса с крака',en:'Leg Press',muscle:'Quads',sets:3,reps:'8-12',rir:'RIR 1-2',rest:'2 мин',alt:'Българско клекче'},
-      {name:'Сгъване за задно бедро',en:'Leg Curls',muscle:'Hamstrings',sets:3,reps:'10-12',rir:'последна до отказ',rest:'90 сек',alt:'Нордическо сгъване'},
-      {name:'Странично рамо на кабел',en:'Cable Lateral Raises',muscle:'Shoulders',sets:4,reps:'12-15',rir:'последна до отказ',rest:'90 сек',alt:'Странично рамо с дъмбели'},
-      {name:'Прасци от седеж',en:'Seated Calf Raises',muscle:'Calves',sets:3,reps:'10-15',rest:'90 сек',alt:'Прасци от стоеж'},
-      {name:'Хамър сгъвания',en:'Hammer Curls',muscle:'Biceps',sets:3,reps:'10-12',rest:'90 сек',alt:'Бицепс с въже на скрипец'},
-      {name:'Френска преса с EZ (лежешком)',en:'Skull Crushers',muscle:'Triceps',sets:3,reps:'8-12',rir:'последна до отказ',rest:'90 сек',alt:'Бенч с тесен хват'}
+    {name:'Долна А',focus:'клек акцент',exercises:[
+      {name:'Клек с щанга',en:'Squat',muscle:'Quads',sets:3,reps:'4-6',rir:'RIR 1-2',rest:'3-4 мин',alt:'Преса с крака'},
+      {name:'Румънска тяга',en:'Romanian Deadlift',muscle:'Hamstrings',sets:3,reps:'6-8',rir:'RIR 1-2',rest:'3 мин',alt:'Румънска с дъмбели'},
+      {name:'Странично рамо с дъмбели',en:'Lateral Raises',muscle:'Shoulders',sets:4,reps:'12-15',rir:'последна до отказ',rest:'90 сек',alt:'Странично рамо на кабел'},
+      {name:'Прасци от стоеж',en:'Standing Calf Raises',muscle:'Calves',sets:3,reps:'8-12',rest:'90 сек',alt:'Прасци на пресата за крака'},
+      {name:'Бицепс с EZ-лост',en:'Barbell Curls',muscle:'Biceps',sets:3,reps:'8-12',rest:'90 сек',alt:'Бицепс с дъмбели, прав'}
     ]},
     {name:'Горна Б',focus:'преси акцент',exercises:[
       {name:'Военна преса от седеж',en:'Overhead Press',muscle:'Shoulders',sets:3,reps:'5-8',rir:'RIR 1-2',rest:'3 мин',alt:'Раменна преса на машина'},
@@ -3159,6 +3152,14 @@ const PROGRAMS=[
       {name:'Странично рамо с дъмбели',en:'Lateral Raises',muscle:'Shoulders',sets:3,reps:'12-15',rir:'последна до отказ',rest:'90 сек',alt:'Странично рамо на кабел'},
       {name:'Разпъване назад (заден делт)',en:'Reverse Flyes',muscle:'Rear Delts',sets:4,reps:'12-15',rir:'последна до отказ',rest:'90 сек',alt:'Обратен пек дек'},
       {name:'Трицепс на скрипец',en:'Tricep Pushdowns',muscle:'Triceps',sets:3,reps:'10-15',rest:'90 сек',alt:'Трицепс на машина'}
+    ]},
+    {name:'Долна Б',focus:'преса и задно бедро',exercises:[
+      {name:'Преса с крака',en:'Leg Press',muscle:'Quads',sets:3,reps:'8-12',rir:'RIR 1-2',rest:'2 мин',alt:'Българско клекче'},
+      {name:'Сгъване за задно бедро',en:'Leg Curls',muscle:'Hamstrings',sets:3,reps:'10-12',rir:'последна до отказ',rest:'90 сек',alt:'Нордическо сгъване'},
+      {name:'Странично рамо на кабел',en:'Cable Lateral Raises',muscle:'Shoulders',sets:4,reps:'12-15',rir:'последна до отказ',rest:'90 сек',alt:'Странично рамо с дъмбели'},
+      {name:'Прасци от седеж',en:'Seated Calf Raises',muscle:'Calves',sets:3,reps:'10-15',rest:'90 сек',alt:'Прасци от стоеж'},
+      {name:'Хамър сгъвания',en:'Hammer Curls',muscle:'Biceps',sets:3,reps:'10-12',rest:'90 сек',alt:'Бицепс с въже на скрипец'},
+      {name:'Френска преса с EZ (лежешком)',en:'Skull Crushers',muscle:'Triceps',sets:3,reps:'8-12',rir:'последна до отказ',rest:'90 сек',alt:'Бенч с тесен хват'}
     ]}
   ]},
   {id:'ppl',name:'Push / Pull / Legs',desc:'6 дни/седмица • Средно ниво',icon:'💪',days:[
