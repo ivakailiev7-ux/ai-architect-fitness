@@ -2915,6 +2915,7 @@ body::before{display:none !important}          /* grain overlay off */
           <div class="setting-item" onclick="logSleep()"><div class="si-left"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg><span class="si-label">Запиши сън</span></div><span class="si-val">›</span></div>
           <div class="setting-item" onclick="exportBackup()"><div class="si-left"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg><span class="si-label">Свали бекъп</span></div><span class="si-val">JSON</span></div>
           <div class="setting-item" onclick="importBackup()"><div class="si-left"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M17 8l-5-5-5 5M12 3v12"/></svg><span class="si-label">Възстанови от бекъп</span></div><span class="si-val">›</span></div>
+          <div class="setting-item" onclick="showDiagnostics()"><div class="si-left"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg><span class="si-label">Диагностика на паметта</span></div></div>
           <div class="setting-item" onclick="exportData()"><div class="si-left"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg><span class="si-label">Експорт на тренировки</span></div><span class="si-val">CSV</span></div>
           <div class="setting-item" onclick="clearWorkoutHistory()"><div class="si-left"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 109-9 9 9 0 00-6.36 2.64L3 8"/><path d="M3 3v5h5M12 7v5l3 2"/></svg><span class="si-label" style="color:var(--gold)">Изчисти историята на тренировките</span></div><span class="si-val">›</span></div>
           <div class="setting-item" onclick="clearAllData()"><div class="si-left"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3,6 5,6 21,6"/><path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/></svg><span class="si-label" style="color:var(--red)">Изтрий всички данни</span></div><span class="si-val">›</span></div>
@@ -3318,6 +3319,7 @@ const LS={
     try{localStorage.setItem('aia_'+k,JSON.stringify(v));return true}
     catch(e){
       console.error('Storage write failed:',k,e);
+      window.__lastStorageError=k+': '+(e&&e.name||'')+' '+(e&&e.message||e);
       if(!LS._warned){LS._warned=true;setTimeout(()=>{LS._warned=false},10000);
         alert('⚠️ Данните НЕ можаха да се запишат — паметта на браузъра е пълна или е забранена (частен режим).\n\nСвали бекъп от Настройки и освободи място.')}
       return false;
@@ -3484,7 +3486,7 @@ function showPage(page){
   document.querySelectorAll(`[data-page="${page}"]`).forEach(n=>n.classList.add('active'));
   if(page==='home')updateDashboard();
   if(page==='nutrition')updateNutrition();
-  if(page==='progress'){renderProgress();renderProgressPhotos()}
+  if(page==='progress'){renderProgress();try{renderProgressPhotos()}catch(e){console.error('photos',e)}}
   if(page==='profile')updateProfile();
   if(page==='workout'){renderProgramList();renderExBrowser()}
   if(page==='coach')renderCoachPage();
@@ -4219,7 +4221,10 @@ function setRestTime(t){restDuration=t;restRemaining=t;document.getElementById('
 // PROGRESS
 // ==============================
 function renderProgress(){
-  renderWeightChart();renderExProgress();renderHistoryList();
+  // Всеки блок поотделно: срив в графиката не трябва да скрива историята.
+  try{renderHistoryList()}catch(e){console.error('history',e);const el=document.getElementById('historyList');if(el)el.innerHTML='<div class="card" style="padding:16px">Грешка при показване на историята: '+String(e.message||e)+'</div>'}
+  try{renderWeightChart()}catch(e){console.error('weightChart',e)}
+  try{renderExProgress()}catch(e){console.error('exProgress',e)}
 }
 
 // ══════════ ПРОГРЕС ПО УПРАЖНЕНИЕ + РЕКОРДИ ══════════
@@ -5028,6 +5033,32 @@ if('serviceWorker' in navigator){navigator.serviceWorker.register('./sw.js').cat
 // ==============================
 // START
 // ==============================
+// ════ ДИАГНОСТИКА — какво реално има в паметта на това устройство ════
+const APP_VERSION='v17';
+async function showDiagnostics(){
+  const L=[];
+  L.push('Версия: '+APP_VERSION);
+  const standalone=(window.navigator.standalone===true)||(window.matchMedia&&matchMedia('(display-mode: standalone)').matches);
+  L.push('Режим: '+(standalone?'приложение (икона)':'браузър'));
+  L.push('Адрес: '+location.origin);
+  let raw=null;try{raw=localStorage.getItem('aia_history')}catch(e){L.push('ЧЕТЕНЕ: ГРЕШКА '+e.name)}
+  let rawCount='—';
+  try{const a=JSON.parse(raw);rawCount=Array.isArray(a)?a.length:('не е списък: '+typeof a)}catch(e){rawCount=raw===null?'няма ключ':'повреден JSON'}
+  L.push('Тренировки (сурово): '+rawCount);
+  L.push('Тренировки (показвани): '+getHistory().length);
+  const h=getHistory();if(h.length){const last=h.reduce((a,b)=>new Date(b.date)>new Date(a.date)?b:a);L.push('Последна: '+last.dayName+' — '+new Date(last.date).toLocaleString('bg-BG'))}
+  let total=0,keys=0,photos=0;
+  try{for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);const v=localStorage.getItem(k)||'';total+=k.length+v.length;keys++;if(k==='aia_progressPhotos')photos=v.length}}catch(e){}
+  L.push('Памет: '+Math.round(total/1024)+' KB в '+keys+' ключа (история '+Math.round((raw||'').length/1024)+' KB, снимки '+Math.round(photos/1024)+' KB)');
+  let test='OK';try{localStorage.setItem('aia__diag','1');if(localStorage.getItem('aia__diag')!=='1')test='чете грешно';localStorage.removeItem('aia__diag')}catch(e){test='ГРЕШКА '+e.name}
+  L.push('Тест на запис: '+test);
+  try{if(navigator.storage&&navigator.storage.persisted)L.push('Постоянна памет: '+((await navigator.storage.persisted())?'да':'не'))}catch(e){}
+  L.push('Последна грешка: '+(window.__lastStorageError||'няма'));
+  alert(L.join('\n'));
+}
+// Моли браузъра да не трие данните автоматично
+try{if(navigator.storage&&navigator.storage.persist)navigator.storage.persist().catch(()=>{})}catch(e){}
+
 init();
 </script>
 
