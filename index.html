@@ -3312,13 +3312,32 @@ let isPro=false;
 // ==============================
 const LS={
   get:(k,d)=>{try{return JSON.parse(localStorage.getItem('aia_'+k))||d}catch{return d}},
-  set:(k,v)=>localStorage.setItem('aia_'+k,JSON.stringify(v))
+  // Връща true/false. Преди грешка при запис (пълна памет) хвърляше изключение
+  // и тренировката се губеше без никакво съобщение.
+  set:(k,v)=>{
+    try{localStorage.setItem('aia_'+k,JSON.stringify(v));return true}
+    catch(e){
+      console.error('Storage write failed:',k,e);
+      if(!LS._warned){LS._warned=true;setTimeout(()=>{LS._warned=false},10000);
+        alert('⚠️ Данните НЕ можаха да се запишат — паметта на браузъра е пълна или е забранена (частен режим).\n\nСвали бекъп от Настройки и освободи място.')}
+      return false;
+    }
+  }
 };
 
 function getProfile(){return LS.get('profile',null)}
 function getTodayFood(){const k='food_'+new Date().toISOString().slice(0,10);return LS.get(k,{meals:[[],[],[],[]],water:0})}
 function saveTodayFood(d){const k='food_'+new Date().toISOString().slice(0,10);LS.set(k,d)}
-function getHistory(){return LS.get('history',[])}
+// Нормализира историята: един повреден/стар запис без exercises или sets
+// чупеше „Завърши тренировка" ПРЕДИ записа и новата тренировка се губеше.
+function getHistory(){
+  const h=LS.get('history',[]);
+  if(!Array.isArray(h))return [];
+  return h.filter(w=>w&&typeof w==='object').map(w=>({...w,
+    duration:Number(w.duration)||0,
+    exercises:(Array.isArray(w.exercises)?w.exercises:[]).filter(e=>e&&typeof e==='object').map(e=>({...e,
+      sets:(Array.isArray(e.sets)?e.sets:[]).filter(x=>x&&typeof x==='object').map(x=>({...x,kg:parseFloat(x.kg)||0,reps:parseInt(x.reps)||0}))}))}));
+}
 function saveHistory(h){LS.set('history',h)}
 function getWeightLog(){return LS.get('weightLog',[])}
 function getRecentFoods(){return LS.get('recentFoods',[])}
@@ -3921,48 +3940,54 @@ function addSet(ei){activeWorkout.exercises[ei].sets.push({kg:'',reps:'',done:fa
 function startTimer(){clearInterval(timerInterval);timerInterval=setInterval(()=>{const e=Math.floor((Date.now()-workoutStartTime)/1000);document.getElementById('workoutTimer').textContent=`${String(Math.floor(e/60)).padStart(2,'0')}:${String(e%60).padStart(2,'0')}`},1000)}
 
 function finishWorkout(){
-  clearInterval(timerInterval);const elapsed=Math.floor((Date.now()-workoutStartTime)/1000);
+  if(!activeWorkout)return;
+  const elapsed=Math.floor((Date.now()-(workoutStartTime||activeWorkout.startTime||Date.now()))/1000);
   const h=getHistory();
   // Запазва всеки сет с въведени повторения — дори без отметка.
-  // (Преди се пазеха само отметнатите и въведените числа се губеха при финиш.)
-  const completedExercises=activeWorkout.exercises.map(ex=>({name:ex.name,muscle:ex.muscle,sets:ex.sets.filter(s=>s.done||parseInt(s.reps)>0).map(s=>({kg:parseFloat(s.kg)||0,reps:parseInt(s.reps)||0}))})).filter(ex=>ex.sets.length>0);
+  const completedExercises=(activeWorkout.exercises||[]).map(ex=>({name:ex.name,muscle:ex.muscle,sets:(ex.sets||[]).filter(s=>s.done||parseInt(s.reps)>0).map(s=>({kg:parseFloat(s.kg)||0,reps:parseInt(s.reps)||0}))})).filter(ex=>ex.sets.length>0);
 
-  // Detect Personal Records
+  // Detect Personal Records (преди добавянето на новата тренировка)
   const prs=[];
-  completedExercises.forEach(ex=>{
-    // Find all previous instances of this exercise
-    const prevSessions=h.filter(w=>w.exercises.some(e=>e.name===ex.name));
-    if(prevSessions.length===0)return; // First time doing exercise, no PR comparison
-    // Get previous best weight for this exercise
-    let prevBestKg=0,prevBestVolume=0;
-    prevSessions.forEach(w=>{
-      const prevEx=w.exercises.find(e=>e.name===ex.name);
-      if(prevEx){prevEx.sets.forEach(s=>{if(s.kg>prevBestKg)prevBestKg=s.kg;prevBestVolume=Math.max(prevBestVolume,s.kg*s.reps)})}
+  try{
+    completedExercises.forEach(ex=>{
+      const prevSessions=h.filter(w=>w.exercises.some(e=>e.name===ex.name));
+      if(prevSessions.length===0)return;
+      let prevBestKg=0,prevBestVolume=0;
+      prevSessions.forEach(w=>{
+        const prevEx=w.exercises.find(e=>e.name===ex.name);
+        if(prevEx){prevEx.sets.forEach(s=>{if(s.kg>prevBestKg)prevBestKg=s.kg;prevBestVolume=Math.max(prevBestVolume,s.kg*s.reps)})}
+      });
+      let newBestKg=0,newBestVolume=0;
+      ex.sets.forEach(s=>{if(s.kg>newBestKg)newBestKg=s.kg;newBestVolume=Math.max(newBestVolume,s.kg*s.reps)});
+      if(newBestKg>prevBestKg&&prevBestKg>0)prs.push({name:ex.name,type:'weight',value:newBestKg+'kg',prev:prevBestKg+'kg'});
+      else if(newBestVolume>prevBestVolume&&prevBestVolume>0)prs.push({name:ex.name,type:'volume',value:Math.round(newBestVolume)+'kg×reps',prev:Math.round(prevBestVolume)+'kg×reps'});
     });
-    // Check current session for new records
-    let newBestKg=0,newBestVolume=0;
-    ex.sets.forEach(s=>{if(s.kg>newBestKg)newBestKg=s.kg;newBestVolume=Math.max(newBestVolume,s.kg*s.reps)});
-    if(newBestKg>prevBestKg&&prevBestKg>0)prs.push({name:ex.name,type:'weight',value:newBestKg+'kg',prev:prevBestKg+'kg'});
-    else if(newBestVolume>prevBestVolume&&prevBestVolume>0)prs.push({name:ex.name,type:'volume',value:Math.round(newBestVolume)+'kg×reps',prev:Math.round(prevBestVolume)+'kg×reps'});
-  });
+  }catch(e){console.error('PR detection failed',e)}
 
+  // ЗАПИСЪТ Е ПЪРВИ. Ако не мине — тренировката остава отворена, нищо не се губи.
   h.push({date:new Date().toISOString(),programId:activeWorkout.programId||'custom',program:activeWorkout.programName||'Custom',dayName:activeWorkout.dayName,duration:elapsed,exercises:completedExercises});
-  saveHistory(h);LS.set('activeWorkout',null);activeWorkout=null;
+  if(!LS.set('history',h)){
+    alert('Тренировката НЕ е записана. Остава отворена — данните ти са запазени на екрана. Свали бекъп от Настройки и опитай пак.');
+    return;
+  }
+  clearInterval(timerInterval);
+  LS.set('activeWorkout',null);activeWorkout=null;
 
-  // Award XP
-  let workoutXP=25;
-  completedExercises.forEach(ex=>workoutXP+=ex.sets.length*3);
-  addXP(workoutXP,'Тренировка завършена');
-
-  // Track PRs
-  if(prs.length>0){
-    const totalPRs=LS.get('totalPRs',0);
-    LS.set('totalPRs',totalPRs+prs.length);
-    prs.forEach(()=>addXP(20,'Нов личен рекорд'));
-    showPRCelebration(prs);
-  } else showPage('home');
-
-  checkAchievements();
+  // Бонуси — грешка тук вече не може да изтрие тренировката
+  try{
+    let workoutXP=25;
+    completedExercises.forEach(ex=>workoutXP+=ex.sets.length*3);
+    addXP(workoutXP,'Тренировка завършена');
+    if(prs.length>0){
+      const totalPRs=LS.get('totalPRs',0);
+      LS.set('totalPRs',totalPRs+prs.length);
+      prs.forEach(()=>addXP(20,'Нов личен рекорд'));
+    }
+  }catch(e){console.error('XP failed',e)}
+  if(prs.length>0){try{showPRCelebration(prs)}catch(e){showPage('home')}}
+  else showPage('home');
+  try{checkAchievements()}catch(e){console.error('Achievements failed',e)}
+  if(typeof showToast==='function')showToast('✓','Тренировката е записана',`${completedExercises.length} упражнения`);
 }
 function cancelWorkout(){if(!confirm('Откажи тренировката?'))return;clearInterval(timerInterval);LS.set('activeWorkout',null);activeWorkout=null;showPage('workout')}
 

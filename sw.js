@@ -1,4 +1,4 @@
-const CACHE = 'prime-physique-v15-backup-progress';
+const CACHE = 'prime-physique-v16-save-fix';
 const ASSETS = ['./index.html', './manifest.json', './icon-192.png', './icon-512.png'];
 
 self.addEventListener('install', e => {
