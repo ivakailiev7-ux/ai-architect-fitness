@@ -1,4 +1,4 @@
-const CACHE = 'prime-physique-v18-input-sync';
+const CACHE = 'prime-physique-v19-dashboard';
 const ASSETS = ['./index.html', './manifest.json', './icon-192.png', './icon-512.png'];
 
 self.addEventListener('install', e => {

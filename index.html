@@ -1169,7 +1169,7 @@ body{font-family:var(--font-b);color:var(--text)}
 .empty-state p{color:var(--text3);font-size:13px}
 
 /* ── ONBOARDING ───────────────────────────────────────── */
-#onboarding{position:relative;z-index:100}
+#onboarding{position:fixed;inset:0;z-index:1000;overflow-y:auto}
 .ob-step{animation:obIn .5s cubic-bezier(.22,1,.36,1) both}
 @keyframes obIn{from{opacity:0;transform:translateX(20px)}to{opacity:1;transform:translateX(0)}}
 .ob-logo{animation:obLogoIn .7s cubic-bezier(.22,1,.36,1) both}
@@ -3327,6 +3327,17 @@ const LS={
   }
 };
 
+// Дневник на грешките — вижда се в Настройки → Диагностика.
+function logAppError(where,e){
+  try{
+    console.error(where,e);
+    const msg=where+': '+(e&&e.message||e)+(e&&e.stack?' @'+String(e.stack).split('\n')[1]?.trim().slice(0,80):'');
+    const a=JSON.parse(sessionStorage.getItem('aia_errlog')||'[]');a.push(new Date().toLocaleTimeString('bg-BG')+' '+msg);
+    sessionStorage.setItem('aia_errlog',JSON.stringify(a.slice(-6)));
+  }catch(_){}
+}
+window.addEventListener('error',ev=>logAppError('js',ev.error||ev.message));
+window.addEventListener('unhandledrejection',ev=>logAppError('promise',ev.reason));
 function getProfile(){return LS.get('profile',null)}
 function getTodayFood(){const k='food_'+new Date().toISOString().slice(0,10);return LS.get(k,{meals:[[],[],[],[]],water:0})}
 function saveTodayFood(d){const k='food_'+new Date().toISOString().slice(0,10);LS.set(k,d)}
@@ -3366,11 +3377,11 @@ function init(){
 }
 
 function updateAll(){
-  updateDashboard();updateNutrition();renderProgramList();renderExBrowser();updateProfile();
-  updateXPBar();renderAchievements();renderMeasurements();renderStreakCalendar();renderAdaptiveTDEE();
-  renderSleepTracker();renderRecoveryScore();renderCycleTracker();
-  checkAchievements();
-  updateEditorialBar();
+  // Всеки блок поотделно — един срив не трябва да спира останалите.
+  [updateDashboard,updateNutrition,renderProgramList,renderExBrowser,updateProfile,
+   updateXPBar,renderAchievements,renderMeasurements,renderStreakCalendar,renderAdaptiveTDEE,
+   renderSleepTracker,renderRecoveryScore,renderCycleTracker,checkAchievements,updateEditorialBar
+  ].forEach(fn=>{try{fn()}catch(e){logAppError(fn.name,e)}});
 }
 
 // ════ EDITORIAL TICKER BAR + MARQUEE ═══════════════════════════
@@ -3526,7 +3537,13 @@ function quickStart(){
 // DASHBOARD
 // ==============================
 function updateDashboard(){
+  // Тренировъчните числа не зависят от профила/храненето — преди срив там ги оставяше на 0.
+  try{updateStats()}catch(e){logAppError('updateStats',e)}
+  try{updateNewDashboardCards()}catch(e){logAppError('dashboardCards',e)}
   if(!profile)return;
+  try{updateDashboardNutrition()}catch(e){logAppError('dashboardNutrition',e)}
+}
+function updateDashboardNutrition(){
   const food=getTodayFood();
   let totalCal=0,totalP=0,totalC=0,totalF=0;
   food.meals.forEach(m=>m.forEach(f=>{totalCal+=f.cal;totalP+=f.protein;totalC+=f.carbs;totalF+=f.fat}));
@@ -3558,8 +3575,6 @@ function updateDashboard(){
   const l1=document.getElementById('ghLine1');if(l1)l1.textContent=greet;
   const l2=document.getElementById('ghLine2');if(l2)l2.textContent=lvl.name;
 
-  updateStats();
-  updateNewDashboardCards();
   // Home meal summary
   const ms=document.getElementById('homeMealSummary');
   ms.innerHTML=MEALS.map((m,i)=>{
@@ -5051,7 +5066,7 @@ if('serviceWorker' in navigator){navigator.serviceWorker.register('./sw.js').cat
 // START
 // ==============================
 // ════ ДИАГНОСТИКА — какво реално има в паметта на това устройство ════
-const APP_VERSION='v18';
+const APP_VERSION='v19';
 async function showDiagnostics(){
   const L=[];
   L.push('Версия: '+APP_VERSION);
@@ -5070,7 +5085,11 @@ async function showDiagnostics(){
   let test='OK';try{localStorage.setItem('aia__diag','1');if(localStorage.getItem('aia__diag')!=='1')test='чете грешно';localStorage.removeItem('aia__diag')}catch(e){test='ГРЕШКА '+e.name}
   L.push('Тест на запис: '+test);
   try{if(navigator.storage&&navigator.storage.persisted)L.push('Постоянна памет: '+((await navigator.storage.persisted())?'да':'не'))}catch(e){}
-  L.push('Последна грешка: '+(window.__lastStorageError||'няма'));
+  L.push('Последна грешка в паметта: '+(window.__lastStorageError||'няма'));
+  const pr=getProfile();L.push('Профил: '+(pr?('има ('+Object.keys(pr).join(',')+')'):'НЯМА'));
+  L.push('Ключове: '+Object.keys(localStorage).filter(k=>k.startsWith('aia_')).join(', '));
+  let errs=[];try{errs=JSON.parse(sessionStorage.getItem('aia_errlog')||'[]')}catch(_){}
+  L.push('Грешки в приложението: '+(errs.length?'\n'+errs.join('\n'):'няма'));
   alert(L.join('\n'));
 }
 // Моли браузъра да не трие данните автоматично
@@ -5284,6 +5303,10 @@ shimmerObserver.observe(document.body, {subtree:true, childList:true});
 /* ── 6. NUMBER COUNTER ANIMATION ─────────────────────────── */
 function animateNumber(el, target, duration=800){
   if(!el || isNaN(target)) return;
+  /* Една анимация на елемент. Записите от самата анимация се маркират (__animWrite),
+     за да не ги хваща MutationObserver-ът отдолу — иначе всяка стъпка пускаше нова
+     анимация и броят им се умножаваше всеки кадър (хиляди кадри/сек → замръзване). */
+  if(el.__animRaf) cancelAnimationFrame(el.__animRaf);
   const start = parseFloat(el.textContent) || 0;
   const startTime = performance.now();
   const suffix = el.textContent.replace(/[\d.-]/g,'');
@@ -5291,10 +5314,11 @@ function animateNumber(el, target, duration=800){
     const p = Math.min((now-startTime)/duration, 1);
     const ease = 1-Math.pow(1-p, 3); /* ease-out-cubic */
     const val = start + (target-start)*ease;
-    el.textContent = Math.round(val*10)/10 + suffix;
-    if(p<1) requestAnimationFrame(step);
+    el.__animWrite = true;
+    el.textContent = (p<1 ? Math.round(val*10)/10 : target) + suffix;
+    el.__animRaf = p<1 ? requestAnimationFrame(step) : 0;
   }
-  requestAnimationFrame(step);
+  el.__animRaf = requestAnimationFrame(step);
 }
 /* Observe calorie / stat number changes */
 const counterEls = ['calRemaining','calGoal','calFood','calExercise','calRemaining2'];
@@ -5302,6 +5326,7 @@ counterEls.forEach(id=>{
   const el = document.getElementById(id);
   if(!el) return;
   const obs = new MutationObserver(()=>{
+    if(el.__animWrite){ el.__animWrite = false; return; } /* промяна от самата анимация */
     const val = parseFloat(el.textContent);
     if(!isNaN(val)){
       animateNumber(el, val);
