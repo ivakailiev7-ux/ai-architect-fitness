@@ -3867,8 +3867,8 @@ function renderActiveWorkout(){
         <div class="set-row ${s.done?'done':''}" id="set-${ei}-${si}">
           <div class="set-num">${si+1}</div>
           <div class="set-prev">${s.prevKg?s.prevKg+'×'+s.prevReps:'—'}</div>
-          <div class="set-input"><input type="number" inputmode="decimal" placeholder="${s.prevKg||'-'}" value="${s.kg}" onchange="updateSet(${ei},${si},'kg',this.value)"></div>
-          <div class="set-input"><input type="number" inputmode="numeric" placeholder="${s.prevReps||'-'}" value="${s.reps}" onchange="updateSet(${ei},${si},'reps',this.value)"></div>
+          <div class="set-input"><input type="text" inputmode="decimal" autocomplete="off" data-ei="${ei}" data-si="${si}" data-f="kg" placeholder="${s.prevKg||'-'}" value="${s.kg}" oninput="updateSet(${ei},${si},'kg',this.value)" onchange="updateSet(${ei},${si},'kg',this.value)"></div>
+          <div class="set-input"><input type="text" inputmode="numeric" autocomplete="off" data-ei="${ei}" data-si="${si}" data-f="reps" placeholder="${s.prevReps||'-'}" value="${s.reps}" oninput="updateSet(${ei},${si},'reps',this.value)" onchange="updateSet(${ei},${si},'reps',this.value)"></div>
           <button class="check-btn ${s.done?'checked':''}" onclick="toggleSet(${ei},${si})"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20,6 9,17 4,12"/></svg></button>
         </div>
       `).join('')}
@@ -3930,8 +3930,24 @@ function updateExDelta(ei){
 
 function refreshAllDeltas(){activeWorkout.exercises.forEach((_,ei)=>updateExDelta(ei))}
 
-function updateSet(ei,si,field,val){activeWorkout.exercises[ei].sets[si][field]=val;LS.set('activeWorkout',activeWorkout);updateExDelta(ei)}
+// Записва при всяко натискане (oninput), не само при излизане от полето.
+// Запетая → точка: клавиатурата на Samsung дава „62,5", а type=number го връщаше като празно.
+function updateSet(ei,si,field,val){
+  if(!activeWorkout||!activeWorkout.exercises[ei]||!activeWorkout.exercises[ei].sets[si])return;
+  activeWorkout.exercises[ei].sets[si][field]=String(val==null?'':val).replace(',','.').replace(/[^0-9.]/g,'');
+  LS.set('activeWorkout',activeWorkout);updateExDelta(ei)
+}
+// Взима числата директно от полетата на екрана — те са истината.
+function syncSetsFromDOM(){
+  if(!activeWorkout)return;
+  document.querySelectorAll('#workoutExercises input[data-f]').forEach(inp=>{
+    const ei=+inp.dataset.ei,si=+inp.dataset.si,f=inp.dataset.f;
+    const set=activeWorkout.exercises[ei]&&activeWorkout.exercises[ei].sets[si];
+    if(set&&inp.value!=='')set[f]=String(inp.value).replace(',','.').replace(/[^0-9.]/g,'');
+  });
+}
 function toggleSet(ei,si){
+  try{syncSetsFromDOM()}catch(e){}
   const s=activeWorkout.exercises[ei].sets[si];s.done=!s.done;LS.set('activeWorkout',activeWorkout);
   const row=document.getElementById(`set-${ei}-${si}`);
   row.classList.toggle('done',s.done);row.querySelector('.check-btn').classList.toggle('checked',s.done);
@@ -3943,10 +3959,11 @@ function startTimer(){clearInterval(timerInterval);timerInterval=setInterval(()=
 
 function finishWorkout(){
   if(!activeWorkout)return;
+  try{syncSetsFromDOM()}catch(e){console.error('sync',e)}
   const elapsed=Math.floor((Date.now()-(workoutStartTime||activeWorkout.startTime||Date.now()))/1000);
   const h=getHistory();
   // Запазва всеки сет с въведени повторения — дори без отметка.
-  const completedExercises=(activeWorkout.exercises||[]).map(ex=>({name:ex.name,muscle:ex.muscle,sets:(ex.sets||[]).filter(s=>s.done||parseInt(s.reps)>0).map(s=>({kg:parseFloat(s.kg)||0,reps:parseInt(s.reps)||0}))})).filter(ex=>ex.sets.length>0);
+  const completedExercises=(activeWorkout.exercises||[]).map(ex=>({name:ex.name,muscle:ex.muscle,sets:(ex.sets||[]).filter(s=>s.done||parseInt(s.reps)>0||parseFloat(s.kg)>0).map(s=>({kg:parseFloat(s.kg)||0,reps:parseInt(s.reps)||0}))})).filter(ex=>ex.sets.length>0);
 
   // Detect Personal Records (преди добавянето на новата тренировка)
   const prs=[];
@@ -5034,7 +5051,7 @@ if('serviceWorker' in navigator){navigator.serviceWorker.register('./sw.js').cat
 // START
 // ==============================
 // ════ ДИАГНОСТИКА — какво реално има в паметта на това устройство ════
-const APP_VERSION='v17';
+const APP_VERSION='v18';
 async function showDiagnostics(){
   const L=[];
   L.push('Версия: '+APP_VERSION);
@@ -5046,7 +5063,7 @@ async function showDiagnostics(){
   try{const a=JSON.parse(raw);rawCount=Array.isArray(a)?a.length:('не е списък: '+typeof a)}catch(e){rawCount=raw===null?'няма ключ':'повреден JSON'}
   L.push('Тренировки (сурово): '+rawCount);
   L.push('Тренировки (показвани): '+getHistory().length);
-  const h=getHistory();if(h.length){const last=h.reduce((a,b)=>new Date(b.date)>new Date(a.date)?b:a);L.push('Последна: '+last.dayName+' — '+new Date(last.date).toLocaleString('bg-BG'))}
+  const h=getHistory();if(h.length){const last=h.reduce((a,b)=>new Date(b.date)>new Date(a.date)?b:a);L.push('Последна: '+last.dayName+' — '+new Date(last.date).toLocaleString('bg-BG'));L.push('  в нея: '+last.exercises.length+' упр., '+last.exercises.reduce((a,e)=>a+e.sets.length,0)+' серии')}
   let total=0,keys=0,photos=0;
   try{for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);const v=localStorage.getItem(k)||'';total+=k.length+v.length;keys++;if(k==='aia_progressPhotos')photos=v.length}}catch(e){}
   L.push('Памет: '+Math.round(total/1024)+' KB в '+keys+' ключа (история '+Math.round((raw||'').length/1024)+' KB, снимки '+Math.round(photos/1024)+' KB)');
