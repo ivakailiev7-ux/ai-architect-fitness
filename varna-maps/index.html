@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="bg">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#111827">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Варна Адрес">
+<title>Варна Адрес</title>
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="icon-192.png">
+<link rel="stylesheet" href="vendor/leaflet.css">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="map"></div>
+
+<header id="top">
+  <div id="searchbox">
+    <button id="menuBtn" class="ib" aria-label="Меню">
+      <svg viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+    </button>
+    <input id="q" type="search" placeholder="Улица и номер, блок, обект…" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" enterkeyhint="search">
+    <button id="clearBtn" class="ib" aria-label="Изчисти" hidden>
+      <svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg>
+    </button>
+  </div>
+  <div id="results" hidden></div>
+</header>
+
+<div id="fabs">
+  <button id="layerBtn" class="fab" aria-label="Сателит" title="Сателит / Карта">
+    <svg viewBox="0 0 24 24"><path d="M12 3l9 5-9 5-9-5 9-5z"/><path d="M3 13l9 5 9-5"/></svg>
+  </button>
+  <button id="nightBtn" class="fab" aria-label="Нощен режим" title="Нощен режим">
+    <svg viewBox="0 0 24 24"><path d="M20 14.5A8 8 0 019.5 4a8 8 0 1010.5 10.5z"/></svg>
+  </button>
+  <button id="locBtn" class="fab" aria-label="Моето местоположение" title="Моето местоположение">
+    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg>
+  </button>
+</div>
+
+<section id="card" hidden>
+  <div class="grab"></div>
+  <button id="closeCard" class="ib cclose" aria-label="Затвори"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+  <div id="cardBody"></div>
+  <div class="actions">
+    <a id="navG" class="btn primary" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24"><path d="M3 11l18-8-8 18-2-8-8-2z"/></svg>Навигация
+    </a>
+    <a id="navW" class="btn" target="_blank" rel="noopener">Waze</a>
+    <button id="copyBtn" class="btn">Копирай</button>
+    <button id="favBtn" class="btn" aria-label="Любим">☆</button>
+  </div>
+</section>
+
+<section id="panel" hidden>
+  <div class="panel-in">
+    <div class="phead"><h2>Варна Адрес</h2><button id="closePanel" class="ib" aria-label="Затвори"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
+    <div id="dbInfo" class="info"></div>
+    <button id="updateBtn" class="btn primary wide">Обнови адресите сега</button>
+    <h3>Любими</h3>
+    <div id="favList" class="list"></div>
+    <h3>Как се търси</h3>
+    <ul class="help">
+      <li><b>цар симеон 25</b> — улица + номер</li>
+      <li><b>младост бл 112</b> — блок в комплекс</li>
+      <li><b>vladislav 120</b> — работи и на латиница</li>
+      <li>Поставете цял адрес: <b>гр. Варна, ж.к. Чайка, бл. 5, вх. Б, ап. 12</b> — входът/етажът/апартаментът се игнорират</li>
+      <li><b>Задръжте пръст върху картата</b> — показва най-близкия адрес</li>
+    </ul>
+    <p class="small">Данни: © сътрудници на OpenStreetMap (ODbL). Търсенето работи без интернет след първото изтегляне. Картата се пази в паметта за зоните, които сте разглеждали.</p>
+  </div>
+</section>
+
+<div id="loader" hidden>
+  <div class="lbox">
+    <div class="logo"><img src="icon.svg" alt=""></div>
+    <h2>Изтегляне на адресите на Варна</h2>
+    <p id="lmsg">Еднократно, ~5–10 MB. След това търсенето работи и без интернет.</p>
+    <div class="bar"><i id="lbar"></i></div>
+    <p id="lsub" class="small"></p>
+    <div class="lbtns">
+      <button id="lretry" class="btn primary" hidden>Опитай пак</button>
+      <button id="lskip" class="btn ghost" hidden>Продължи само с онлайн търсене</button>
+    </div>
+  </div>
+</div>
+
+<div id="toast" hidden></div>
+
+<script src="vendor/leaflet.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
