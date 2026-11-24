@@ -53,6 +53,7 @@
     </a>
     <a id="navW" class="btn" target="_blank" rel="noopener">Waze</a>
     <button id="copyBtn" class="btn">Копирай</button>
+    <button id="saveBtn" class="btn" aria-label="Запази като мой адрес" title="Запази като мой точен адрес">📌</button>
     <button id="favBtn" class="btn" aria-label="Любим">☆</button>
   </div>
 </section>
@@ -62,6 +63,13 @@
     <div class="phead"><h2>Варна Адрес</h2><button id="closePanel" class="ib" aria-label="Затвори"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
     <div id="dbInfo" class="info"></div>
     <button id="updateBtn" class="btn primary wide">Обнови адресите сега</button>
+    <h3>Google търсене (за липсващи номера)</h3>
+    <p class="small">Когато номерът го няма в картата, приложението пита Google автоматично. Нужен е безплатен ключ (10 000 търсения/месец без такса).</p>
+    <div class="krow"><input id="gkey" type="text" placeholder="Поставете Google API ключ" autocomplete="off" spellcheck="false"><button id="gsave" class="btn sm">Запази</button></div>
+    <div id="gstat" class="small"></div>
+    <h3>Мои адреси</h3>
+    <p class="small">Адреси, които сте запазили с 📌. Винаги излизат първи и като точни.</p>
+    <div id="myList" class="list"></div>
     <h3>Любими</h3>
     <div id="favList" class="list"></div>
     <h3>Как се търси</h3>
