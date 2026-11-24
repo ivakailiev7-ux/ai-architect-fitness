@@ -108,3 +108,10 @@ body.card-open #toast{bottom:auto;top:calc(var(--safe-t) + 76px)}
 #cardBody{padding-right:40px}
 #navW,#copyBtn,#favBtn{flex:none}
 .actions{gap:6px}.actions .btn{padding:0 11px}.actions .btn.primary{min-width:0}
+
+.r .ic.google{background:#fee2e2;color:#b91c1c}
+.r .ic.mine{background:#ffedd5;color:#c2410c}
+.b-g{background:#fee2e2;color:#991b1b}.b-mine{background:#ffedd5;color:#9a3412}
+.krow{display:flex;gap:8px}.krow input{flex:1;min-width:0;height:38px;border:1px solid var(--line);border-radius:10px;padding:0 10px;background:var(--bg);color:var(--fg);font:inherit;font-size:14px}
+.del{border:0;background:transparent;color:var(--muted);font-size:20px;width:36px;height:36px}
+.hint{margin-top:6px;font-size:13px;color:var(--muted)}

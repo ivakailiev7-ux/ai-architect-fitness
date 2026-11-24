@@ -1,4 +1,4 @@
-const V = 'va-shell-v1', TILES = 'va-tiles-v1', MAX_TILES = 6000;
+const V = 'va-shell-v2', TILES = 'va-tiles-v1', MAX_TILES = 6000;
 const SHELL = ['./', 'index.html', 'style.css', 'app.js', 'manifest.json', 'icon.svg', 'icon-192.png', 'icon-512.png',
   'vendor/leaflet.js', 'vendor/leaflet.css', 'vendor/images/layers.png', 'vendor/images/layers-2x.png',
   'vendor/images/marker-icon.png', 'vendor/images/marker-icon-2x.png', 'vendor/images/marker-shadow.png'];

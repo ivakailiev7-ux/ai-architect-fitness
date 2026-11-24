@@ -271,8 +271,20 @@ function approxFor(s, num) {
   return near && Math.abs(near.n - q) <= 10 ? { lat: near.a.lat, lon: near.a.lon, note: `най-близкият № в базата е ${near.a.hn}` } : null;
 }
 
+function searchMine(P) {
+  const out = [];
+  if (!P.qt.length && !P.num) return out;
+  for (const m of store.get('vk_my', [])) {
+    const M = parseQuery(m.title);
+    if (P.qt.length && tokScore(P.qt, M.qt, false) < 0) continue;
+    if (P.num && !M.keys.some(k => P.keys.includes(k))) continue;
+    if (!P.qt.length && !P.num) continue;
+    out.push({ type: 'mine', title: m.title, sub: '📌 мой запазен адрес', lat: m.lat, lon: m.lon });
+  }
+  return out;
+}
 function searchLocal(raw) {
-  const P = parseQuery(raw), res = [];
+  const P = parseQuery(raw), res = searchMine(P);
   if (!DB.ready || (!P.qt.length && !P.num)) return { P, res };
   let streets = matchStreets(P.qt);
   // поставен цял адрес „ж.к. X, ул. Y 5“ → опитай всеки сегмент поотделно
@@ -321,6 +333,52 @@ const KIND = {
   'shop:supermarket':'Супермаркет','shop:convenience':'Магазин','shop:bakery':'Пекарна','shop:mall':'Мол','tourism:hotel':'Хотел','tourism:museum':'Музей','tourism:guest_house':'Къща за гости','leisure:park':'Парк','leisure:sports_centre':'Спортен център',
 };
 function kindLabel(k) { if (KIND[k]) return KIND[k]; const g = k.split(':')[0]; return { shop: 'Магазин', amenity: 'Обект', office: 'Офис', tourism: 'Туризъм', place: 'Място', craft: 'Сервиз', healthcare: 'Здраве', leisure: 'Отдих' }[g] || ''; }
+
+/* Google резервно търсене (с ключ на потребителя) */
+let gLoad = null;
+function loadGoogle(key) {
+  if (window.google && google.maps && google.maps.importLibrary) return Promise.resolve();
+  if (gLoad) return gLoad;
+  window.gm_authFailure = () => { store.set('vk_gerr', 'Ключът е отказан от Google (проверете ключа, Geocoding API и ограниченията за сайта).'); toast('Google ключът не работи — вижте менюто'); };
+  gLoad = new Promise((res, rej) => {
+    window.__gcb = () => res();
+    const s = document.createElement('script');
+    s.src = `https://maps.googleapis.com/maps/api/js?key=${encodeURIComponent(key)}&language=bg&region=BG&loading=async&callback=__gcb`;
+    s.onerror = () => { gLoad = null; rej(new Error('Google не се зареди')); };
+    document.head.appendChild(s);
+  });
+  return gLoad;
+}
+async function searchGoogle(raw, P) {
+  const key = store.get('vk_gkey', '');
+  if (!key || !navigator.onLine) return [];
+  const ck = skel(raw), cache = store.get('vk_gcache', {});
+  if (cache[ck]) return cache[ck];
+  await loadGoogle(key);
+  const { Geocoder } = await google.maps.importLibrary('geocoding');
+  const [s, w, n, e] = CFG.bbox;
+  const q = /варна|varna/i.test(raw) ? raw : raw + ', Варна';
+  const r = await new Geocoder().geocode({ address: q, bounds: { south: s, west: w, north: n, east: e }, region: 'bg', language: 'bg' });
+  const want = P && P.num ? skel(P.num).replace(/ /g, '') : null;
+  const out = [];
+  for (const x of (r.results || []).slice(0, 5)) {
+    const lat = x.geometry.location.lat(), lon = x.geometry.location.lng();
+    if (lat < s || lat > n || lon < w || lon > e) continue;
+    const comp = t => (x.address_components.find(c => c.types.includes(t)) || {}).long_name;
+    const sn = comp('street_number'), route = comp('route') || comp('premise') || comp('sublocality');
+    const numOk = !want || (sn && skel(sn).replace(/ /g, '') === want);
+    const exact = x.geometry.location_type === 'ROOFTOP' && !!sn && numOk;
+    out.push({
+      type: exact ? 'google' : 'approx', src: 'google',
+      title: route ? pretty(route) + (sn ? ' ' + sn : '') : x.formatted_address.split(',')[0],
+      sub: 'Google · ' + x.formatted_address, lat, lon,
+      warn: exact ? '' : (sn && !numOk ? `Google намери № ${sn}, не № ${P.num}. ` : '') + 'Google няма точна точка за този номер — позицията е приблизителна. Преместете пина и натиснете 📌, когато намерите адреса.',
+    });
+  }
+  const keys = Object.keys(cache); if (keys.length > 400) delete cache[keys[0]];
+  cache[ck] = out; store.set('vk_gcache', cache); store.set('vk_gerr', '');
+  return out;
+}
 
 /* онлайн търсене (резервно) */
 async function searchOnline(raw) {
@@ -378,7 +436,7 @@ function dist(a, b) {
 const fmtD = m => m < 1000 ? Math.round(m / 10) * 10 + ' м' : (m / 1000).toFixed(m < 10000 ? 1 : 0) + ' км';
 
 /* ───────────── UI: резултати ───────────── */
-const ICON = { addr: '№', approx: '≈', street: 'ул', poi: '●', online: '🌐' };
+const ICON = { addr: '№', approx: '≈', street: 'ул', poi: '●', online: '🌐', google: 'G', mine: '📌' };
 let lastResults = [];
 function rowHtml(r, i) {
   const d = me ? `<div class="d">${fmtD(dist(me, r))}</div>` : '';
@@ -415,14 +473,29 @@ function onInput() {
   if (!raw) return renderHome();
   tmr = setTimeout(() => runSearch(raw), 60);
 }
-function runSearch(raw) {
-  if (!DB.ready) { renderResults([], raw, { note: 'Локалната база не е заредена — използвайте онлайн търсене.' }); return; }
+let gTmr, gSeq = 0;
+function runSearch(raw, now) {
   const t0 = performance.now();
   const { P, res } = searchLocal(raw);
-  let note = '';
-  if (!res.length && (P.qt.length || P.num)) note = `Няма резултат в локалната база за „<b>${esc(raw)}</b>“.`;
-  renderResults(res.slice(0, 40), raw, { note });
   window.__lastSearchMs = performance.now() - t0;
+  const exact = res.some(r => r.type === 'addr' || r.type === 'mine');
+  const useG = !exact && store.get('vk_gkey', '') && navigator.onLine && (P.num || (!res.length && P.qt.length));
+  let note = '';
+  if (!DB.ready) note = 'Локалната база не е заредена.';
+  else if (!res.length && (P.qt.length || P.num)) note = `Няма резултат в локалната база за „<b>${esc(raw)}</b>“.`;
+  if (useG) note = (note ? note + ' ' : '') + 'Търся в Google…';
+  renderResults(res.slice(0, 40), raw, { note });
+  clearTimeout(gTmr);
+  if (!useG) return;
+  const seq = ++gSeq;
+  gTmr = setTimeout(async () => {
+    let g = [];
+    try { g = await searchGoogle(raw, P); } catch (e) { if (seq === gSeq) toast('Google: ' + (e.message || 'грешка')); }
+    if (seq !== gSeq || $('#q').value.trim() !== raw) return;
+    if (!now && $('#results').hidden) return;
+    renderResults([...g, ...res].slice(0, 40), raw, { note: g.length ? '' : (note.replace('Търся в Google…', '') + ' Google също не намери адреса.').trim() });
+    if (now && g[0] && g[0].type === 'google') select(g[0]);
+  }, now ? 0 : 700);
 }
 async function doOnline(raw) {
   if (!navigator.onLine) return toast('Няма интернет');
@@ -442,7 +515,8 @@ function select(r, opt = {}) {
   current = r;
   selLayer.clearLayers();
   $('#results').hidden = true; $('#q').blur();
-  const color = r.type === 'approx' ? '#d97706' : r.type === 'online' ? '#a21caf' : '#dc2626';
+  const color = r.type === 'approx' ? '#d97706' : r.type === 'online' ? '#a21caf' : r.type === 'mine' ? '#ea580c' : '#dc2626';
+  const movable = !['addr', 'google', 'mine'].includes(r.type);
   if (r.type === 'street' && r.s && r.s.geoms.length) {
     const pl = L.polyline(r.s.geoms, { color: '#2563eb', weight: 7, opacity: .75 }).addTo(selLayer);
     map.fitBounds(pl.getBounds(), { padding: [40, 40], maxZoom: 17 });
@@ -453,15 +527,16 @@ function select(r, opt = {}) {
   } else {
     map.setView([r.lat, r.lon], Math.max(map.getZoom(), 18), { animate: !opt.noAnim });
   }
-  L.marker([r.lat, r.lon], { icon: pinIcon(color) }).addTo(selLayer);
+  const mk = L.marker([r.lat, r.lon], { icon: pinIcon(color), draggable: movable, autoPan: true }).addTo(selLayer);
+  mk.on('dragend', () => { const ll = mk.getLatLng(); current = { ...current, lat: ll.lat, lon: ll.lng, moved: true }; setNav(current); const c = $('#coords'); if (c) c.textContent = ll.lat.toFixed(6) + ', ' + ll.lng.toFixed(6) + ' (преместен)'; });
   if (r.type === 'approx') L.circle([r.lat, r.lon], { radius: 35, color: '#d97706', weight: 1, fillOpacity: .12 }).addTo(selLayer);
 
-  const badge = r.type === 'addr' ? '<span class="badge b-ok">точен адрес</span>' : r.type === 'approx' ? '<span class="badge b-warn">приблизително</span>' : r.type === 'online' ? '<span class="badge b-on">онлайн</span>' : '';
+  const badge = r.type === 'addr' ? '<span class="badge b-ok">точен адрес</span>' : r.type === 'google' ? '<span class="badge b-g">Google · точен</span>' : r.type === 'mine' ? '<span class="badge b-mine">мой адрес</span>' : r.type === 'approx' ? '<span class="badge b-warn">приблизително</span>' : r.type === 'online' ? '<span class="badge b-on">онлайн</span>' : '';
   const dd = me ? ' · ' + fmtD(dist(me, r)) + ' от вас' : '';
   $('#cardBody').innerHTML = `<div class="ct">${esc(r.title)} ${badge}</div><div class="cs">${esc(r.sub || '')}${dd}</div>` +
-    `<div class="cs">${r.lat.toFixed(6)}, ${r.lon.toFixed(6)}</div>` + (r.warn ? `<div class="cw">${esc(r.warn)}</div>` : '');
-  $('#navG').href = `https://www.google.com/maps/dir/?api=1&destination=${r.lat},${r.lon}&travelmode=driving`;
-  $('#navW').href = `https://waze.com/ul?ll=${r.lat},${r.lon}&navigate=yes`;
+    `<div class="cs" id="coords">${r.lat.toFixed(6)}, ${r.lon.toFixed(6)}</div>` + (r.warn ? `<div class="cw">${esc(r.warn)}</div>` : '') +
+    (movable ? `<div class="hint">Задръжте и плъзнете пина до точното място → 📌 запазва адреса завинаги. <a href="${gmapsSearch(r.title)}" target="_blank" rel="noopener">Виж в Google Maps</a></div>` : '');
+  setNav(r);
   const favs = store.get('vk_favs', []);
   $('#favBtn').classList.toggle('on', favs.some(f => f.title === r.title));
   $('#favBtn').textContent = favs.some(f => f.title === r.title) ? '★' : '☆';
@@ -472,7 +547,11 @@ function select(r, opt = {}) {
     h.unshift(slim(r)); store.set('vk_hist', h.slice(0, 12));
   }
 }
-const slim = r => ({ type: r.type === 'street' ? 'addr' : r.type, title: r.title, sub: r.sub, lat: r.lat, lon: r.lon, warn: r.warn });
+function setNav(r) {
+  $('#navG').href = `https://www.google.com/maps/dir/?api=1&destination=${r.lat},${r.lon}&travelmode=driving`;
+  $('#navW').href = `https://waze.com/ul?ll=${r.lat},${r.lon}&navigate=yes`;
+}
+const slim = r => ({ type: r.type === 'street' ? 'approx' : r.type, title: r.title, sub: r.sub, lat: r.lat, lon: r.lon, warn: r.warn });
 function closeCard() { $('#card').hidden = true; document.body.classList.remove('card-open'); selLayer.clearLayers(); current = null; }
 $('#closeCard').onclick = closeCard;
 $('#copyBtn').onclick = async () => {
@@ -480,6 +559,19 @@ $('#copyBtn').onclick = async () => {
   const txt = `${current.title}, Варна\nhttps://www.google.com/maps/search/?api=1&query=${current.lat},${current.lon}`;
   try { await navigator.clipboard.writeText(txt); toast('Копирано'); }
   catch { if (navigator.share) navigator.share({ text: txt }).catch(() => {}); }
+};
+$('#saveBtn').onclick = () => {
+  if (!current) return;
+  let pos = { lat: current.lat, lon: current.lon };
+  if (me && dist(me, current) > 25 && me.acc < 40 && confirm('На адреса ли сте в момента?\n\nOK = запази текущата ви GPS позиция\nОтказ = запази позицията на пина')) pos = { lat: me.lat, lon: me.lon };
+  const def = current.type === 'street' && $('#q').value.trim() ? $('#q').value.trim() : current.title;
+  const title = (prompt('Как да се казва адресът? (както ще го търсите, напр. „ул. Цар Симеон I 12“ или „Младост бл. 112“)', def) || '').trim();
+  if (!title) return;
+  const my = store.get('vk_my', []).filter(m => m.title !== title);
+  my.unshift({ title, lat: pos.lat, lon: pos.lon, ts: Date.now() });
+  store.set('vk_my', my);
+  toast('📌 Запазен: ' + title);
+  select({ type: 'mine', title, sub: '📌 мой запазен адрес', lat: pos.lat, lon: pos.lon }, { noAnim: true });
 };
 $('#favBtn').onclick = () => {
   if (!current) return;
@@ -521,7 +613,23 @@ function reverseAt(ll) {
 })();
 
 /* ───────────── панел, бутони ───────────── */
+function renderMy() {
+  const my = store.get('vk_my', []);
+  $('#myList').innerHTML = my.length ? my.map((m, i) => `<div class="r" data-m="${i}"><div class="ic mine">📌</div><div class="tx"><div class="t1">${esc(m.title)}</div><div class="t2">${new Date(m.ts || 0).toLocaleDateString('bg')}</div></div><button class="del" data-del="${i}" aria-label="Изтрий">×</button></div>`).join('') : '<p class="small">Още няма.</p>';
+  const k = store.get('vk_gkey', ''), err = store.get('vk_gerr', '');
+  $('#gkey').value = k;
+  $('#gstat').textContent = !k ? 'Не е настроено.' : err ? '⚠ ' + err : '✓ Включено.';
+}
+$('#myList').addEventListener('click', e => {
+  const d = e.target.closest('[data-del]');
+  if (d) { const my = store.get('vk_my', []); const m = my[+d.dataset.del]; if (m && confirm('Изтрий „' + m.title + '“?')) { my.splice(+d.dataset.del, 1); store.set('vk_my', my); renderMy(); } return; }
+  const r = e.target.closest('[data-m]'); if (!r) return;
+  const m = store.get('vk_my', [])[+r.dataset.m]; $('#panel').hidden = true;
+  select({ type: 'mine', title: m.title, sub: '📌 мой запазен адрес', lat: m.lat, lon: m.lon }, { noHist: true });
+});
+$('#gsave').onclick = () => { store.set('vk_gkey', $('#gkey').value.trim()); store.set('vk_gerr', ''); store.set('vk_gcache', {}); gLoad = null; renderMy(); toast($('#gkey').value.trim() ? 'Google ключът е запазен' : 'Google е изключен'); };
 function dbInfo() {
+  renderMy();
   if (!DB.ready) return $('#dbInfo').innerHTML = 'Локалната база <b>не е изтеглена</b>.';
   const d = new Date(DB.ts), age = Math.floor((Date.now() - DB.ts) / 864e5);
   $('#dbInfo').innerHTML = `<b>${DB.addrs.length.toLocaleString('bg')}</b> адреса · <b>${DB.streets.size.toLocaleString('bg')}</b> улици/комплекси · <b>${DB.pois.length.toLocaleString('bg')}</b> обекта<br>Обновено: ${d.toLocaleDateString('bg')} ${d.toLocaleTimeString('bg', { hour: '2-digit', minute: '2-digit' })} (${age ? 'преди ' + age + ' дни' : 'днес'})`;
@@ -541,7 +649,7 @@ $('#q').addEventListener('focus', () => { if (!$('#q').value.trim()) renderHome(
 $('#q').addEventListener('keydown', e => {
   if (e.key === 'Enter') {
     const raw = $('#q').value.trim(); if (!raw) return;
-    clearTimeout(tmr); runSearch(raw);
+    clearTimeout(tmr); runSearch(raw, true);
     if (lastResults.length && ['addr', 'approx'].includes(lastResults[0].type) && lastResults.filter(r => r.type === 'addr').length <= 1) select(lastResults[0]);
     else if (!lastResults.length && navigator.onLine) doOnline(raw);
   }
@@ -586,4 +694,4 @@ $('#lskip').onclick = () => $('#loader').hidden = true;
 if ('serviceWorker' in navigator && location.protocol !== 'file:') navigator.serviceWorker.register('sw.js').catch(() => {});
 if (navigator.storage && navigator.storage.persist) navigator.storage.persist().catch(() => {});
 load(false);
-window.__va = { DB, searchLocal, parseQuery, buildIndex, parsePoints, parseStreets, select };
+window.__va = { DB, searchLocal, searchGoogle, parseQuery, buildIndex, parsePoints, parseStreets, select };
